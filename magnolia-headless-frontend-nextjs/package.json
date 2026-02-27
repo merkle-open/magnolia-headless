@@ -1,0 +1,61 @@
+{
+  "name": "@merkle-open/magnolia-headless-frontend-nextjs",
+  "version": "0.0.1-SNAPSHOT",
+  "description": "Magnolia headless frontend nextJs",
+  "license": "MIT",
+  "author": "Merkle Inc.",
+  "private": false,
+  "main": "index.ts",
+  "module": "index.ts",
+  "type": "module",
+  "engines": {
+    "node": ">=25"
+  },
+  "files": [
+    "README.md",
+    "index.js",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/merkle-open/magnolia-headless.git"
+  },
+  "scripts": {
+    "generate-oss-magnoliaConfig": "npx tsx src/scripts/generate-magnolia-config.ts src/templates src/templates",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "format": "prettier --write src/**",
+    "lint": "eslint src/**",
+    "prepare": "cd .. && husky magnolia-headless-frontend-nextjs/.husky"
+  },
+  "dependencies": {
+    "@magnolia/react-editor": "2.1.1"
+  },
+  "peerDependencies": {
+    "next": "^16.1",
+    "react": "^19.2",
+    "react-dom": "^19.2",
+    "reflect-metadata": "^0.2",
+    "tsyringe": "^4.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.3",
+    "@types/node": "^25.0.10",
+    "@types/react": "19.2.10",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
+    "eslint": "^9.39.3",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react": "^7.37.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
+    "tsx": "^4.21.0",
+    "typescript-eslint": "^8.56.1",
+    "jiti": "^2.6.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,mdx,html,css}": "npm run format"
+  }
+}

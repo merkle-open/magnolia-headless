@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "module.dtd" >
+<module>
+    <name>magnolia-headless-spring</name>
+    <displayName>Magnolia Spring Headless</displayName>
+    <description>Magnolia spring headless endpoints</description>
+    <versionHandler>com.merkle.oss.magnolia.headless.configuration.MagnoliaSpringHeadlessModuleVersionHandler</versionHandler>
+    <version>${project.version}</version>
+
+    <components>
+        <id>main</id>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.renderer.JsonRenderer</type>
+            <implementation>com.merkle.oss.magnolia.headless.renderer.JsonRenderer</implementation>
+        </component>
+    </components>
+
+    <dependencies>
+        <dependency>
+            <name>core</name>
+            <version>*</version>
+        </dependency>
+        <dependency>
+            <name>rendering</name>
+            <version>*</version>
+        </dependency>
+    </dependencies>
+</module>

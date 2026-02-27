@@ -1,0 +1,109 @@
+name: release and deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Maven verify
+        run: mvn -s ci/mvnsettings.xml verify --batch-mode
+        env:
+          MAGNOLIA_REPO_USER: ${{ secrets.MGNL_NEXUS_USER }}
+          MAGNOLIA_REPO_PASSWORD: ${{ secrets.MGNL_NEXUS_PASS }}
+  verify-nextjs-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ./magnolia-headless-frontend-nextjs/.nvmrc
+      - name: Node verify
+        working-directory: ./magnolia-headless-frontend-nextjs
+        run: npm ci && npm run build && npm run lint
+
+  release:
+    needs: [verify-backend, verify-nextjs-frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ./magnolia-headless-frontend-nextjs/.nvmrc
+      # Install xmllint
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install libxml2-utils
+      # Set git user name and email
+      - name: Set up Git
+        run: |
+          chmod +x ci/setup-git.sh
+          ci/setup-git.sh
+      # Release, set correct versions and create tag
+      - name: Release (versioning/tag)
+        run: |
+          chmod +x ci/release.sh
+          ci/release.sh
+
+  deploy-release-backend:
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+      - name: Release Maven package
+        run: mvn -s ci/mvnsettings.xml deploy -Pdeploy
+        env:
+          MAVEN_USERNAME: ${{ secrets.SONATYPE_USER }}
+          MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          MAGNOLIA_REPO_USER: ${{ secrets.MGNL_NEXUS_USER }}
+          MAGNOLIA_REPO_PASSWORD: ${{ secrets.MGNL_NEXUS_PASS }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+  deploy-release-nextjs-frontend:
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ./magnolia-headless-frontend-nextjs/.nvmrc
+          registry-url: 'https://npm.pkg.github.com'
+      - name: Release Node package
+        working-directory: ./magnolia-headless-frontend-nextjs
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm ci && npm publish

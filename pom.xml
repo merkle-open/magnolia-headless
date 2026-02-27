@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd ">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.merkle.oss.magnolia</groupId>
+	<artifactId>magnolia-headless-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>${project.artifactId}</name>
+	<description>Magnolia headless module</description>
+	<url>https://github.com/namics/magnolia-headless</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Merkle Magnolia</name>
+			<email>magnolia@merkle.com</email>
+			<organization>Merkle DACH</organization>
+			<organizationUrl>https://merkleinc.ch</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<url>https://github.com/namics/magnolia-headless</url>
+		<connection>scm:git:git@github.com:namics/magnolia-headless.git</connection>
+		<developerConnection>scm:git:git@github.com:namics/magnolia-headless.git</developerConnection>
+	</scm>
+
+	<modules>
+		<module>magnolia-headless-spring</module>
+  </modules>
+
+	<properties>
+		<!--	mvn versions:display-property-updates	-->
+		<magnolia.version>6.4.3</magnolia.version>
+		<magnolia-personalization.version>4.0.1</magnolia-personalization.version>
+
+		<merkle.oss.spring-renderer.version>0.1.1</merkle.oss.spring-renderer.version>
+		<merkle.oss.powernode.version>2.3.2</merkle.oss.powernode.version>
+
+		<jjwt.version>0.13.0</jjwt.version>
+		<!--Test dependency versions-->
+		<junit.version>6.0.3</junit.version>
+		<mockito.version>5.21.0</mockito.version>
+
+		<!-- Maven Plugins -->
+		<mvn.compiler.plugin.version>3.15.0</mvn.compiler.plugin.version>
+		<mvn.source.plugin.version>3.4.0</mvn.source.plugin.version>
+		<mvn.javadoc.version>3.12.0</mvn.javadoc.version>
+		<mvn.gpg.plugin.version>3.2.5</mvn.gpg.plugin.version>
+		<mvn.sonatype.publishing.plugin.version>0.5.0</mvn.sonatype.publishing.plugin.version>
+		<mvn.surefire.plugin.version>3.5.5</mvn.surefire.plugin.version>
+
+		<javaVersion>17</javaVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.version.ignore>.*-M.*,.*-alpha.*,.*-beta.*,.*-rc.*,.*-RC.*</maven.version.ignore>
+
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Magnolia -->
+			<dependency>
+				<groupId>info.magnolia.bundle</groupId>
+				<artifactId>magnolia-bundle-parent</artifactId>
+				<version>${magnolia.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>info.magnolia.personalization</groupId>
+				<artifactId>magnolia-personalization-core</artifactId>
+				<version>${magnolia-personalization.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.merkle.oss.magnolia</groupId>
+				<artifactId>magnolia-spring-renderer</artifactId>
+				<version>${merkle.oss.spring-renderer.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.merkle.oss.magnolia</groupId>
+				<artifactId>magnolia-powernode</artifactId>
+				<version>${merkle.oss.powernode.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-api</artifactId>
+				<version>${jjwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-impl</artifactId>
+				<version>${jjwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-jackson</artifactId>
+				<version>${jjwt.version}</version>
+			</dependency>
+
+			<!-- TESTING DEPENDENCIES -->
+			<dependency>
+				<groupId>org.junit.jupiter</groupId>
+				<artifactId>junit-jupiter</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-core</artifactId>
+				<version>${mockito.version}</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${mvn.compiler.plugin.version}</version>
+				<configuration>
+					<source>${javaVersion}</source>
+					<target>${javaVersion}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${mvn.source.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${mvn.javadoc.version}</version>
+				<configuration>
+					<failOnError>false</failOnError>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${mvn.surefire.plugin.version}</version>
+			</plugin>
+		</plugins>
+		<!-- default resources configuration which will filter your module descriptors -->
+		<resources>
+			<resource>
+				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+
+	<repositories>
+		<!-- Magnolia -->
+		<repository>
+			<id>magnolia.public.group</id>
+			<url>https://nexus.magnolia-cms.com/content/groups/public</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>magnolia.enterprise.group</id>
+			<url>https://nexus.magnolia-cms.com/content/groups/enterprise</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+
+	<distributionManagement>
+		<!-- central portal doesn't support SNAPSHOT versions: https://central.sonatype.org/faq/snapshot-releases -->
+		<repository>
+			<id>central</id>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
+	<profiles>
+		<profile>
+			<id>deploy</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${mvn.gpg.plugin.version}</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+								<configuration>
+									<!-- Prevent `gpg` from using pinentry programs -->
+									<gpgArguments>
+										<arg>--pinentry-mode</arg>
+										<arg>loopback</arg>
+									</gpgArguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
+						<version>${mvn.sonatype.publishing.plugin.version}</version>
+						<extensions>true</extensions>
+						<configuration>
+							<publishingServerId>central</publishingServerId>
+							<autoPublish>true</autoPublish>
+							<waitUntil>published</waitUntil>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>
