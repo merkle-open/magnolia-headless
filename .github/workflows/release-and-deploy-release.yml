@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+
 jobs:
   verify-backend:
     runs-on: ubuntu-latest
@@ -104,6 +107,4 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Release Node package
         working-directory: ./magnolia-headless-frontend-nextjs
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_REGISTRY_AUTH_TOKEN }}
         run: npm ci && npm publish
