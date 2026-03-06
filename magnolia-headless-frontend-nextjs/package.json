@@ -9,7 +9,7 @@
   "module": "index.ts",
   "type": "module",
   "engines": {
-    "node": ">=25"
+    "node": ">=24"
   },
   "files": [
     "README.md",
