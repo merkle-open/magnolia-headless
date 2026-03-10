@@ -3,16 +3,13 @@ package com.merkle.oss.magnolia.headless.api.page;
 import info.magnolia.config.registry.DefinitionProvider;
 import info.magnolia.module.site.Site;
 import info.magnolia.module.site.SiteManager;
-import info.magnolia.rendering.engine.AppendableOnlyOutputProvider;
-import info.magnolia.rendering.engine.RenderException;
-import info.magnolia.rendering.engine.RenderingEngine;
 import info.magnolia.rendering.template.TemplateDefinition;
 import info.magnolia.rendering.template.registry.TemplateDefinitionRegistry;
 import info.magnolia.repository.RepositoryConstants;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -26,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.machinezoo.noexception.Exceptions;
 import com.merkle.oss.magnolia.headless.api.page.mapper.PagePathMapper;
 import com.merkle.oss.magnolia.headless.api.page.mapper.PagePathMapperResolver;
 import com.merkle.oss.magnolia.headless.model.RedirectModelDataProvider;
@@ -40,33 +36,33 @@ import jakarta.servlet.http.HttpServletRequest;
 public class PageController {
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final SiteManager siteManager;
-    private final RenderingEngine renderingEngine;
     private final TemplateDefinitionRegistry templateDefinitionRegistry;
     private final RedirectModelDataProvider redirectModelDataProvider;
     private final ErrorPageProvider errorPageProvider;
     private final Gson gson;
     private final PageNodeResolver pageNodeResolver;
     private final PagePathMapperResolver pagePathMapperResolver;
+    private final PageModelProvider pageModelProvider;
 
     @Inject
     public PageController(
             final SiteManager siteManager,
-            final RenderingEngine renderingEngine,
             final TemplateDefinitionRegistry templateDefinitionRegistry,
             final RedirectModelDataProvider redirectModelDataProvider,
             final ErrorPageProvider errorPageProvider,
             final GsonBuilder gsonBuilder,
             final PageNodeResolver pageNodeResolver,
-            final PagePathMapperResolver pagePathMapperResolver
+            final PagePathMapperResolver pagePathMapperResolver,
+            final PageModelProvider pageModelProvider
     ) {
         this.siteManager = siteManager;
-        this.renderingEngine = renderingEngine;
         this.templateDefinitionRegistry = templateDefinitionRegistry;
 		this.redirectModelDataProvider = redirectModelDataProvider;
         this.errorPageProvider = errorPageProvider;
         this.gson = gsonBuilder.create();
 		this.pageNodeResolver = pageNodeResolver;
         this.pagePathMapperResolver = pagePathMapperResolver;
+        this.pageModelProvider = pageModelProvider;
     }
 
     @GetMapping(value = "/{language}/page.json", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -135,18 +131,19 @@ public class PageController {
     private ResponseEntity<String> getPageResponse(final Locale locale, @Nullable final PowerNode page, final boolean errorPage) {
         return Optional
                 .ofNullable(page)
-                .map(p ->  Exceptions.wrap().get(() -> getRenderResponseBody(locale, page, errorPage)))
+                .map(p ->  getRenderResponseBody(locale, page, errorPage))
                 .map(body -> ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(body))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    protected String getRenderResponseBody(final Locale locale, final PowerNode page, final boolean errorPage) throws RenderException {
+    protected String getRenderResponseBody(final Locale locale, final PowerNode page, final boolean errorPage) {
         final TemplateDefinition template = page.getTemplate().map(templateDefinitionRegistry::getProvider).map(DefinitionProvider::get).orElseThrow(() ->
                 new NullPointerException("couldn't get template for page: " + page.getPath())
         );
-        final StringBuilder rendered = new StringBuilder();
-        renderingEngine.render(page, template, Collections.emptyMap(), new AppendableOnlyOutputProvider(rendered));
-        return rendered.toString();
+        return serialize(pageModelProvider.get(page, template));
+    }
+    protected String serialize(final Map<String, Object> model) {
+        return gson.toJson(model);
     }
 
 	private ResponseEntity<String> getRedirectResponse(final String destination, final int redirectStatusCode) {
