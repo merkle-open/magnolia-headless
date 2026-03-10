@@ -2,7 +2,7 @@
 
 ## [Robots.txt](./RobotsTxtApi.ts)
 
-Consumes content provided by the [Magnolia Robots Endpoint](../../../magnolia-headless-spring/src/main/java/com/merkle/oss/magnolia/headless/api/robots/README.md).
+Consumes content provided by the [Magnolia Robots Endpoint](../../../magnolia-headless/src/main/java/com/merkle/oss/magnolia/headless/api/robots/README.md).
 
 `/app/api/robots.txt/route.ts`
 
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest): Promise<Response> {
 
 ## [Sitemap](./SitemapApi.ts)
 
-Consumes content provided by the [Magnolia Sitemap Endpoint](../../../magnolia-headless-spring/src/main/java/com/merkle/oss/magnolia/headless/api/sitemap/README.md).
+Consumes content provided by the [Magnolia Sitemap Endpoint](../../../magnolia-headless/src/main/java/com/merkle/oss/magnolia/headless/api/sitemap/README.md).
 
 `/app/api/[language]/sitemap/[type]/route.ts`
 
@@ -49,7 +49,7 @@ function getType(req: NextRequest): String {
 
 ## [ErrorPage](./ErrorPageApi.ts)
 
-Consumes content provided by the [Magnolia Page Endpoint](../../../magnolia-headless-spring/src/main/java/com/merkle/oss/magnolia/headless/api/page/README.md).
+Consumes content provided by the [Magnolia Page Endpoint](../../../magnolia-headless/src/main/java/com/merkle/oss/magnolia/headless/api/page/README.md).
 Frontend API path must be provided in the [HeadlessConfigProviderI](../config/_README.md#headlessconfigprovideri)!
 
 `/app/api/[language]/error/route.ts`

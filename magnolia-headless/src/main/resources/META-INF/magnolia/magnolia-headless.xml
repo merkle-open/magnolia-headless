@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module SYSTEM "module.dtd" >
+<module>
+    <name>magnolia-headless</name>
+    <displayName>Magnolia Headless</displayName>
+    <description>Magnolia headless endpoints</description>
+    <versionHandler>com.merkle.oss.magnolia.headless.configuration.MagnoliaHeadlessModuleVersionHandler</versionHandler>
+    <version>${project.version}</version>
+
+    <components>
+        <id>main</id>
+        <configurer>
+            <class>com.merkle.oss.magnolia.headless.configuration.HeadlessGuiceComponentConfigurer</class>
+        </configurer>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.renderer.JsonRenderer</type>
+            <implementation>com.merkle.oss.magnolia.headless.renderer.JsonRenderer</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.model.RedirectModelDataProvider</type>
+            <implementation>com.merkle.oss.magnolia.headless.model.RedirectModelDataProvider</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.model.ErrorModelDataProvider</type>
+            <implementation>com.merkle.oss.magnolia.headless.model.ErrorModelDataProvider</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.api.page.PageNodeResolver</type>
+            <implementation>com.merkle.oss.magnolia.headless.api.page.PageNodeResolver</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.api.page.mapper.PagePathMapperResolver</type>
+            <implementation>com.merkle.oss.magnolia.headless.api.page.mapper.PagePathMapperResolver</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.api.page.mapper.pathparam.PathParamsPagePathMapper$Factory</type>
+            <implementation>com.merkle.oss.magnolia.headless.api.page.mapper.pathparam.PathParamsPagePathMapper$Factory</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.api.page.mapper.pathparam.PathParamsLinkBuilder$Parser$Factory</type>
+            <implementation>com.merkle.oss.magnolia.headless.api.page.mapper.pathparam.PathParamsLinkBuilder$Parser$Factory</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.api.page.PageModelProvider</type>
+            <implementation>com.merkle.oss.magnolia.headless.api.page.PageModelProvider</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.api.vanity.VanityProvider</type>
+            <implementation>com.merkle.oss.magnolia.headless.api.vanity.VanityProvider$NoVanityProvider</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.api.robots.RobotsTextProvider</type>
+            <implementation>com.merkle.oss.magnolia.headless.api.robots.RobotsTextProvider$NoRobotsTextProvider</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.api.sitemap.SitemapXmlFormatter</type>
+            <implementation>com.merkle.oss.magnolia.headless.api.sitemap.SitemapXmlFormatter</implementation>
+        </component>
+        <component>
+            <type>com.merkle.oss.magnolia.headless.util.LinkUtil</type>
+            <implementation>com.merkle.oss.magnolia.headless.util.LinkUtil</implementation>
+        </component>
+    </components>
+
+    <dependencies>
+        <dependency>
+            <name>core</name>
+            <version>*</version>
+        </dependency>
+        <dependency>
+            <name>rendering</name>
+            <version>*</version>
+        </dependency>
+    </dependencies>
+</module>

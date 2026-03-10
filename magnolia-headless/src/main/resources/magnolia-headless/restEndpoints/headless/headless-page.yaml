@@ -1,0 +1,3 @@
+name: Headless-Page
+class: info.magnolia.rest.registry.ConfiguredEndpointDefinition
+implementationClass: com.merkle.oss.magnolia.headless.api.page.PageEndpoint

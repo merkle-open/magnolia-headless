@@ -36,7 +36,7 @@
 	</scm>
 
 	<modules>
-		<module>magnolia-headless-spring</module>
+		<module>magnolia-headless</module>
   </modules>
 
 	<properties>
@@ -44,7 +44,6 @@
 		<magnolia.version>6.4.3</magnolia.version>
 		<magnolia-personalization.version>4.0.1</magnolia-personalization.version>
 
-		<merkle.oss.spring-renderer.version>0.1.1</merkle.oss.spring-renderer.version>
 		<merkle.oss.powernode.version>2.3.2</merkle.oss.powernode.version>
 
 		<jjwt.version>0.13.0</jjwt.version>
@@ -82,11 +81,6 @@
 				<version>${magnolia-personalization.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>com.merkle.oss.magnolia</groupId>
-				<artifactId>magnolia-spring-renderer</artifactId>
-				<version>${merkle.oss.spring-renderer.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>com.merkle.oss.magnolia</groupId>
 				<artifactId>magnolia-powernode</artifactId>
