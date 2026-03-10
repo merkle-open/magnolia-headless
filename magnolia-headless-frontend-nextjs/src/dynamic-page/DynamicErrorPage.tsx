@@ -12,6 +12,7 @@ import { AbstractDynamicErrorPage } from './AbstractDynamicErrorPage.tsx';
 import { TOKEN_PREFIX } from '../Constants.ts';
 import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
+import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.tsx';
 
 @injectable()
 export class DynamicErrorPage extends AbstractDynamicErrorPage {
@@ -21,9 +22,10 @@ export class DynamicErrorPage extends AbstractDynamicErrorPage {
 		@inject(TOKEN_PREFIX + 'StylesheetProviderI') StylesheetProviderI: StylesheetProviderI,
 		@inject(TOKEN_PREFIX + 'Logger') logger: Logger,
 		@inject(TOKEN_PREFIX + 'RestClient') restClient: RestClient,
+		@inject(TOKEN_PREFIX + 'StaticErrorPage') staticErrorPage: StaticErrorPage,
 		@inject(TOKEN_PREFIX + 'MagnoliaContextProvider') magnoliaContextProvider: MagnoliaContextProvider,
 	) {
-		super(componentMappingsProvider, configProvider, StylesheetProviderI, logger, restClient, magnoliaContextProvider);
+		super(componentMappingsProvider, configProvider, StylesheetProviderI, logger, restClient, staticErrorPage, magnoliaContextProvider);
 	}
 
 	public async render(errorType: ErrorType): Promise<ReactNode> {

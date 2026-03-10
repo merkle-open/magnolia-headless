@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 import { ErrorType } from '../helper/MagnoliaPageRestClient.ts';
-import { ErrorStatic } from '../templates/pages/_error-static/ErrorStatic.tsx';
+import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.tsx';
 import { AbstractDynamicPage } from './AbstractDynamicPage.tsx';
 import { Logger } from '../helper/Logger.ts';
 import { RestClient } from '../helper/RestClient.ts';
@@ -20,6 +20,7 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 		StylesheetProviderI: StylesheetProviderI,
 		logger: Logger,
 		private readonly restClient: RestClient,
+		private readonly staticErrorPage: StaticErrorPage,
 		protected readonly magnoliaContextProvider: MagnoliaContextProvider,
 	) {
 		super(componentMappingsProvider, configProvider, StylesheetProviderI, logger);
@@ -33,7 +34,7 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 	}
 
 	protected renderStatic(language: string, errorType: ErrorType): ReactNode {
-		return ErrorStatic({ language: language, errorType: errorType });
+		return this.staticErrorPage.render({ language: language, errorType: errorType });
 	}
 
 	private async fetchErrorPageContent(language: string, errorType: ErrorType) {

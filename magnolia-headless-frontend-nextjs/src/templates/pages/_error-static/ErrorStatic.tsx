@@ -2,9 +2,11 @@
 
 import React, { ReactNode } from 'react';
 import ErrorStaticProps from './ErrorStaticProps.ts';
+import { injectable } from 'tsyringe';
 
-export function ErrorStatic({ errorType, language }: ErrorStaticProps): ReactNode {
-	const errorMessages = new Map(
+@injectable()
+export class StaticErrorPage {
+	protected errorMessages = new Map(
 		Object.entries({
 			en: 'This website is currently not available.',
 			de: 'Diese Seite ist momentan nicht verfügbar.',
@@ -13,14 +15,17 @@ export function ErrorStatic({ errorType, language }: ErrorStaticProps): ReactNod
 		}),
 	);
 
-	return (
-		<div>
-			<main>
-				<div>
-					<h1>{errorType}</h1>
-					<p>{errorMessages.get(language) || errorMessages.get('en')}</p>
-				</div>
-			</main>
-		</div>
-	);
+	public render({ errorType, language }: ErrorStaticProps): ReactNode {
+		const errorMessages = this.errorMessages;
+		return (
+			<div>
+				<main>
+					<div>
+						<h1>{errorType}</h1>
+						<p>{errorMessages.get(language) || errorMessages.get('en')}</p>
+					</div>
+				</main>
+			</div>
+		);
+	}
 }
