@@ -14,7 +14,8 @@
   "files": [
     "README.md",
     "index.ts",
-    "src"
+    "src",
+    "src/**/_README.md"
   ],
   "repository": {
     "type": "git",
