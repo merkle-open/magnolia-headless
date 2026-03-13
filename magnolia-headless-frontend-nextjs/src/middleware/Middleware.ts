@@ -4,7 +4,7 @@ import { Logger } from '../helper/Logger.ts';
 import { inject, injectable, injectAllWithTransform } from 'tsyringe';
 import { Transform } from 'tsyringe/dist/typings/types';
 
-import { TOKEN_PREFIX } from '../Constants.ts';
+import { token } from '../Constants.ts';
 
 export interface Middleware {
 	apply(request: NextRequest, response: NextResponse, event: NextFetchEvent): NextMiddlewareResult | Promise<NextMiddlewareResult>;
@@ -12,6 +12,7 @@ export interface Middleware {
 	getOrder(): number;
 	getName(): string;
 }
+export const MIDDLEWARE_TOKEN = token('Middleware');
 
 export abstract class AbstractMiddleware implements Middleware {
 	public abstract apply(request: NextRequest, response: NextResponse, event: NextFetchEvent): NextMiddlewareResult | Promise<NextMiddlewareResult>;
@@ -36,8 +37,8 @@ class MiddlewareTransform implements Transform<Middleware[], Middleware[]> {
 @injectable()
 export class MiddlewareComposer {
 	constructor(
-		@injectAllWithTransform(TOKEN_PREFIX + 'Middleware', MiddlewareTransform) private middlewares: Middleware[],
-		@inject(TOKEN_PREFIX + 'Logger') private logger: Logger,
+		@injectAllWithTransform(MIDDLEWARE_TOKEN, MiddlewareTransform) private middlewares: Middleware[],
+		@inject(Logger) private logger: Logger,
 	) {}
 
 	public composeMiddleware(): NextProxy {

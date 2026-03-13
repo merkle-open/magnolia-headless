@@ -1,3 +1,5 @@
+import { token } from '../Constants.ts';
+
 export interface MagnoliaApiEndpointsProvider {
 	annotationTemplates(): string;
 	pageContent(language: string): string;
@@ -33,3 +35,4 @@ export type Config = {
 export interface HeadlessConfigProviderI {
 	get(): Config;
 }
+export const HEADLESS_CONFIG_PROVIDER_TOKEN = token('HeadlessConfigProviderI');

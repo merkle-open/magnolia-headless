@@ -3,27 +3,27 @@ import { ErrorType } from '../helper/MagnoliaPageRestClient.ts';
 import { inject, injectable } from 'tsyringe';
 import { DynamicPageLayout } from './DynamicPageLayout.tsx';
 import { AbstractDynamicErrorPage } from './AbstractDynamicErrorPage.tsx';
-import type { HeadlessConfigProviderI } from '../config/ConfigProvider.ts';
+import { type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 import { RestClient } from '../helper/RestClient.ts';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
 import { Logger } from '../helper/Logger.ts';
 
-import { TOKEN_PREFIX } from '../Constants.ts';
-import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
+import { type StylesheetProviderI, STYLESHEET_PROVIDER_TOKEN } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
 import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.tsx';
+import { CombinedComponentMappingsProvider } from '../templates/ComponentMappingsProvider.ts';
 
 @injectable()
 export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
 	constructor(
-		@inject(TOKEN_PREFIX + 'CombinedComponentMappingsProvider') componentMappingsProvider: ComponentMappingsProviderI,
-		@inject(TOKEN_PREFIX + 'HeadlessConfigProviderI') configProvider: HeadlessConfigProviderI,
-		@inject(TOKEN_PREFIX + 'StylesheetProviderI') StylesheetProviderI: StylesheetProviderI,
-		@inject(TOKEN_PREFIX + 'Logger') logger: Logger,
-		@inject(TOKEN_PREFIX + 'RestClient') restClient: RestClient,
-		@inject(TOKEN_PREFIX + 'StaticErrorPage') staticErrorPage: StaticErrorPage,
-		@inject(TOKEN_PREFIX + 'MagnoliaContextProvider') magnoliaContextProvider: MagnoliaContextProvider,
-		@inject(TOKEN_PREFIX + 'DynamicPageLayout') private readonly dynamicPageLayout: DynamicPageLayout,
+		@inject(CombinedComponentMappingsProvider) componentMappingsProvider: ComponentMappingsProviderI,
+		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
+		@inject(STYLESHEET_PROVIDER_TOKEN) StylesheetProviderI: StylesheetProviderI,
+		@inject(Logger) logger: Logger,
+		@inject(RestClient) restClient: RestClient,
+		@inject(StaticErrorPage) staticErrorPage: StaticErrorPage,
+		@inject(MagnoliaContextProvider) magnoliaContextProvider: MagnoliaContextProvider,
+		@inject(DynamicPageLayout) private readonly dynamicPageLayout: DynamicPageLayout,
 	) {
 		super(componentMappingsProvider, configProvider, StylesheetProviderI, logger, restClient, staticErrorPage, magnoliaContextProvider);
 	}

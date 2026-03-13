@@ -3,11 +3,9 @@ import { NextRequest } from 'next/server.d.ts';
 import { injectable, inject } from 'tsyringe';
 import { Logger } from './Logger.ts';
 
-import { TOKEN_PREFIX } from '../Constants.ts';
-
 @injectable()
 export class BrowserLanguageProvider {
-	constructor(@inject(TOKEN_PREFIX + 'Logger') private readonly logger: Logger) {}
+	constructor(@inject(Logger) private readonly logger: Logger) {}
 
 	public getBrowserLanguage(req: NextRequest): string {
 		try {

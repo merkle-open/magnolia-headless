@@ -3,9 +3,7 @@ import { RestClient } from './RestClient.ts';
 import { MagnoliaContextProvider } from './MagnoliaContextProvider.ts';
 import MetaProps from './MetaProps.ts';
 import { inject, injectable } from 'tsyringe';
-import type { HeadlessConfigProviderI, MagnoliaApiEndpointsProvider } from '../config/ConfigProvider.ts';
-
-import { TOKEN_PREFIX } from '../Constants.ts';
+import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 
 export interface Content extends MgnlContent {
 	cspHeader?: string;
@@ -23,9 +21,9 @@ export class MagnoliaPageRestClient {
 	private readonly apisProvider: MagnoliaApiEndpointsProvider;
 
 	constructor(
-		@inject(TOKEN_PREFIX + 'HeadlessConfigProviderI') readonly configProvider: HeadlessConfigProviderI,
-		@inject(TOKEN_PREFIX + 'MagnoliaContextProvider') private readonly magnoliaContextProvider: MagnoliaContextProvider,
-		@inject(TOKEN_PREFIX + 'RestClient') private readonly restClient: RestClient,
+		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) readonly configProvider: HeadlessConfigProviderI,
+		@inject(MagnoliaContextProvider) private readonly magnoliaContextProvider: MagnoliaContextProvider,
+		@inject(RestClient) private readonly restClient: RestClient,
 	) {
 		this.apisProvider = configProvider.get().magnoliaApisProvider;
 	}

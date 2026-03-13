@@ -2,11 +2,9 @@ import { NextRequest } from 'next/server';
 import { inject, injectable } from 'tsyringe';
 import { ErrorType, MagnoliaPageRestClient } from '../helper/MagnoliaPageRestClient.ts';
 
-import { TOKEN_PREFIX } from '../Constants.ts';
-
 @injectable()
 export class ErrorPageApi {
-	constructor(@inject(TOKEN_PREFIX + 'MagnoliaPageRestClient') private magnoliaPageRestClient: MagnoliaPageRestClient) {}
+	constructor(@inject(MagnoliaPageRestClient) private magnoliaPageRestClient: MagnoliaPageRestClient) {}
 
 	public async get(req: NextRequest, language: string): Promise<Response> {
 		const queryParams = req.nextUrl.searchParams;

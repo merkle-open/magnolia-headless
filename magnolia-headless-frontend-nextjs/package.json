@@ -50,11 +50,11 @@
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react": "^7.37.5",
     "husky": "^9.1.7",
+    "jiti": "^2.6.1",
     "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
-    "typescript-eslint": "^8.56.1",
-    "jiti": "^2.6.1"
+    "typescript-eslint": "^8.56.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mdx,html,css}": "npm run format"

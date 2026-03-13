@@ -98,19 +98,18 @@ export class SampleStylesheetProvider implements StylesheetProviderI {
 
 ```typescript
 import { DependencyContainer } from 'tsyringe';
-import { TOKEN_PREFIX } from '@merkle-open/magnolia-headless-frontend-nextjs';
+import {
+    HEADLESS_CONFIG_PROVIDER_TOKEN,
+    COMPONENTS_MAPPINGS_PROVIDER_TOKEN,
+    LOGGER_TOKEN,
+    STYLESHEET_PROVIDER_I_TOKEN
+} from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { Logger } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
 export default function register(container: DependencyContainer) {
-    container.register(TOKEN_PREFIX + 'HeadlessConfigProviderI', {
-        useClass: SampleHeadlessConfigProvider,
-    });
-    container.register(TOKEN_PREFIX + 'ComponentMappingsProviderI', {
-        useClass: SampleComponentMappingsProvider,
-    });
-    container.register(TOKEN_PREFIX + 'StylesheetProviderI', {
-        useClass: SampleStylesheetProvider,
-    });
-    container.register(TOKEN_PREFIX + 'LoggerI', { useClass: SampleLogger });
+    container.register(HEADLESS_CONFIG_PROVIDER_TOKEN, {useClass: SampleHeadlessConfigProvider});
+    container.register(COMPONENTS_MAPPINGS_PROVIDER_TOKEN, {useClass: SampleComponentMappingsProvider});
+    container.register(STYLESHEET_PROVIDER_I_TOKEN, {useClass: SampleStylesheetProvider});
+    container.register(LOGGER_TOKEN, { useClass: SampleLogger });
 }
 ```

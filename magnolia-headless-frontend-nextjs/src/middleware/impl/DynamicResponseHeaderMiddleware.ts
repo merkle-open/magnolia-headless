@@ -3,17 +3,15 @@ import { NextMiddlewareResult } from 'next/dist/server/web/types';
 import { RestClient } from '../../helper/RestClient.ts';
 import { AbstractMiddleware } from '../Middleware.ts';
 import { inject, injectable } from 'tsyringe';
-import type { HeadlessConfigProviderI, MagnoliaApiEndpointsProvider } from '../../config/ConfigProvider.ts';
-
-import { TOKEN_PREFIX } from '../../Constants.ts';
+import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../../config/ConfigProvider.ts';
 
 @injectable()
 export class DynamicResponseHeaderMiddleware extends AbstractMiddleware {
 	private apisProvider: MagnoliaApiEndpointsProvider;
 
 	constructor(
-		@inject(TOKEN_PREFIX + 'HeadlessConfigProviderI') configProvider: HeadlessConfigProviderI,
-		@inject(TOKEN_PREFIX + 'RestClient') private restClient: RestClient,
+		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
+		@inject(RestClient) private restClient: RestClient,
 	) {
 		super();
 		this.apisProvider = configProvider.get().magnoliaApisProvider;

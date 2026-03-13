@@ -2,13 +2,11 @@ import { DependencyContainer } from 'tsyringe';
 import { DynamicResponseHeaderMiddleware } from './impl/DynamicResponseHeaderMiddleware.ts';
 import { I18nRedirectMiddleware } from './impl/I18nRedirectMiddleware.ts';
 import { VanityMiddleware } from './impl/VanityMiddleware.ts';
-import { MiddlewareComposer } from './Middleware.ts';
-
-import { TOKEN_PREFIX } from '../Constants.ts';
+import { MiddlewareComposer, MIDDLEWARE_TOKEN } from './Middleware.ts';
 
 export default function register(container: DependencyContainer) {
-	container.register(TOKEN_PREFIX + 'Middleware', { useClass: DynamicResponseHeaderMiddleware });
-	container.register(TOKEN_PREFIX + 'Middleware', { useClass: I18nRedirectMiddleware });
-	container.register(TOKEN_PREFIX + 'Middleware', { useClass: VanityMiddleware });
-	container.register(TOKEN_PREFIX + 'MiddlewareComposer', { useClass: MiddlewareComposer });
+	container.register(MIDDLEWARE_TOKEN, { useClass: DynamicResponseHeaderMiddleware });
+	container.register(MIDDLEWARE_TOKEN, { useClass: I18nRedirectMiddleware });
+	container.register(MIDDLEWARE_TOKEN, { useClass: VanityMiddleware });
+	container.register(MiddlewareComposer, { useClass: MiddlewareComposer });
 }

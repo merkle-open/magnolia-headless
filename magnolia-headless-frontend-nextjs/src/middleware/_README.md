@@ -63,10 +63,10 @@ export class SomeMiddleware extends AbstractMiddleware {
 Add binding:
 
 ```typescript
-import { TOKEN_PREFIX } from '@merkle-open/magnolia-headless-frontend-nextjs';
+import { MIDDLEWARE_TOKEN } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { DependencyContainer } from 'tsyringe';
 
 function bindSomeMiddleware(container: DependencyContainer): void {
-    container.register(TOKEN_PREFIX + 'Middleware', {useClass: SomeMiddleware});
+    container.register(MIDDLEWARE_TOKEN, {useClass: SomeMiddleware});
 }
 ```

@@ -8,24 +8,24 @@ import { MetadataProvider } from '../helper/MetadataProvider.ts';
 import { inject, injectable } from 'tsyringe';
 import { AbstractDynamicPage } from './AbstractDynamicPage.tsx';
 import { Logger } from '../helper/Logger.ts';
-import type { HeadlessConfigProviderI } from '../config/ConfigProvider.ts';
+import { type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 import PageProps, { UrlProvider } from './PageProps.ts';
 
-import { TOKEN_PREFIX } from '../Constants.ts';
-import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
+import { type StylesheetProviderI, STYLESHEET_PROVIDER_TOKEN } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
+import { CombinedComponentMappingsProvider } from '../templates/ComponentMappingsProvider.ts';
 
 @injectable()
 export class DynamicPage extends AbstractDynamicPage {
 	constructor(
-		@inject(TOKEN_PREFIX + 'CombinedComponentMappingsProvider') componentMappingsProvider: ComponentMappingsProviderI,
-		@inject(TOKEN_PREFIX + 'HeadlessConfigProviderI') configProvider: HeadlessConfigProviderI,
-		@inject(TOKEN_PREFIX + 'StylesheetProviderI') StylesheetProviderI: StylesheetProviderI,
-		@inject(TOKEN_PREFIX + 'Logger') logger: Logger,
-		@inject(TOKEN_PREFIX + 'MagnoliaContextProvider') private readonly magnoliaContextProvider: MagnoliaContextProvider,
-		@inject(TOKEN_PREFIX + 'MagnoliaPageRestClient') private readonly magnoliaPageRestClient: MagnoliaPageRestClient,
-		@inject(TOKEN_PREFIX + 'MetadataProvider') private readonly metadataProvider: MetadataProvider,
-		@inject(TOKEN_PREFIX + 'UrlProvider') private readonly urlProvider: UrlProvider,
+		@inject(CombinedComponentMappingsProvider) componentMappingsProvider: ComponentMappingsProviderI,
+		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
+		@inject(STYLESHEET_PROVIDER_TOKEN) StylesheetProviderI: StylesheetProviderI,
+		@inject(Logger) logger: Logger,
+		@inject(MagnoliaContextProvider) private readonly magnoliaContextProvider: MagnoliaContextProvider,
+		@inject(MagnoliaPageRestClient) private readonly magnoliaPageRestClient: MagnoliaPageRestClient,
+		@inject(MetadataProvider) private readonly metadataProvider: MetadataProvider,
+		@inject(UrlProvider) private readonly urlProvider: UrlProvider,
 	) {
 		super(componentMappingsProvider, configProvider, StylesheetProviderI, logger);
 	}

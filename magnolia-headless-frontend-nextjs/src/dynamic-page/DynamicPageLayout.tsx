@@ -3,8 +3,6 @@ import { inject, injectable } from 'tsyringe';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
 import { UrlProvider, Params } from './PageProps.ts';
 
-import { TOKEN_PREFIX } from '../Constants.ts';
-
 export interface Props {
 	children: ReactNode;
 	params: Promise<Params>;
@@ -13,8 +11,8 @@ export interface Props {
 @injectable()
 export class DynamicPageLayout {
 	constructor(
-		@inject(TOKEN_PREFIX + 'MagnoliaContextProvider') private readonly magnoliaContextProvider: MagnoliaContextProvider,
-		@inject(TOKEN_PREFIX + 'UrlProvider') private readonly urlProvider: UrlProvider,
+		@inject(MagnoliaContextProvider) private readonly magnoliaContextProvider: MagnoliaContextProvider,
+		@inject(UrlProvider) private readonly urlProvider: UrlProvider,
 	) {}
 
 	public async renderUrl(props: Props): Promise<ReactNode> {

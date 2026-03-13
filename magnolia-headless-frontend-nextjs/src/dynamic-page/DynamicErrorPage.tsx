@@ -6,24 +6,24 @@ import { inject, injectable } from 'tsyringe';
 import { Logger } from '../helper/Logger.ts';
 import { RestClient } from '../helper/RestClient.ts';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
-import type { HeadlessConfigProviderI } from '../config/ConfigProvider.ts';
+import { type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 import { AbstractDynamicErrorPage } from './AbstractDynamicErrorPage.tsx';
 
-import { TOKEN_PREFIX } from '../Constants.ts';
-import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
+import { type StylesheetProviderI, STYLESHEET_PROVIDER_TOKEN } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
 import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.tsx';
+import { CombinedComponentMappingsProvider } from '../templates/ComponentMappingsProvider.ts';
 
 @injectable()
 export class DynamicErrorPage extends AbstractDynamicErrorPage {
 	constructor(
-		@inject(TOKEN_PREFIX + 'CombinedComponentMappingsProvider') componentMappingsProvider: ComponentMappingsProviderI,
-		@inject(TOKEN_PREFIX + 'HeadlessConfigProviderI') configProvider: HeadlessConfigProviderI,
-		@inject(TOKEN_PREFIX + 'StylesheetProviderI') StylesheetProviderI: StylesheetProviderI,
-		@inject(TOKEN_PREFIX + 'Logger') logger: Logger,
-		@inject(TOKEN_PREFIX + 'RestClient') restClient: RestClient,
-		@inject(TOKEN_PREFIX + 'StaticErrorPage') staticErrorPage: StaticErrorPage,
-		@inject(TOKEN_PREFIX + 'MagnoliaContextProvider') magnoliaContextProvider: MagnoliaContextProvider,
+		@inject(CombinedComponentMappingsProvider) componentMappingsProvider: ComponentMappingsProviderI,
+		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
+		@inject(STYLESHEET_PROVIDER_TOKEN) StylesheetProviderI: StylesheetProviderI,
+		@inject(Logger) logger: Logger,
+		@inject(RestClient) restClient: RestClient,
+		@inject(StaticErrorPage) staticErrorPage: StaticErrorPage,
+		@inject(MagnoliaContextProvider) magnoliaContextProvider: MagnoliaContextProvider,
 	) {
 		super(componentMappingsProvider, configProvider, StylesheetProviderI, logger, restClient, staticErrorPage, magnoliaContextProvider);
 	}

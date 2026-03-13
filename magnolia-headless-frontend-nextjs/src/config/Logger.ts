@@ -1,3 +1,5 @@
+import { token } from '../Constants.ts';
+
 export enum Level {
 	DEBUG = 'DEBUG',
 	INFO = 'INFO',
@@ -8,3 +10,4 @@ export enum Level {
 export interface LoggerI {
 	log(level: Level, message: string): void;
 }
+export const LOGGER_TOKEN = token('LoggerI');

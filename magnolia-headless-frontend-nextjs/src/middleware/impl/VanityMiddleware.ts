@@ -2,11 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { NextMiddlewareResult } from 'next/dist/server/web/types';
 import { RestClient } from '../../helper/RestClient.ts';
 import { AbstractMiddleware } from '../Middleware.ts';
-import type { BrowserLanguageProvider } from '../../helper/BrowserLanguageProvider.ts';
+import { BrowserLanguageProvider } from '../../helper/BrowserLanguageProvider.ts';
 import { inject, injectable } from 'tsyringe';
-import type { HeadlessConfigProviderI, MagnoliaApiEndpointsProvider } from '../../config/ConfigProvider.ts';
-
-import { TOKEN_PREFIX } from '../../Constants.ts';
+import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../../config/ConfigProvider.ts';
 
 export enum RedirectType {
 	TEMPORARY = 'redirect',
@@ -26,9 +24,9 @@ export class VanityMiddleware extends AbstractMiddleware {
 	private apisProvider: MagnoliaApiEndpointsProvider;
 
 	constructor(
-		@inject(TOKEN_PREFIX + 'HeadlessConfigProviderI') configProvider: HeadlessConfigProviderI,
-		@inject(TOKEN_PREFIX + 'RestClient') private restClient: RestClient,
-		@inject(TOKEN_PREFIX + 'BrowserLanguageProvider') private browserLanguageProvider: BrowserLanguageProvider,
+		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
+		@inject(RestClient) private restClient: RestClient,
+		@inject(BrowserLanguageProvider) private browserLanguageProvider: BrowserLanguageProvider,
 	) {
 		super();
 		this.apisProvider = configProvider.get().magnoliaApisProvider;

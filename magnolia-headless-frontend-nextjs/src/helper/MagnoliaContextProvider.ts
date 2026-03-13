@@ -1,9 +1,7 @@
 import { EditorContextService, IMagnoliaContext } from '@magnolia/frontend-helpers-base';
 import { inject, injectable } from 'tsyringe';
 import { Logger } from './Logger.ts';
-import type { HeadlessConfigProviderI } from '../config/ConfigProvider.ts';
-
-import { TOKEN_PREFIX } from '../Constants.ts';
+import { type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 
 export interface ExtendedMagnoliaContext extends IMagnoliaContext {
 	domain: string;
@@ -16,8 +14,8 @@ export class MagnoliaContextProvider {
 	private readonly multiTree: boolean;
 
 	constructor(
-		@inject(TOKEN_PREFIX + 'HeadlessConfigProviderI') readonly configProvider: HeadlessConfigProviderI,
-		@inject(TOKEN_PREFIX + 'Logger') private readonly logger: Logger,
+		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) readonly configProvider: HeadlessConfigProviderI,
+		@inject(Logger) private readonly logger: Logger,
 	) {
 		this.multiTree = configProvider.get().multiTree;
 	}

@@ -1,14 +1,12 @@
 import { createBasicAuthHeader } from './BasicAuth.ts';
 import { inject, injectable } from 'tsyringe';
-import type { Credentials, HeadlessConfigProviderI } from '../config/ConfigProvider.ts';
-
-import { TOKEN_PREFIX } from '../Constants.ts';
+import { Credentials, type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 
 @injectable()
 export class RestClient {
 	private readonly magnoliaCredentials: Credentials;
 
-	constructor(@inject(TOKEN_PREFIX + 'HeadlessConfigProviderI') readonly configProvider: HeadlessConfigProviderI) {
+	constructor(@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) readonly configProvider: HeadlessConfigProviderI) {
 		this.magnoliaCredentials = configProvider.get().magnoliaCredentials;
 	}
 

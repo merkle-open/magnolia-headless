@@ -1,17 +1,15 @@
 import { RestClient } from '../helper/RestClient.ts';
 import { NextRequest } from 'next/server';
 import { inject, injectable } from 'tsyringe';
-import type { HeadlessConfigProviderI, MagnoliaApiEndpointsProvider } from '../config/ConfigProvider.ts';
-
-import { TOKEN_PREFIX } from '../Constants.ts';
+import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 
 @injectable()
 export class SitemapApi {
 	private readonly apisProvider: MagnoliaApiEndpointsProvider;
 
 	constructor(
-		@inject(TOKEN_PREFIX + 'HeadlessConfigProviderI') configProvider: HeadlessConfigProviderI,
-		@inject(TOKEN_PREFIX + 'RestClient') private restClient: RestClient,
+		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
+		@inject(RestClient) private restClient: RestClient,
 	) {
 		this.apisProvider = configProvider.get().magnoliaApisProvider;
 	}

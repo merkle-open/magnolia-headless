@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { NextMiddlewareResult } from 'next/dist/server/web/types';
 import { AbstractMiddleware } from '../Middleware.ts';
-import type { BrowserLanguageProvider } from '../../helper/BrowserLanguageProvider.ts';
+import { BrowserLanguageProvider } from '../../helper/BrowserLanguageProvider.ts';
 import { inject, injectable } from 'tsyringe';
-
-import { TOKEN_PREFIX } from '../../Constants.ts';
 
 @injectable()
 export class I18nRedirectMiddleware extends AbstractMiddleware {
-	constructor(@inject(TOKEN_PREFIX + 'BrowserLanguageProvider') private browserLanguageProvider: BrowserLanguageProvider) {
+	constructor(@inject(BrowserLanguageProvider) private browserLanguageProvider: BrowserLanguageProvider) {
 		super();
 	}
 
