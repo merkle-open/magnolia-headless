@@ -37,9 +37,9 @@ public class SomeGuiceComponentConfigurer extends AbstractGuiceComponentConfigur
     @Override
     protected void configure() {
         super.configure();
-
+        final Provider<PathParamsPagePathMapper.Factory> pathParamsPagePathMapperFactoryProvider = binder.getProvider(PathParamsPagePathMapper.Factory.class);
         final Multibinder<PagePathMapper> pagePathMapperMultibinder = Multibinder.newSetBinder(binder(), PagePathMapper.class);
-        pagePathMapperMultibinder.addBinding().toProvider(() -> getProvider(PathParamsPagePathMapper.Factory.class).get().create(List.of("tags"))).in(Singleton.class);
+        pagePathMapperMultibinder.addBinding().toProvider(() -> pathParamsPagePathMapperFactoryProvider.get().create(List.of("tags"))).in(Singleton.class);
     }
 }
 ```
