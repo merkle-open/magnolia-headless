@@ -3,7 +3,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { ErrorType } from '../helper/MagnoliaPageRestClient.ts';
 import { inject, injectable } from 'tsyringe';
-import { Logger } from '../helper/Logger.ts';
 import { RestClient } from '../helper/RestClient.ts';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
 import { type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
@@ -13,6 +12,7 @@ import { type StylesheetProviderI, STYLESHEET_PROVIDER_TOKEN } from '../config/S
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
 import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.tsx';
 import { CombinedComponentMappingsProvider } from '../templates/ComponentMappingsProvider.ts';
+import { ThemeValidator } from '../helper/ThemeValidator.ts';
 
 @injectable()
 export class DynamicErrorPage extends AbstractDynamicErrorPage {
@@ -20,12 +20,12 @@ export class DynamicErrorPage extends AbstractDynamicErrorPage {
 		@inject(CombinedComponentMappingsProvider) componentMappingsProvider: ComponentMappingsProviderI,
 		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
 		@inject(STYLESHEET_PROVIDER_TOKEN) StylesheetProviderI: StylesheetProviderI,
-		@inject(Logger) logger: Logger,
+		@inject(ThemeValidator) themeValidator: ThemeValidator,
 		@inject(RestClient) restClient: RestClient,
 		@inject(StaticErrorPage) staticErrorPage: StaticErrorPage,
 		@inject(MagnoliaContextProvider) magnoliaContextProvider: MagnoliaContextProvider,
 	) {
-		super(componentMappingsProvider, configProvider, StylesheetProviderI, logger, restClient, staticErrorPage, magnoliaContextProvider);
+		super(componentMappingsProvider, configProvider, StylesheetProviderI, themeValidator, restClient, staticErrorPage, magnoliaContextProvider);
 	}
 
 	public async render(errorType: ErrorType): Promise<ReactNode> {

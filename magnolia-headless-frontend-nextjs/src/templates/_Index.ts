@@ -3,3 +3,5 @@ export type { default as PageBaseProps } from './pages/BaseProps.ts';
 export type { default as AreaBaseProps } from './areas/BaseProps.ts';
 export * from './areas/__magnolia-editable-area/EditableArea.tsx';
 export type { default as ComponentBaseProps } from './components/BaseProps.ts';
+export * from './pages/_error-static/ErrorStatic.tsx';
+export type { default as StaticErrorPageProps } from './pages/_error-static/ErrorStaticProps.ts';

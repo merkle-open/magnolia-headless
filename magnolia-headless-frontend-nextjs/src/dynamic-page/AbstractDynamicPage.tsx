@@ -4,22 +4,16 @@ import { MgnlTemplateAnnotations } from '@magnolia/frontend-helpers-base';
 import React, { ReactNode } from 'react';
 import { MagnoliaConfig, RefService } from '@magnolia/react-editor';
 import { EditablePage } from '../templates/pages/__magnolia-editable-page/EditablePage.tsx';
-import { Logger } from '../helper/Logger.ts';
-import type { HeadlessConfigProviderI, ThemesProvider } from '../config/ConfigProvider.ts';
 import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
+import { ThemeValidator } from '../helper/ThemeValidator.ts';
 
 export abstract class AbstractDynamicPage {
-	private themesProvider: ThemesProvider;
-
 	protected constructor(
 		private readonly componentMappingsProvider: ComponentMappingsProviderI,
-		readonly configProvider: HeadlessConfigProviderI,
 		private readonly StylesheetProviderI: StylesheetProviderI,
-		private readonly logger: Logger,
-	) {
-		this.themesProvider = configProvider.get().themesProvider;
-	}
+		private readonly themeValidator: ThemeValidator,
+	) {}
 
 	protected renderBase(magnoliaContext: ExtendedMagnoliaContext, content: Content, templateAnnotations: MgnlTemplateAnnotations): ReactNode {
 		const config: MagnoliaConfig = {
@@ -41,15 +35,6 @@ export abstract class AbstractDynamicPage {
 	}
 
 	private getStylesheet(magnoliaContext: ExtendedMagnoliaContext, content: Content): string[] {
-		return this.StylesheetProviderI.get(magnoliaContext, this.getValidatedTheme(content.theme));
-	}
-	private getValidatedTheme(theme?: string): string {
-		if (!theme || !this.themesProvider.getAll().includes(theme)) {
-			if (theme) {
-				this.logger.error(`Got invalid theme '${theme}' from magnolia! falling back to ${this.themesProvider.getFallback()}`);
-			}
-			return this.themesProvider.getFallback();
-		}
-		return theme;
+		return this.StylesheetProviderI.get(magnoliaContext, this.themeValidator.getValidatedTheme(content.theme));
 	}
 }

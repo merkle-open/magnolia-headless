@@ -4,12 +4,12 @@ import { ReactNode } from 'react';
 import { ErrorType } from '../helper/MagnoliaPageRestClient.ts';
 import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.tsx';
 import { AbstractDynamicPage } from './AbstractDynamicPage.tsx';
-import { Logger } from '../helper/Logger.ts';
 import { RestClient } from '../helper/RestClient.ts';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
 import type { FrontendApiEndpointsProvider, HeadlessConfigProviderI } from '../config/ConfigProvider.ts';
 import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
+import { ThemeValidator } from '../helper/ThemeValidator.ts';
 
 export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 	private readonly frontendApisProvider: FrontendApiEndpointsProvider;
@@ -18,12 +18,12 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 		componentMappingsProvider: ComponentMappingsProviderI,
 		configProvider: HeadlessConfigProviderI,
 		StylesheetProviderI: StylesheetProviderI,
-		logger: Logger,
+		themeValidator: ThemeValidator,
 		private readonly restClient: RestClient,
 		private readonly staticErrorPage: StaticErrorPage,
 		protected readonly magnoliaContextProvider: MagnoliaContextProvider,
 	) {
-		super(componentMappingsProvider, configProvider, StylesheetProviderI, logger);
+		super(componentMappingsProvider, StylesheetProviderI, themeValidator);
 		this.frontendApisProvider = configProvider.get().frontendApisProvider;
 	}
 

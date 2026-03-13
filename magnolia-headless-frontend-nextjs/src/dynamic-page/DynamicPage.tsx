@@ -7,27 +7,25 @@ import { Metadata } from 'next';
 import { MetadataProvider } from '../helper/MetadataProvider.ts';
 import { inject, injectable } from 'tsyringe';
 import { AbstractDynamicPage } from './AbstractDynamicPage.tsx';
-import { Logger } from '../helper/Logger.ts';
-import { type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 import PageProps, { UrlProvider } from './PageProps.ts';
 
 import { type StylesheetProviderI, STYLESHEET_PROVIDER_TOKEN } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
 import { CombinedComponentMappingsProvider } from '../templates/ComponentMappingsProvider.ts';
+import { ThemeValidator } from '../helper/ThemeValidator.ts';
 
 @injectable()
 export class DynamicPage extends AbstractDynamicPage {
 	constructor(
 		@inject(CombinedComponentMappingsProvider) componentMappingsProvider: ComponentMappingsProviderI,
-		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
 		@inject(STYLESHEET_PROVIDER_TOKEN) StylesheetProviderI: StylesheetProviderI,
-		@inject(Logger) logger: Logger,
+		@inject(ThemeValidator) themeValidator: ThemeValidator,
 		@inject(MagnoliaContextProvider) private readonly magnoliaContextProvider: MagnoliaContextProvider,
 		@inject(MagnoliaPageRestClient) private readonly magnoliaPageRestClient: MagnoliaPageRestClient,
 		@inject(MetadataProvider) private readonly metadataProvider: MetadataProvider,
 		@inject(UrlProvider) private readonly urlProvider: UrlProvider,
 	) {
-		super(componentMappingsProvider, configProvider, StylesheetProviderI, logger);
+		super(componentMappingsProvider, StylesheetProviderI, themeValidator);
 	}
 
 	public async render(pageProps: PageProps): Promise<ReactNode> {
