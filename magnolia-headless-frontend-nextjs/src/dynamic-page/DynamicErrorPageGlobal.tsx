@@ -39,15 +39,20 @@ export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
 		}, []);
 
 		if (!errorPage) {
-			return (
-				<html>
-					<body>
-						<div>Loading...</div>
-					</body>
-				</html>
-			);
+			return this.renderLoader(errorType);
 		}
 		return errorPage;
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	protected renderLoader(errorType: ErrorType): ReactNode {
+		return (
+			<html>
+				<body>
+					<div>Loading...</div>
+				</body>
+			</html>
+		);
 	}
 
 	private async renderGlobalDynamicError(language: string, errorType: ErrorType): Promise<ReactNode> {
