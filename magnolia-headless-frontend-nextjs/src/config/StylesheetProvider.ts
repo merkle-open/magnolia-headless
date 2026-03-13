@@ -1,3 +1,5 @@
+import { ExtendedMagnoliaContext } from '../helper/MagnoliaContextProvider.ts';
+
 export interface StylesheetProviderI {
-	get(theme: string): string;
+	get(magnoliaContext: ExtendedMagnoliaContext, theme: string): string[];
 }

@@ -32,14 +32,16 @@ export abstract class AbstractDynamicPage {
 		return (
 			<div>
 				{/* is moved to <head> see https://react.dev/blog/2024/12/05/react-19#support-for-stylesheets */}
-				<link rel="stylesheet" href={this.getStylesheet(content)} precedence="high" />
+				{this.getStylesheet(magnoliaContext, content).map((stylesheet) => (
+					<link rel="stylesheet" href={stylesheet} precedence="high" />
+				))}
 				<EditablePage content={content} config={config} templateAnnotations={templateAnnotations} magnoliaContext={magnoliaContext} />
 			</div>
 		);
 	}
 
-	private getStylesheet(content: Content) {
-		return this.StylesheetProviderI.get(this.getValidatedTheme(content.theme));
+	private getStylesheet(magnoliaContext: ExtendedMagnoliaContext, content: Content): string[] {
+		return this.StylesheetProviderI.get(magnoliaContext, this.getValidatedTheme(content.theme));
 	}
 	private getValidatedTheme(theme?: string): string {
 		if (!theme || !this.themesProvider.getAll().includes(theme)) {

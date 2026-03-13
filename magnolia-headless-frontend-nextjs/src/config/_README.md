@@ -80,14 +80,15 @@ export class SampleComponentMappingsProvider implements ComponentMappingsProvide
 `/app/config/SampleStylesheetProvider.ts`
 
 ```typescript
-import { injectable } from 'tsyringe';
-import { StylesheetProviderI } from '@merkle-open/magnolia-headless-frontend-nextjs';
+import {injectable} from 'tsyringe';
+import {StylesheetProviderI} from '@merkle-open/magnolia-headless-frontend-nextjs';
+import {ExtendedMagnoliaContext} from "./MagnoliaContextProvider";
 
 @injectable()
 export class SampleStylesheetProvider implements StylesheetProviderI {
-	public get(theme: string): string {
-		return `/css/theme/${theme}.min.css`;
-	}
+    public get(magnoliaContext: ExtendedMagnoliaContext, theme: string): string[] {
+        return [`/css/theme/${theme}.min.css`];
+    }
 }
 ```
 
