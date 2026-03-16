@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode, useEffect, useState } from 'react';
 import { ErrorType } from '../helper/MagnoliaPageRestClient.ts';
 import { inject, injectable } from 'tsyringe';

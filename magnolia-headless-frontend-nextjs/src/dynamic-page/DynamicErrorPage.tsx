@@ -28,7 +28,7 @@ export class DynamicErrorPage extends AbstractDynamicErrorPage {
 		super(componentMappingsProvider, configProvider, StylesheetProviderI, themeValidator, restClient, staticErrorPage, magnoliaContextProvider);
 	}
 
-	public async render(errorType: ErrorType): Promise<ReactNode> {
+	public render(errorType: ErrorType): ReactNode {
 		const [errorPage, setErrorPage] = useState(null);
 
 		useEffect(() => {
