@@ -1,7 +1,8 @@
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
+import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
 import { MagnoliaPageRestClient } from '../helper/MagnoliaPageRestClient.ts';
-import { notFound } from 'next/navigation';
 import { MgnlTemplateAnnotations } from '@magnolia/frontend-helpers-base';
 import { Metadata } from 'next';
 import { MetadataProvider } from '../helper/MetadataProvider.ts';

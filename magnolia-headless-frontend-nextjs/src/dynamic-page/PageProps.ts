@@ -1,3 +1,4 @@
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import { headers } from 'next/headers';
 import { injectable } from 'tsyringe';
 

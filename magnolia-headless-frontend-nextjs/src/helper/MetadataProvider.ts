@@ -1,7 +1,9 @@
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
+import type { OpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
+import type { Twitter } from 'next/dist/lib/metadata/types/twitter-types';
 import MetaProps, { OpenGraph as HeadlessOpenGraph } from './MetaProps.ts';
 import { Metadata } from 'next';
-import type { OpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
-import type { Twitter } from 'next/dist/lib/metadata/types/twitter-types';
 import { injectable } from 'tsyringe';
 
 @injectable()

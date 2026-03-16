@@ -1,7 +1,10 @@
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import { NextFetchEvent, NextProxy, NextRequest, NextResponse } from 'next/server';
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import { NextMiddlewareResult } from 'next/dist/server/web/types';
 import { Logger } from '../helper/Logger.ts';
 import { inject, injectable, injectAllWithTransform } from 'tsyringe';
+// @ts-expect-error: tsyringe missing exports prevents ESM resolution with 'nodenext'.
 import { Transform } from 'tsyringe/dist/typings/types';
 
 import { token } from '../Constants.ts';

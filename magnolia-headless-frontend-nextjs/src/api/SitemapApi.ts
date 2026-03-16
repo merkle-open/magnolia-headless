@@ -1,5 +1,6 @@
-import { RestClient } from '../helper/RestClient.ts';
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import { NextRequest } from 'next/server';
+import { RestClient } from '../helper/RestClient.ts';
 import { inject, injectable } from 'tsyringe';
 import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 

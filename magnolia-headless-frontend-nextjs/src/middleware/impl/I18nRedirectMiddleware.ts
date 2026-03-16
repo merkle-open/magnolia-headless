@@ -1,4 +1,6 @@
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import { NextRequest, NextResponse } from 'next/server';
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import { NextMiddlewareResult } from 'next/dist/server/web/types';
 import { AbstractMiddleware } from '../Middleware.ts';
 import { BrowserLanguageProvider } from '../../helper/BrowserLanguageProvider.ts';

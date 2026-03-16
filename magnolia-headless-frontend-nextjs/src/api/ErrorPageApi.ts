@@ -1,3 +1,4 @@
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import { NextRequest } from 'next/server';
 import { inject, injectable } from 'tsyringe';
 import { ErrorType, MagnoliaPageRestClient } from '../helper/MagnoliaPageRestClient.ts';

@@ -1,5 +1,6 @@
-import { ReactNode } from 'react';
+// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import { redirect, permanentRedirect } from 'next/navigation';
+import { ReactNode } from 'react';
 import RedirectComponentProps, { RedirectType } from './RedirectComponentProps.ts';
 
 export default function Redirect({ destination, statusCode }: RedirectComponentProps): ReactNode {
