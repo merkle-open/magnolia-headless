@@ -17,10 +17,13 @@ import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.merkle.oss.magnolia.headless.util.Lazy;
+
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.annotation.Nullable;
 import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -36,20 +39,20 @@ public class SitemapEndpoint {
     private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final SitemapXmlFormatter sitemapXmlFormatter;
     private final SiteManager siteManager;
-    private final Map<String, SitemapProvider> typeSitemapProviderMapping;
+    private final Provider<Map<String, SitemapProvider>> typeSitemapProviderMapping;
 
     @Inject
     public SitemapEndpoint(
             final SitemapXmlFormatter sitemapXmlFormatter,
             final SiteManager siteManager,
-            final Set<SitemapProvider> sitemapProviders
+            final Provider<Set<SitemapProvider>> sitemapProviders
     ) {
         this.sitemapXmlFormatter = sitemapXmlFormatter;
         this.siteManager = siteManager;
-        this.typeSitemapProviderMapping = sitemapProviders.stream().collect(Collectors.toMap(
+        this.typeSitemapProviderMapping = Lazy.of(() -> sitemapProviders.get().stream().collect(Collectors.toMap(
                 SitemapProvider::getType,
                 Function.identity()
-        ));
+        )))::get;
     }
 
     @ApiResponses(value = {
@@ -72,7 +75,7 @@ public class SitemapEndpoint {
             if (site == null) {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
-            final Set<SitemapProvider.Url> sitemapUrls = typeSitemapProviderMapping.get(type).stream(request, locale, site).collect(Collectors.toSet());
+            final Set<SitemapProvider.Url> sitemapUrls = typeSitemapProviderMapping.get().get(type).stream(request, locale, site).collect(Collectors.toSet());
             return Response.ok(sitemapXmlFormatter.format(sitemapUrls)).build();
         } catch (Exception e) {
             LOG.error("Failed to serve sitemap response!", e);
@@ -81,7 +84,7 @@ public class SitemapEndpoint {
     }
 
     public Stream<String> streamSitemapEndpoints(final HttpServletRequest request, final Site site, final String sitemapUrlTemplate) {
-        return typeSitemapProviderMapping.values().stream().flatMap(provider ->
+        return typeSitemapProviderMapping.get().values().stream().flatMap(provider ->
                 site.getI18n().getLocales().stream().flatMap(locale ->
                         Optional
                                 .of(provider)

@@ -7,20 +7,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import com.merkle.oss.magnolia.headless.util.Lazy;
+
 import jakarta.annotation.Nullable;
 import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class PagePathMapperResolver {
-    private final List<PagePathMapper> pagePathMappers;
+    private final Provider<List<PagePathMapper>> pagePathMappers;
 
     @Inject
-    public PagePathMapperResolver(final Set<PagePathMapper> pagePathMappers) {
-        this.pagePathMappers = pagePathMappers.stream().sorted(Comparator.comparing(PagePathMapper::getOrder)).toList();
+    public PagePathMapperResolver(final Provider<Set<PagePathMapper>> pagePathMappers) {
+        this.pagePathMappers = Lazy.of(() -> pagePathMappers.get().stream().sorted(Comparator.comparing(PagePathMapper::getOrder)).toList())::get;
     }
 
     public PagePathMapper.Result resolve(final Locale locale, final Site site, final String path, final String workspace, @Nullable final String versionName, final HttpServletRequest request){
-        return map(pagePathMappers, locale, site, path, workspace, versionName, request);
+        return map(pagePathMappers.get(), locale, site, path, workspace, versionName, request);
     }
 
     private PagePathMapper.Result map(final List<PagePathMapper> pagePathMappers, final Locale locale, final Site site, final String path, final String workspace, @Nullable final String versionName, final HttpServletRequest request){

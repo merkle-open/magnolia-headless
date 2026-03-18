@@ -16,6 +16,7 @@ import com.google.gson.GsonBuilder;
 
 import jakarta.annotation.Nullable;
 import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -30,13 +31,13 @@ public class DynamicResponseHeaderEndpoint {
 	private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private final SiteManager siteManager;
 	private final Gson gson;
-    private final Set<DynamicResponseHeaderProvider> dynamicResponseHeaderProviders;
+    private final Provider<Set<DynamicResponseHeaderProvider>> dynamicResponseHeaderProviders;
 
     @Inject
     public DynamicResponseHeaderEndpoint(
 		final SiteManager siteManager,
 		final GsonBuilder gsonBuilder,
-		final Set<DynamicResponseHeaderProvider> dynamicResponseHeaderProviders
+		final Provider<Set<DynamicResponseHeaderProvider>> dynamicResponseHeaderProviders
 	) {
         this.siteManager = siteManager;
 		this.gson = gsonBuilder.create();
@@ -56,7 +57,7 @@ public class DynamicResponseHeaderEndpoint {
 				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 
-			final Map<String, String> headers = dynamicResponseHeaderProviders.stream()
+			final Map<String, String> headers = dynamicResponseHeaderProviders.get().stream()
 					.flatMap(provider -> provider.stream(request, site))
 					.collect(Collectors.toMap(
 							DynamicResponseHeaderProvider.Header::key,
