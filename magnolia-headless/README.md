@@ -1,5 +1,17 @@
 # Magnolia Headless
 
+## Requirements
+* Java 17
+* Magnolia >= 6.4
+
+```xml
+<dependency>
+    <groupId>com.merkle.oss.magnolia</groupId>
+    <artifactId>magnolia-headless</artifactId>
+    <version>0.0.3</version>
+</dependency>
+```
+
 ## setup
 - implement and bind [LinkFactory](./src/main/java/com/merkle/oss/magnolia/headless/util/LinkFactory.java)
 
@@ -10,5 +22,3 @@
 - [dynamic response header controller](./src/main/java/com/merkle/oss/magnolia/headless/api/dynamicresponseheader/README.md)
 - [robots controller](./src/main/java/com/merkle/oss/magnolia/headless/api/robots/README.md)
 - [sitemap controller](./src/main/java/com/merkle/oss/magnolia/headless/api/sitemap/README.md)
-
-

@@ -31,7 +31,7 @@ if [[ $CURRENT_VERSION == *-SNAPSHOT ]]; then
 	git commit -a -m "Release $NEW_VERSION: set main to new release version"
 
 	echo "Update version in README.md"
-	sed -i -e "s|<version>[0-9A-Za-z._-]\{1,\}</version>|<version>$NEW_VERSION</version>|g" README.md && rm -f README.md-e
+	find . -name 'README.md' -exec sh -c "sed -i -e 's|<version>[0-9A-Za-z._-]\{1,\}</version>|<version>${NEW_VERSION}</version>|g' \"{}\" && rm -f \"{}\"-e" \;
 	git commit -a -m "Release $NEW_VERSION: Update README.md"
 
 	echo "create tag for new release"
