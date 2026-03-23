@@ -1,10 +1,10 @@
 'use client';
 
-import React, { ReactNode } from 'react';
-import Error from './ErrorElement.tsx';
+import React, { ReactNode, Suspense } from 'react';
+import ErrorElement from './ErrorElement.tsx';
 
 interface ErrorState {
-	error: Error;
+	error: Error | null;
 }
 
 interface ErrorProps {
@@ -26,8 +26,8 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
 
 	render() {
 		if (this.state.error) {
-			return <Error editMode={this.props.isEditMode} throwNotEditMode={this.props.throwNotEditMode} path={this.props.path} msg={this.state.error.message} />;
+			return <ErrorElement editMode={this.props.isEditMode} throwNotEditMode={this.props.throwNotEditMode} path={this.props.path} msg={this.state.error.message} />;
 		}
-		return this.props.children;
+		return <Suspense fallback={null}>{this.props.children}</Suspense>;
 	}
 }
