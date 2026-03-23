@@ -1,8 +1,17 @@
-import { EditableArea as MagnoliaEditableArea } from '@magnolia/react-editor';
+import { EditableArea as MagnoliaEditableArea, RefService } from '@magnolia/react-editor';
 import React, { ReactNode } from 'react';
 import EditableAreaProps from './EditableAreaProps.ts';
-import { ContentRendererService, MgnlContent } from '@magnolia/frontend-helpers-base';
+import { ContentRendererService, IMagnoliaContext, MgnlContent } from '@magnolia/frontend-helpers-base';
 import { EditableComponent } from '../../components/__magnolia-editable-component/EditableComponent.tsx';
+
+function shouldRender(hasChildren: boolean, renderEmpty?: boolean) {
+	if (renderEmpty) {
+		return true;
+	}
+	const magnoliaContext = RefService.getMagnoliaContextRef<IMagnoliaContext>();
+	const isEditMode = magnoliaContext?.isMagnoliaEdit;
+	return isEditMode || hasChildren;
+}
 
 export function EditableArea(props: EditableAreaProps): ReactNode {
 	const { content, additionalContent, additionalComponentContent } = props;
@@ -13,9 +22,11 @@ export function EditableArea(props: EditableAreaProps): ReactNode {
 	const children = componentContents?.map((item, index) => <EditableComponent key={ContentRendererService.buildKey(item)} content={item} index={index} />);
 
 	return (
-		<MagnoliaEditableArea {...props} content={mergedContent}>
-			{children}
-		</MagnoliaEditableArea>
+		shouldRender(children.length > 0, props.renderEmpty) && (
+			<MagnoliaEditableArea {...props} content={mergedContent}>
+				{children}
+			</MagnoliaEditableArea>
+		)
 	);
 }
 

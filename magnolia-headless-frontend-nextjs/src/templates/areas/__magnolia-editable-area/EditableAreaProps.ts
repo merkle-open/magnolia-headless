@@ -9,4 +9,5 @@ export default interface EditableAreaProps {
 	children?: ReactNodeLike;
 	additionalContent?: any;
 	additionalComponentContent?: any;
+	renderEmpty?: boolean;
 }
