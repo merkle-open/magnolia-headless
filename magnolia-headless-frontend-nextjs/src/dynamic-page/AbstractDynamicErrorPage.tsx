@@ -10,6 +10,7 @@ import type { FrontendApiEndpointsProvider, HeadlessConfigProviderI } from '../c
 import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
 import { ThemeValidator } from '../helper/ThemeValidator.ts';
+import { EditablePage } from '../templates/pages/__magnolia-editable-page/EditablePage.tsx';
 
 export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 	private readonly frontendApisProvider: FrontendApiEndpointsProvider;
@@ -19,11 +20,12 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 		configProvider: HeadlessConfigProviderI,
 		StylesheetProviderI: StylesheetProviderI,
 		themeValidator: ThemeValidator,
+		editablePage: EditablePage,
 		private readonly restClient: RestClient,
 		private readonly staticErrorPage: StaticErrorPage,
 		protected readonly magnoliaContextProvider: MagnoliaContextProvider,
 	) {
-		super(componentMappingsProvider, StylesheetProviderI, themeValidator);
+		super(componentMappingsProvider, StylesheetProviderI, themeValidator, editablePage);
 		this.frontendApisProvider = configProvider.get().frontendApisProvider;
 	}
 

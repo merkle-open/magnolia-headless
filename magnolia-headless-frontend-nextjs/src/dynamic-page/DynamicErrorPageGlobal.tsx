@@ -14,6 +14,7 @@ import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProv
 import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.tsx';
 import { CombinedComponentMappingsProvider } from '../templates/ComponentMappingsProvider.ts';
 import { ThemeValidator } from '../helper/ThemeValidator.ts';
+import { EditablePage } from '../templates/pages/__magnolia-editable-page/EditablePage.tsx';
 
 @injectable()
 export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
@@ -22,12 +23,13 @@ export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
 		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
 		@inject(STYLESHEET_PROVIDER_TOKEN) StylesheetProviderI: StylesheetProviderI,
 		@inject(ThemeValidator) themeValidator: ThemeValidator,
+		@inject(EditablePage) editablePage: EditablePage,
 		@inject(RestClient) restClient: RestClient,
 		@inject(StaticErrorPage) staticErrorPage: StaticErrorPage,
 		@inject(MagnoliaContextProvider) magnoliaContextProvider: MagnoliaContextProvider,
 		@inject(DynamicPageLayout) private readonly dynamicPageLayout: DynamicPageLayout,
 	) {
-		super(componentMappingsProvider, configProvider, StylesheetProviderI, themeValidator, restClient, staticErrorPage, magnoliaContextProvider);
+		super(componentMappingsProvider, configProvider, StylesheetProviderI, themeValidator, editablePage, restClient, staticErrorPage, magnoliaContextProvider);
 	}
 
 	public render(errorType: ErrorType): ReactNode {

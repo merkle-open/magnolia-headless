@@ -13,6 +13,7 @@ export abstract class AbstractDynamicPage {
 		private readonly componentMappingsProvider: ComponentMappingsProviderI,
 		private readonly StylesheetProviderI: StylesheetProviderI,
 		private readonly themeValidator: ThemeValidator,
+		private readonly editablePage: EditablePage,
 	) {}
 
 	protected renderBase(magnoliaContext: ExtendedMagnoliaContext, content: Content, templateAnnotations: MgnlTemplateAnnotations): ReactNode {
@@ -29,7 +30,7 @@ export abstract class AbstractDynamicPage {
 				{this.getStylesheet(magnoliaContext, content).map((stylesheet) => (
 					<link rel="stylesheet" href={stylesheet} precedence="high" />
 				))}
-				<EditablePage content={content} config={config} templateAnnotations={templateAnnotations} magnoliaContext={magnoliaContext} />
+				{this.editablePage.render({ content, config, templateAnnotations, magnoliaContext })}
 			</div>
 		);
 	}

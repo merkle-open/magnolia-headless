@@ -3,14 +3,18 @@ import React, { ReactNode } from 'react';
 import EditablePageProps from './EditablePageProps.ts';
 import { IMagnoliaContext } from '@magnolia/frontend-helpers-base';
 import ErrorBoundary from '../../elements/_error/ErrorBoundary.tsx';
+import { injectable } from 'tsyringe';
 
-export function EditablePage(props: EditablePageProps): ReactNode {
-	const { content } = props;
-	const magnoliaContext = RefService.getMagnoliaContextRef<IMagnoliaContext>();
+@injectable()
+export class EditablePage {
+	public render(props: EditablePageProps): ReactNode {
+		const { content } = props;
+		const magnoliaContext: IMagnoliaContext = RefService.getMagnoliaContextRef<IMagnoliaContext>();
 
-	return (
-		<ErrorBoundary isEditMode={magnoliaContext.isMagnoliaEdit} throwNotEditMode={true} path={content!['@path']}>
-			<MagnoliaEditablePage {...props} />
-		</ErrorBoundary>
-	);
+		return (
+			<ErrorBoundary isEditMode={magnoliaContext.isMagnoliaEdit} throwNotEditMode={true} path={content!['@path']}>
+				<MagnoliaEditablePage {...props} />
+			</ErrorBoundary>
+		);
+	}
 }
