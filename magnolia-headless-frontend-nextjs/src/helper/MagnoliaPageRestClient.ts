@@ -1,14 +1,9 @@
-import { IMagnoliaContext, MgnlContent, MgnlTemplateAnnotations } from '@magnolia/frontend-helpers-base';
+import { IMagnoliaContext, MgnlTemplateAnnotations } from '@magnolia/frontend-helpers-base';
 import { RestClient } from './RestClient.ts';
 import { MagnoliaContextProvider } from './MagnoliaContextProvider.ts';
-import MetaProps from './MetaProps.ts';
+import PageProps from '../templates/pages/BaseProps.ts';
 import { inject, injectable } from 'tsyringe';
 import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
-
-export interface Content extends MgnlContent {
-	meta: MetaProps;
-	theme?: string;
-}
 
 export enum ErrorType {
 	PAGE_NOT_FOUND = '404',
@@ -27,7 +22,7 @@ export class MagnoliaPageRestClient {
 		this.apisProvider = configProvider.get().magnoliaApisProvider;
 	}
 
-	public async getErrorPageContent(url: URL, errorType: ErrorType): Promise<Content> {
+	public async getErrorPageContent(url: URL, errorType: ErrorType): Promise<PageProps> {
 		const magnoliaContext = this.magnoliaContextProvider.getMagnoliaContext(url);
 		const queryParams = new URLSearchParams();
 		queryParams.set('errorCode', errorType.toString());
@@ -36,7 +31,7 @@ export class MagnoliaPageRestClient {
 		return this.restClient.fetchMagnoliaBasicAuth(errorPagesApiUrl).then((response) => this.restClient.getJson(errorPagesApiUrl, response));
 	}
 
-	public async getPageContent(url: URL): Promise<Content> {
+	public async getPageContent(url: URL): Promise<PageProps> {
 		const magnoliaContext = this.magnoliaContextProvider.getMagnoliaContext(url);
 		const queryParams = new URLSearchParams(magnoliaContext.searchParams);
 		queryParams.delete('jwt');

@@ -1,6 +1,8 @@
+import ComponentProps from '../BaseProps.ts';
+
 export default interface EditableComponentProps {
 	key: string;
-	content: any;
+	content: ComponentProps;
 	additionalContent?: any;
 	index: number;
 }

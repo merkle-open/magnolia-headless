@@ -1,5 +1,5 @@
 import { ExtendedMagnoliaContext } from '../helper/MagnoliaContextProvider.ts';
-import { Content } from '../helper/MagnoliaPageRestClient.ts';
+import PageProps from '../templates/pages/BaseProps.ts';
 import { MgnlTemplateAnnotations } from '@magnolia/frontend-helpers-base';
 import React, { ReactNode } from 'react';
 import { MagnoliaConfig, RefService } from '@magnolia/react-editor';
@@ -16,7 +16,7 @@ export abstract class AbstractDynamicPage {
 		private readonly editablePage: EditablePage,
 	) {}
 
-	protected renderBase(magnoliaContext: ExtendedMagnoliaContext, content: Content, templateAnnotations: MgnlTemplateAnnotations): ReactNode {
+	protected renderBase(magnoliaContext: ExtendedMagnoliaContext, content: PageProps, templateAnnotations: MgnlTemplateAnnotations): ReactNode {
 		const config: MagnoliaConfig = {
 			componentMappings: this.componentMappingsProvider.getComponentMappings(),
 		};
@@ -35,7 +35,7 @@ export abstract class AbstractDynamicPage {
 		);
 	}
 
-	private getStylesheet(magnoliaContext: ExtendedMagnoliaContext, content: Content): string[] {
+	private getStylesheet(magnoliaContext: ExtendedMagnoliaContext, content: PageProps): string[] {
 		return this.StylesheetProviderI.get(magnoliaContext, this.themeValidator.getValidatedTheme(content.theme));
 	}
 }

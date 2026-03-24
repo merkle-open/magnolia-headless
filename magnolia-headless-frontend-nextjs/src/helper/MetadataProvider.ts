@@ -2,7 +2,7 @@
 import type { OpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
 // @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import type { Twitter } from 'next/dist/lib/metadata/types/twitter-types';
-import MetaProps, { OpenGraph as HeadlessOpenGraph } from './MetaProps.ts';
+import { MetaProps, OpenGraph as HeadlessOpenGraph } from '../templates/pages/BaseProps.ts';
 import { Metadata } from 'next';
 import { injectable } from 'tsyringe';
 
