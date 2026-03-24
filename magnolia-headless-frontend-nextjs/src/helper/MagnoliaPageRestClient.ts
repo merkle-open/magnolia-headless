@@ -6,7 +6,6 @@ import { inject, injectable } from 'tsyringe';
 import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 
 export interface Content extends MgnlContent {
-	cspHeader?: string;
 	meta: MetaProps;
 	theme?: string;
 }
