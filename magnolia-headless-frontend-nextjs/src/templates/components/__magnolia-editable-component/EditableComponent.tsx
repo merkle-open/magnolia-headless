@@ -1,23 +1,28 @@
 import { EditableComponent as MagnoliaEditableComponent, RefService } from '@magnolia/react-editor';
 import React, { ReactNode } from 'react';
 import EditableComponentProps from './EditableComponentProps.ts';
-import { IMagnoliaContext } from '@magnolia/frontend-helpers-base';
+import { IMagnoliaContext, MgnlContent } from '@magnolia/frontend-helpers-base';
 import ErrorBoundary from '../../elements/_error/ErrorBoundary.tsx';
 
-export function EditableComponent(props: EditableComponentProps): ReactNode {
-	const { content, additionalContent } = props;
-	const magnoliaContext = RefService.getMagnoliaContextRef<IMagnoliaContext>();
+export class EditableComponent {
+	public render(props: EditableComponentProps): ReactNode {
+		const { content, additionalContent } = props;
+		const magnoliaContext: IMagnoliaContext = RefService.getMagnoliaContextRef<IMagnoliaContext>();
+		const mergedContent: MgnlContent = this.merge(content, additionalContent);
 
-	return (
-		<ErrorBoundary isEditMode={magnoliaContext.isMagnoliaEdit} throwNotEditMode={false} path={content!['@path']}>
-			<MagnoliaEditableComponent {...props} content={merge(content, additionalContent)} />
-		</ErrorBoundary>
-	);
-}
+		return (
+			<ErrorBoundary isEditMode={magnoliaContext.isMagnoliaEdit} throwNotEditMode={false} path={content!['@path']}>
+				<MagnoliaEditableComponent {...props} content={mergedContent} />
+			</ErrorBoundary>
+		);
+	}
 
-function merge(first: any, second: any): any {
-	return {
-		...first,
-		...second,
-	};
+	protected merge(...content: any[]): any {
+		return content.reduce((previousValue: any, currentValue: any): any => {
+			return {
+				...previousValue,
+				...currentValue,
+			};
+		});
+	}
 }
