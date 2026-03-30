@@ -27,8 +27,8 @@ export abstract class AbstractDynamicPage {
 		return (
 			<div>
 				{/* is moved to <head> see https://react.dev/blog/2024/12/05/react-19#support-for-stylesheets */}
-				{this.getStylesheet(magnoliaContext, content).map((stylesheet) => (
-					<link rel="stylesheet" href={stylesheet} precedence="high" />
+				{this.getStylesheet(magnoliaContext, content).map((stylesheet, index) => (
+					<link rel="stylesheet" key={`AbstractDynamicPage-stylesheet-${index}`} href={stylesheet} precedence="high" />
 				))}
 				{this.editablePage.render({ content, config, templateAnnotations, magnoliaContext })}
 			</div>
