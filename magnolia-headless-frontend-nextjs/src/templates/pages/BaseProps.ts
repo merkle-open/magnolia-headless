@@ -21,6 +21,11 @@ export interface MetaProps {
 	canonical: string;
 	openGraph: OpenGraph;
 	hrefLangLinks: HrefLangLink[];
+	favicons?: {
+		favicon?: string;
+		faviconLegacy?: string;
+		appleTouchIcon?: string;
+	};
 }
 
 export default interface Props extends MgnlContent {

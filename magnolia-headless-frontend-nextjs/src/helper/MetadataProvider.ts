@@ -24,6 +24,15 @@ export class MetadataProvider {
 				canonical: meta.canonical,
 				languages: Object.fromEntries(meta.hrefLangLinks.map((link) => [link.language, link.href])),
 			},
+			...(meta.favicons && {
+				icons: {
+					icon: [
+						meta.favicons.faviconLegacy && { url: meta.favicons.faviconLegacy, sizes: '32x32' },
+						meta.favicons.favicon && { url: meta.favicons.favicon, type: 'image/svg+xml' },
+					].filter(Boolean),
+					apple: [meta.favicons.appleTouchIcon && { url: meta.favicons.appleTouchIcon, sizes: '180x180' }].filter(Boolean),
+				},
+			}),
 		};
 	}
 
