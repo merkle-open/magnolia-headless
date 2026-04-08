@@ -27,24 +27,24 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/headless")
-public class DynamicResponseHeaderEndpoint {
+public class DynamicHeaderEndpoint {
 	private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private final SiteManager siteManager;
 	private final Gson gson;
-    private final Provider<Set<DynamicResponseHeaderProvider>> dynamicResponseHeaderProviders;
+    private final Provider<Set<DynamicHeaderProvider>> dynamicResponseHeaderProviders;
 
     @Inject
-    public DynamicResponseHeaderEndpoint(
+    public DynamicHeaderEndpoint(
 		final SiteManager siteManager,
 		final GsonBuilder gsonBuilder,
-		final Provider<Set<DynamicResponseHeaderProvider>> dynamicResponseHeaderProviders
+		final Provider<Set<DynamicHeaderProvider>> dynamicResponseHeaderProviders
 	) {
         this.siteManager = siteManager;
 		this.gson = gsonBuilder.create();
         this.dynamicResponseHeaderProviders = dynamicResponseHeaderProviders;
     }
 
-	@Path("/dynamic/response-header")
+	@Path("/dynamic/header")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
     public Response cspHeaders(
@@ -57,11 +57,11 @@ public class DynamicResponseHeaderEndpoint {
 				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 
-			final Map<String, String> headers = dynamicResponseHeaderProviders.get().stream()
+			final Map<String, DynamicHeaderProvider.Header.Value> headers = dynamicResponseHeaderProviders.get().stream()
 					.flatMap(provider -> provider.stream(request, site))
 					.collect(Collectors.toMap(
-							DynamicResponseHeaderProvider.Header::key,
-							DynamicResponseHeaderProvider.Header::value
+							DynamicHeaderProvider.Header::key,
+							DynamicHeaderProvider.Header::value
 					));
 			return Response.ok(gson.toJson(headers)).build();
 		} catch (Exception e) {

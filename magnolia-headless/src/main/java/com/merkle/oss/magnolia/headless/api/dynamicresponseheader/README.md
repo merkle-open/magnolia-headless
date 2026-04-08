@@ -7,10 +7,12 @@ Injected into a set.
 
 ```java
 import info.magnolia.module.site.Site;
-import com.merkle.oss.magnolia.headless.api.dynamicresponseheader.DynamicResponseHeaderProvider;
+
+import com.merkle.oss.magnolia.headless.api.dynamicresponseheader.DynamicHeaderProvider;
+
 import jakarta.servlet.http.HttpServletRequest;
 
-public class SomeDynamicResponseHeaderProvider implements DynamicResponseHeaderProvider {
+public class SomeDynamicResponseHeaderProvider implements DynamicHeaderProvider {
     @Override
     public Stream<Header> stream(final HttpServletRequest request, final Site site) {
         return //TODO implement
@@ -20,14 +22,15 @@ public class SomeDynamicResponseHeaderProvider implements DynamicResponseHeaderP
 
 ```java
 import info.magnolia.objectfactory.guice.AbstractGuiceComponentConfigurer;
-import com.merkle.oss.magnolia.headless.api.dynamicresponseheader.DynamicResponseHeaderProvider;
+
+import com.merkle.oss.magnolia.headless.api.dynamicresponseheader.DynamicHeaderProvider;
 
 public class HeadlessGuiceComponentConfigurer extends AbstractGuiceComponentConfigurer {
 
     @Override
     protected void configure() {
         super.configure();
-        final Multibinder<DynamicResponseHeaderProvider> binder = Multibinder.newSetBinder(binder(), DynamicResponseHeaderProvider.class);
+        final Multibinder<DynamicHeaderProvider> binder = Multibinder.newSetBinder(binder(), DynamicHeaderProvider.class);
         binder.addBinding().to(SomeDynamicResponseHeaderProvider.class);
     }
 }

@@ -4,7 +4,7 @@ export interface MagnoliaApiEndpointsProvider {
 	annotationTemplates(): string;
 	pageContent(language: string): string;
 	errorPageContent(language: string): string;
-	dynamicResponseHeader(): string;
+	dynamicHeader(): string;
 	vanity(language: string): string;
 	robots(): string;
 	sitemap(language: string): string;

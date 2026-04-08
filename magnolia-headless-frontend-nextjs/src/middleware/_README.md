@@ -22,11 +22,11 @@ export async function proxy(request: NextRequest, event: NextFetchEvent): Promis
 
 ## Provided middlewares
 
-| Middleware            | order |
-| --------------------- | ----- |
-| I18nRedirect          | 100   |
-| DynamicResponseHeader | 200   |
-| Vanity                | 300   |
+| Middleware    | order |
+| ------------- | ----- |
+| I18nRedirect  | 100   |
+| DynamicHeader | 200   |
+| Vanity        | 300   |
 
 ## Implement custom middleware
 

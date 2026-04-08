@@ -1,3 +1,0 @@
-name: Headless-DynamicResponseHeader
-class: info.magnolia.rest.registry.ConfiguredEndpointDefinition
-implementationClass: com.merkle.oss.magnolia.headless.api.dynamicresponseheader.DynamicResponseHeaderEndpoint
