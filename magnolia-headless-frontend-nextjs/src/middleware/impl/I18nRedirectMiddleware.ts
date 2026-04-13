@@ -1,8 +1,6 @@
 // @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import { NextRequest, NextResponse } from 'next/server';
-// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
-import { NextMiddlewareResult } from 'next/dist/server/web/types';
-import { AbstractMiddleware } from '../Middleware.ts';
+import { AbstractMiddleware, MiddlewareNextResponse, MiddlewareResult } from '../Middleware.ts';
 import { BrowserLanguageProvider } from '../../helper/BrowserLanguageProvider.ts';
 import { inject, injectable } from 'tsyringe';
 
@@ -19,11 +17,15 @@ export class I18nRedirectMiddleware extends AbstractMiddleware {
 		return 'i18nRedirect';
 	}
 
-	public async apply(req: NextRequest): Promise<NextMiddlewareResult> {
+	public async apply(req: NextRequest, res: MiddlewareNextResponse): Promise<MiddlewareResult> {
 		if (req.nextUrl.pathname === '/') {
 			// browser language redirect
 			const language = this.browserLanguageProvider.getBrowserLanguage(req);
-			return NextResponse.redirect(new URL(`/${language}${req.nextUrl.search}`, req.url));
+			return Promise.resolve({
+				response: NextResponse.redirect(new URL(`/${language}${req.nextUrl.search}`, req.url)),
+				break: true,
+			});
 		}
+		return Promise.resolve({ response: res });
 	}
 }

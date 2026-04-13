@@ -1,9 +1,7 @@
 // @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 import { NextRequest, NextResponse } from 'next/server';
-// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
-import { NextMiddlewareResult } from 'next/dist/server/web/types';
 import { RestClient } from '../../helper/RestClient.ts';
-import { AbstractMiddleware } from '../Middleware.ts';
+import { AbstractMiddleware, MiddlewareNextResponse, MiddlewareResult } from '../Middleware.ts';
 import { BrowserLanguageProvider } from '../../helper/BrowserLanguageProvider.ts';
 import { inject, injectable } from 'tsyringe';
 import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../../config/ConfigProvider.ts';
@@ -41,56 +39,22 @@ export class VanityMiddleware extends AbstractMiddleware {
 		return 'Vanity';
 	}
 
-	public async apply(req: NextRequest): Promise<NextMiddlewareResult> {
+	public async apply(req: NextRequest, res: MiddlewareNextResponse): Promise<MiddlewareResult> {
 		if (super.isPagePathRequest(req)) {
 			const url = new URL('https://' + req.headers.get('host'));
 			const domain: string = url.hostname; //strip port
 			const path = req.nextUrl.pathname;
 			const language: string = this.browserLanguageProvider.getBrowserLanguage(req);
 			const vanity = await this.getVanity(domain, path, language);
-			if (vanity) {
-				const headers = new Headers();
-				if (vanity.disableCache) {
-					headers.set('Cache-Control', 'no-cache');
-					headers.set('Pragma', 'no-cache');
-				}
-				const init: globalThis.ResponseInit = {
-					headers: headers,
-				};
-				const destination = this.getDestination(vanity, req);
-				switch (vanity.type) {
-					case RedirectType.FORWARD:
-						/*
-						 * currently ignores NODE_TLS_REJECT_UNAUTHORIZED=0 flag, so external destinations (assets) don't work for local development with tomcat
-						 * - https://github.com/vercel/next.js/discussions/49546
-						 * - https://github.com/vercel/next.js/pull/78566
-						 */
-						return NextResponse.rewrite(destination, {
-							...init,
-							status: 303,
-						});
-					case RedirectType.TEMPORARY:
-						return NextResponse.redirect(destination, {
-							...init,
-							status: 307,
-						});
-					case RedirectType.PERMANENT:
-						return NextResponse.redirect(destination, {
-							...init,
-							status: 308,
-						});
-				}
+			const response = vanity ? this.getResponse(req, vanity) : undefined;
+			if (response) {
+				return Promise.resolve({
+					response: response,
+					break: true,
+				});
 			}
 		}
-	}
-
-	private getDestination(vanity: Vanity, req: NextRequest): URL {
-		const isAbsolute = vanity.destination?.startsWith('https://');
-		const url = new URL(vanity.destination, isAbsolute ? undefined : req.nextUrl);
-		if (vanity.carryOverQueryParams) {
-			req.nextUrl.searchParams.forEach((value, key) => url.searchParams.set(key, value));
-		}
-		return url;
+		return Promise.resolve({ response: res });
 	}
 
 	private async getVanity(domain: string, path: string, language: string): Promise<Vanity> {
@@ -99,5 +63,59 @@ export class VanityMiddleware extends AbstractMiddleware {
 		queryParams.set('path', path);
 		const url = this.apisProvider.vanity(language) + '?' + queryParams.toString();
 		return this.restClient.fetchMagnoliaBasicAuth(url).then((response) => this.restClient.getJson(url, response));
+	}
+
+	private getResponse(req: NextRequest, vanity: Vanity): NextResponse | undefined {
+		const headers = new Headers();
+		if (vanity.disableCache) {
+			headers.set('Cache-Control', 'no-cache');
+			headers.set('Pragma', 'no-cache');
+		}
+		const init: globalThis.ResponseInit = {
+			headers: headers,
+		};
+		const destination = this.getDestination(req, vanity);
+		switch (vanity.type) {
+			case RedirectType.FORWARD:
+				/*
+				 * currently ignores NODE_TLS_REJECT_UNAUTHORIZED=0 flag, so external destinations (assets) don't work for local development with tomcat
+				 * - https://github.com/vercel/next.js/discussions/49546
+				 * - https://github.com/vercel/next.js/pull/78566
+				 */
+				return Promise.resolve({
+					...NextResponse.rewrite(destination, {
+						...init,
+						status: 303,
+					}),
+					break: true,
+				});
+			case RedirectType.TEMPORARY:
+				return Promise.resolve({
+					...NextResponse.redirect(destination, {
+						...init,
+						status: 307,
+					}),
+					break: true,
+				});
+			case RedirectType.PERMANENT:
+				return Promise.resolve({
+					...NextResponse.redirect(destination, {
+						...init,
+						status: 308,
+					}),
+					break: true,
+				});
+			default:
+				return undefined;
+		}
+	}
+
+	private getDestination(req: NextRequest, vanity: Vanity): URL {
+		const isAbsolute = vanity.destination?.startsWith('https://');
+		const url = new URL(vanity.destination, isAbsolute ? undefined : req.nextUrl);
+		if (vanity.carryOverQueryParams) {
+			req.nextUrl.searchParams.forEach((value, key) => url.searchParams.set(key, value));
+		}
+		return url;
 	}
 }

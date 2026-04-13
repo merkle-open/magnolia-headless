@@ -1,9 +1,7 @@
 // @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
-import { NextRequest, NextResponse } from 'next/server';
-// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
-import { NextMiddlewareResult } from 'next/dist/server/web/types';
+import { NextRequest } from 'next/server';
 import { RestClient } from '../../helper/RestClient.ts';
-import { AbstractMiddleware } from '../Middleware.ts';
+import { AbstractMiddleware, MiddlewareNextResponse, MiddlewareResult } from '../Middleware.ts';
 import { inject, injectable } from 'tsyringe';
 import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../../config/ConfigProvider.ts';
 
@@ -26,7 +24,7 @@ export class DynamicResponseHeaderMiddleware extends AbstractMiddleware {
 		return 'DynamicResponseHeader';
 	}
 
-	public async apply(req: NextRequest, res: NextResponse): Promise<NextMiddlewareResult> {
+	public async apply(req: NextRequest, res: MiddlewareNextResponse): Promise<MiddlewareResult> {
 		if (super.isPagePathRequest(req)) {
 			const domain: string = new URL('https://' + req.headers.get('host')).hostname; //strip port
 			const header = await this.getHeader(domain);
@@ -34,6 +32,7 @@ export class DynamicResponseHeaderMiddleware extends AbstractMiddleware {
 				res.headers.set(key, header[key]);
 			}
 		}
+		return Promise.resolve({ response: res });
 	}
 
 	private async getHeader(domain: string): Promise<any> {
