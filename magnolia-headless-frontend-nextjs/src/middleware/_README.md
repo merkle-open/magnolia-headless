@@ -22,12 +22,12 @@ export async function proxy(request: NextRequest, event: NextFetchEvent): Promis
 
 ## Provided middlewares
 
-| Middleware    | order |
-| ------------- | ----- |
-| I18nRedirect  | 100   |
-| DynamicHeader | 200   |
-| Vanity        | 300   |
-| CSP-nonce     | 1000  |
+| Middleware    | order | description                                                    |
+| ------------- | ----- | -------------------------------------------------------------- |
+| I18nRedirect  | 100   | redirects to browser lang if url doesn't contain language      |
+| DynamicHeader | 200   | sets request/response headers provided by backend endpoint     |
+| Vanity        | 300   | redirects/forwards based on backend endpoint                   |
+| CSP-nonce     | 1000  | generates nonce and replaces csp header '${nonce}' placeholder |
 
 ## Implement custom middleware
 
