@@ -27,6 +27,7 @@ export async function proxy(request: NextRequest, event: NextFetchEvent): Promis
 | I18nRedirect  | 100   |
 | DynamicHeader | 200   |
 | Vanity        | 300   |
+| CSP-nonce     | 1000  |
 
 ## Implement custom middleware
 
