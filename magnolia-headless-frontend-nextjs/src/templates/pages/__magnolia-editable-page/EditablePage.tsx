@@ -7,7 +7,7 @@ import { injectable } from 'tsyringe';
 
 @injectable()
 export class EditablePage {
-	public render(props: EditablePageProps): ReactNode {
+	public async render(props: EditablePageProps): Promise<ReactNode> {
 		const { content } = props;
 		const magnoliaContext: IMagnoliaContext = RefService.getMagnoliaContextRef<IMagnoliaContext>();
 

@@ -16,7 +16,7 @@ export abstract class AbstractDynamicPage {
 		private readonly editablePage: EditablePage,
 	) {}
 
-	protected renderBase(magnoliaContext: ExtendedMagnoliaContext, content: PageProps, templateAnnotations: MgnlTemplateAnnotations): ReactNode {
+	protected async renderBase(magnoliaContext: ExtendedMagnoliaContext, content: PageProps, templateAnnotations: MgnlTemplateAnnotations): Promise<ReactNode> {
 		const config: MagnoliaConfig = {
 			componentMappings: this.componentMappingsProvider.getComponentMappings(),
 		};
@@ -30,7 +30,7 @@ export abstract class AbstractDynamicPage {
 				{this.getStylesheet(magnoliaContext, content).map((stylesheet, index) => (
 					<link rel="stylesheet" key={`AbstractDynamicPage-stylesheet-${index}`} href={stylesheet} precedence="high" />
 				))}
-				{this.editablePage.render({ content, config, templateAnnotations, magnoliaContext })}
+				{await this.editablePage.render({ content, config, templateAnnotations, magnoliaContext })}
 			</div>
 		);
 	}
