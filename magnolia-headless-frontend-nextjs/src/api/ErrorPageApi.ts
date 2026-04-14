@@ -11,12 +11,15 @@ export class ErrorPageApi {
 		const queryParams = req.nextUrl.searchParams;
 		const url = new URL(`https://${req.headers.get('host')}/${language}`);
 		const errorType = this.getErrorTypeFromString(queryParams.get('errorType'));
-		const headers = new Headers();
-		headers.set('Content-Type', 'application/json');
-		return this.magnoliaPageRestClient
-			.getErrorPageContent(url, errorType)
-			.then((content) => JSON.stringify(content))
-			.then((body) => new Response(body, { headers: headers }));
+
+		return this.magnoliaPageRestClient.getErrorPageContent(url, errorType).then((content) => {
+			if (content) {
+				const headers = new Headers();
+				headers.set('Content-Type', 'application/json');
+				return new Response(JSON.stringify(content), { headers: headers });
+			}
+			return new Response(null, { status: 404 });
+		});
 	}
 
 	private getErrorTypeFromString(value: string): ErrorType | undefined {

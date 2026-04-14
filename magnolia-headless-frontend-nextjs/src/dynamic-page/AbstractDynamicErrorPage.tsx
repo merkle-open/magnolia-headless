@@ -32,7 +32,10 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 	protected async renderDynamic(currentUrl: URL, errorType: ErrorType): Promise<ReactNode> {
 		const magnoliaContext = this.magnoliaContextProvider.getMagnoliaContext(currentUrl);
 		const content = await this.fetchErrorPageContent(magnoliaContext.currentLanguage, errorType);
-		return super.renderBase(magnoliaContext, content, {});
+		if (content) {
+			return super.renderBase(magnoliaContext, content, {});
+		}
+		return Promise.reject(new Error('no dynamic error page maintained!'));
 	}
 
 	protected renderStatic(language: string, errorType: ErrorType): ReactNode {

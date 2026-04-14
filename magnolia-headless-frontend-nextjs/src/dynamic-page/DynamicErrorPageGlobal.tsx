@@ -60,10 +60,13 @@ export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
 	}
 
 	private async renderGlobalDynamicError(language: string, errorType: ErrorType): Promise<ReactNode> {
-		const currentUrl = new URL(window.location.href);
-		currentUrl.pathname = language;
-		const errorPage = await super.renderDynamic(currentUrl, errorType);
-		return this.dynamicPageLayout.render(language, errorPage);
+		try {
+			const currentUrl = new URL(window.location.href);
+			currentUrl.pathname = language;
+			return super.renderDynamic(currentUrl, errorType).then((errorPage) => this.dynamicPageLayout.render(language, errorPage));
+		} catch (e) {
+			return Promise.reject(e);
+		}
 	}
 
 	private renderGlobalStaticError(language: string, errorType: ErrorType): ReactNode {
