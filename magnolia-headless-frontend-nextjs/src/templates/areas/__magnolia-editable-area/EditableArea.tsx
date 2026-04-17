@@ -23,7 +23,13 @@ export class EditableAreaClass {
 	}
 
 	protected renderComponent(content: any, index: number): ReactNode {
-		return this.editableComponent.render({ key: ContentRendererService.buildKey(content), content: content, index: index });
+		return this.editableComponent.render(
+			{
+				content: content,
+				index: index,
+			},
+			ContentRendererService.buildKey(content),
+		);
 	}
 
 	protected merge(...content: any[]): any {
