@@ -6,13 +6,14 @@ import ErrorBoundary from '../../elements/_error/ErrorBoundary.tsx';
 
 export class EditableComponent {
 	public render(props: EditableComponentProps): ReactNode {
-		const { key, content, additionalContent, ...rest } = props;
+		const { key, content, additionalContent, index, ...rest } = props;
 		const magnoliaContext: IMagnoliaContext = RefService.getMagnoliaContextRef<IMagnoliaContext>();
 		const mergedContent: MgnlContent = this.merge(content, additionalContent);
+		const resolvedKey = key ?? content?.['@path'] ?? index;
 
 		return (
-			<ErrorBoundary isEditMode={magnoliaContext.isMagnoliaEdit} throwNotEditMode={false} path={content!['@path']} key={`error-${key}`}>
-				<MagnoliaEditableComponent {...rest} key={key} content={mergedContent} />
+			<ErrorBoundary isEditMode={magnoliaContext?.isMagnoliaEdit ?? false} throwNotEditMode={false} path={content!['@path']} key={`error-${resolvedKey}`}>
+				<MagnoliaEditableComponent {...rest} key={resolvedKey} content={mergedContent} />
 			</ErrorBoundary>
 		);
 	}
