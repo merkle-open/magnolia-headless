@@ -1,4 +1,4 @@
-# Vanity
+# Vanity endpoint
 provides vanity model to frontend (consumed by middleware).
 
 ## setup

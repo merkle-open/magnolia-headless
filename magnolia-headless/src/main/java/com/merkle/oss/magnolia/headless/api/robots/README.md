@@ -1,4 +1,4 @@
-# Robots txt
+# Robots txt endpoint
 provides robots txt to frontend (consumed by api endpoint).
 
 Endpoints to all SitemapProviders are appended (see [Sitemap endpoint](../sitemap/README.md)).

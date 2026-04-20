@@ -1,4 +1,4 @@
-# Page controller
+# Page endpoint
 provides page content to frontend using rendering engine.
 
 ## setup

@@ -1,4 +1,4 @@
-# Sitemap
+# Sitemap endpoint
 provides sitemaps to frontend (consumed by api endpoint).
 
 Injected into a set, type has to be unique! The SitemapProviders are also used in the robots endpoint to generate the links to the sitemaps. 
