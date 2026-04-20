@@ -3,7 +3,7 @@ package com.merkle.oss.magnolia.headless.configuration;
 import info.magnolia.objectfactory.guice.AbstractGuiceComponentConfigurer;
 
 import com.google.inject.multibindings.Multibinder;
-import com.merkle.oss.magnolia.headless.api.dynamicresponseheader.DynamicHeaderProvider;
+import com.merkle.oss.magnolia.headless.api.dynamicheader.DynamicHeaderProvider;
 import com.merkle.oss.magnolia.headless.api.page.mapper.PagePathMapper;
 import com.merkle.oss.magnolia.headless.api.sitemap.SitemapProvider;
 

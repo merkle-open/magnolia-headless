@@ -1,4 +1,4 @@
-package com.merkle.oss.magnolia.headless.api.dynamicresponseheader;
+package com.merkle.oss.magnolia.headless.api.dynamicheader;
 
 import info.magnolia.module.site.Site;
 
