@@ -1,6 +1,6 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.5.2 Chrome/142.0.7444.265 Electron/39.6.1 Safari/537.36" version="29.5.2">
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.6.6 Chrome/144.0.7559.236 Electron/40.8.4 Safari/537.36" version="29.6.6">
   <diagram name="Page-1" id="XyZ6tYv2YaA6EYXfYPNk">
-    <mxGraphModel dx="826" dy="480" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="984" dy="571" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -21,10 +21,10 @@
         <mxCell id="rYL1nphE8LKon_mthdMi-1" parent="1" style="swimlane;whiteSpace=wrap;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" value="Backend" vertex="1">
           <mxGeometry height="307" width="170" x="110" y="433" as="geometry" />
         </mxCell>
-        <mxCell id="rYL1nphE8LKon_mthdMi-8" parent="rYL1nphE8LKon_mthdMi-1" style="html=1;rounded=0;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;PageController&lt;/font&gt;" vertex="1">
+        <mxCell id="rYL1nphE8LKon_mthdMi-8" parent="rYL1nphE8LKon_mthdMi-1" style="html=1;rounded=0;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;PageEndpoint&lt;/font&gt;" vertex="1">
           <mxGeometry height="30" width="170" x="11" y="32" as="geometry" />
         </mxCell>
-        <mxCell id="rYL1nphE8LKon_mthdMi-24" parent="rYL1nphE8LKon_mthdMi-1" style="html=1;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;TemplateAnnotationController&lt;/span&gt;" vertex="1">
+        <mxCell id="rYL1nphE8LKon_mthdMi-24" parent="rYL1nphE8LKon_mthdMi-1" style="html=1;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;TemplateAnnotation&lt;/span&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;Endpoint&lt;/span&gt;" vertex="1">
           <mxGeometry height="30" width="170" x="11" y="97" as="geometry" />
         </mxCell>
         <mxCell id="rYL1nphE8LKon_mthdMi-39" edge="1" parent="rYL1nphE8LKon_mthdMi-1" style="endArrow=none;html=1;rounded=0;align=center;verticalAlign=top;endFill=0;labelBackgroundColor=none;endSize=2;" value="">
@@ -39,7 +39,7 @@
             <mxPoint x="219" y="162.79999999999995" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="rYL1nphE8LKon_mthdMi-35" parent="rYL1nphE8LKon_mthdMi-1" style="html=1;rounded=0;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;VanityController&lt;/font&gt;" vertex="1">
+        <mxCell id="rYL1nphE8LKon_mthdMi-35" parent="rYL1nphE8LKon_mthdMi-1" style="html=1;rounded=0;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;Vanity&lt;/font&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;Endpoint&lt;/span&gt;" vertex="1">
           <mxGeometry height="30" width="170" x="11" y="148" as="geometry" />
         </mxCell>
         <mxCell id="rYL1nphE8LKon_mthdMi-37" parent="rYL1nphE8LKon_mthdMi-1" style="ellipse;html=1;fontSize=11;align=center;fillColor=none;points=[];aspect=fixed;resizable=0;verticalAlign=bottom;labelPosition=center;verticalLabelPosition=top;flipH=1;" value="" vertex="1">
@@ -92,10 +92,10 @@
             <mxPoint x="329" y="543.8" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="rYL1nphE8LKon_mthdMi-47" parent="1" style="html=1;rounded=0;" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;DynamicResponseHeaderController&lt;/span&gt;" vertex="1">
+        <mxCell id="rYL1nphE8LKon_mthdMi-47" parent="1" style="html=1;rounded=0;" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;DynamicHeader&lt;/span&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;Endpoint&lt;/span&gt;" vertex="1">
           <mxGeometry height="30" width="170" x="118.5" y="621" as="geometry" />
         </mxCell>
-        <mxCell id="rYL1nphE8LKon_mthdMi-48" parent="1" style="html=1;rounded=0;direction=east;" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;dynamicResponseHeader middleware&lt;/span&gt;" vertex="1">
+        <mxCell id="rYL1nphE8LKon_mthdMi-48" parent="1" style="html=1;rounded=0;direction=east;" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;dynamicHeader middleware&lt;/span&gt;" vertex="1">
           <mxGeometry height="30" width="182.5" x="387.5" y="622" as="geometry" />
         </mxCell>
         <mxCell id="rYL1nphE8LKon_mthdMi-49" parent="1" style="ellipse;html=1;fontSize=11;align=center;fillColor=none;points=[];aspect=fixed;resizable=0;verticalAlign=bottom;labelPosition=center;verticalLabelPosition=top;flipH=1;" value="" vertex="1">
@@ -116,7 +116,7 @@
             <mxPoint x="326.5" y="635.8" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="rYL1nphE8LKon_mthdMi-55" parent="1" style="html=1;rounded=0;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;RobotsTxtController&lt;/font&gt;" vertex="1">
+        <mxCell id="rYL1nphE8LKon_mthdMi-55" parent="1" style="html=1;rounded=0;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;RobotsTxt&lt;/font&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;Endpoint&lt;/span&gt;" vertex="1">
           <mxGeometry height="30" width="170" x="118.5" y="661" as="geometry" />
         </mxCell>
         <mxCell id="rYL1nphE8LKon_mthdMi-56" parent="1" style="html=1;rounded=0;direction=east;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;robots api&lt;/font&gt;" vertex="1">
@@ -140,7 +140,7 @@
             <mxPoint x="326.5" y="675.8" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="zlXHqIaElNNqgeDurM5b-1" parent="1" style="html=1;rounded=0;" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;SitemapController&lt;/span&gt;" vertex="1">
+        <mxCell id="zlXHqIaElNNqgeDurM5b-1" parent="1" style="html=1;rounded=0;" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;Sitemap&lt;/span&gt;&lt;span style=&quot;font-size: 10px;&quot;&gt;Endpoint&lt;/span&gt;" vertex="1">
           <mxGeometry height="30" width="170" x="118.5" y="701" as="geometry" />
         </mxCell>
         <mxCell id="zlXHqIaElNNqgeDurM5b-2" parent="1" style="html=1;rounded=0;direction=east;" value="&lt;span style=&quot;font-size: 10px;&quot;&gt;sitemap api&lt;/span&gt;" vertex="1">
