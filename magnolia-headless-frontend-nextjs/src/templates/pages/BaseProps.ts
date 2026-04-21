@@ -19,7 +19,7 @@ export interface MetaProps {
 	keywords: string[];
 	robots?: string;
 	canonical: string;
-	openGraph: OpenGraph;
+	openGraph?: OpenGraph;
 	hrefLangLinks: HrefLangLink[];
 	favicons?: {
 		favicon?: string;

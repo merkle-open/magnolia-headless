@@ -18,8 +18,8 @@ export class MetadataProvider {
 			keywords: meta.keywords,
 			robots: meta.robots,
 			applicationName: meta.openGraph?.siteName,
-			openGraph: this.getOpenGraph(meta.openGraph),
-			twitter: this.getTwitter(meta.openGraph),
+			openGraph: meta.openGraph ? this.getOpenGraph(meta.openGraph) : undefined,
+			twitter: meta.openGraph ? this.getTwitter(meta.openGraph) : undefined,
 			alternates: {
 				canonical: meta.canonical,
 				languages: Object.fromEntries(meta.hrefLangLinks.map((link) => [link.language, link.href])),
