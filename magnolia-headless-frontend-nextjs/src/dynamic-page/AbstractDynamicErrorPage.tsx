@@ -1,5 +1,3 @@
-'use client';
-
 import { ReactNode } from 'react';
 import { ErrorType } from '../helper/MagnoliaPageRestClient.ts';
 import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.tsx';

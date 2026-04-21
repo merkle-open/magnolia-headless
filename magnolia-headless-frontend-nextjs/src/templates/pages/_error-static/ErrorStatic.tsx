@@ -1,5 +1,3 @@
-'use client';
-
 import React, { ReactNode } from 'react';
 import ErrorStaticProps from './ErrorStaticProps.ts';
 import { injectable } from 'tsyringe';
