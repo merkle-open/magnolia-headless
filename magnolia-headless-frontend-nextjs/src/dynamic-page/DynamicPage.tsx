@@ -15,20 +15,22 @@ import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProv
 import { CombinedComponentMappingsProvider } from '../templates/ComponentMappingsProvider.ts';
 import { ThemeValidator } from '../helper/ThemeValidator.ts';
 import { EditablePage } from '../templates/pages/__magnolia-editable-page/EditablePage.tsx';
+import { ContentSecurityPolicyNonceProvider } from '../middleware/impl/ContentSecurityPolicyNonceMiddleware.ts';
 
 @injectable()
 export class DynamicPage extends AbstractDynamicPage {
 	constructor(
 		@inject(CombinedComponentMappingsProvider) componentMappingsProvider: ComponentMappingsProviderI,
-		@inject(STYLESHEET_PROVIDER_TOKEN) StylesheetProviderI: StylesheetProviderI,
+		@inject(STYLESHEET_PROVIDER_TOKEN) stylesheetProviderI: StylesheetProviderI,
 		@inject(ThemeValidator) themeValidator: ThemeValidator,
 		@inject(EditablePage) editablePage: EditablePage,
+		@inject(ContentSecurityPolicyNonceProvider) private readonly cspNonceProvider: ContentSecurityPolicyNonceProvider,
 		@inject(MagnoliaContextProvider) private readonly magnoliaContextProvider: MagnoliaContextProvider,
 		@inject(MagnoliaPageRestClient) private readonly magnoliaPageRestClient: MagnoliaPageRestClient,
 		@inject(MetadataProvider) private readonly metadataProvider: MetadataProvider,
 		@inject(UrlProvider) private readonly urlProvider: UrlProvider,
 	) {
-		super(componentMappingsProvider, StylesheetProviderI, themeValidator, editablePage);
+		super(componentMappingsProvider, stylesheetProviderI, themeValidator, editablePage);
 	}
 
 	public async render(pageProps: PageProps): Promise<ReactNode> {
@@ -39,7 +41,8 @@ export class DynamicPage extends AbstractDynamicPage {
 		}
 		const templateAnnotations: MgnlTemplateAnnotations = await this.magnoliaPageRestClient.getTemplateAnnotations(url, content['@path']);
 		const magnoliaContext = this.magnoliaContextProvider.getMagnoliaContext(url);
-		return super.renderBase(magnoliaContext, content, templateAnnotations);
+		const nonce = await this.cspNonceProvider.get();
+		return super.renderBase(magnoliaContext, content, templateAnnotations, nonce);
 	}
 
 	public async generateMetadata(pageProps: PageProps): Promise<Metadata> {

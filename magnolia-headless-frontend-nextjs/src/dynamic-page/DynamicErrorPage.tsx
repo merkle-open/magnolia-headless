@@ -14,6 +14,7 @@ import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.ts
 import { CombinedComponentMappingsProvider } from '../templates/ComponentMappingsProvider.ts';
 import { ThemeValidator } from '../helper/ThemeValidator.ts';
 import { EditablePage } from '../templates/pages/__magnolia-editable-page/EditablePage.tsx';
+import { useCspHeaderNonce } from './provider/impl/CspHeaderNonceContext.tsx';
 
 @injectable()
 export class DynamicErrorPage extends AbstractDynamicErrorPage {
@@ -33,13 +34,13 @@ export class DynamicErrorPage extends AbstractDynamicErrorPage {
 
 	public render(errorType: ErrorType): ReactNode {
 		const [errorPage, setErrorPage] = useState(null);
-
+		const nonce = useCspHeaderNonce();
 		useEffect(() => {
 			const currentUrl = new URL(window.location.href);
 			super
-				.renderDynamic(currentUrl, errorType)
-				.then((content) => setErrorPage(content))
-				.catch(() => setErrorPage(super.renderStatic(this.getLanguage(currentUrl), errorType)));
+				.renderDynamic(currentUrl, errorType, nonce)
+				.catch(() => super.renderStatic(this.getLanguage(currentUrl), errorType))
+				.then((content) => setErrorPage(content));
 		}, []);
 
 		if (!errorPage) {

@@ -15,6 +15,7 @@ import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.ts
 import { CombinedComponentMappingsProvider } from '../templates/ComponentMappingsProvider.ts';
 import { ThemeValidator } from '../helper/ThemeValidator.ts';
 import { EditablePage } from '../templates/pages/__magnolia-editable-page/EditablePage.tsx';
+import { useCspHeaderNonce } from './provider/impl/CspHeaderNonceContext.tsx';
 
 @injectable()
 export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
@@ -35,10 +36,10 @@ export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
 
 	public render(errorType: ErrorType): ReactNode {
 		const [errorPage, setErrorPage] = useState(null);
-
+		const nonce = useCspHeaderNonce();
 		useEffect(() => {
 			const language = this.getLanguage();
-			this.renderGlobalDynamicError(language, errorType)
+			this.renderGlobalDynamicError(language, errorType, nonce)
 				.then((content) => setErrorPage(content))
 				.catch(() => setErrorPage(this.renderGlobalStaticError(language, errorType)));
 		}, []);
@@ -49,11 +50,11 @@ export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
 		return errorPage;
 	}
 
-	private async renderGlobalDynamicError(language: string, errorType: ErrorType): Promise<ReactNode> {
+	private async renderGlobalDynamicError(language: string, errorType: ErrorType, nonce: string): Promise<ReactNode> {
 		try {
 			const currentUrl = new URL(window.location.href);
 			currentUrl.pathname = language;
-			return super.renderDynamic(currentUrl, errorType).then((errorPage) => this.dynamicPageLayout.render(language, errorPage));
+			return super.renderDynamic(currentUrl, errorType, nonce).then((errorPage) => this.dynamicPageLayout.render(language, errorPage));
 		} catch (e) {
 			return Promise.reject(e);
 		}

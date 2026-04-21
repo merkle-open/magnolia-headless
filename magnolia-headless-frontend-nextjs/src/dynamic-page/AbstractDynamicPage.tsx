@@ -16,21 +16,20 @@ export abstract class AbstractDynamicPage {
 		private readonly editablePage: EditablePage,
 	) {}
 
-	protected async renderBase(magnoliaContext: ExtendedMagnoliaContext, content: PageProps, templateAnnotations: MgnlTemplateAnnotations): Promise<ReactNode> {
+	protected async renderBase(magnoliaContext: ExtendedMagnoliaContext, content: PageProps, templateAnnotations: MgnlTemplateAnnotations, nonce?: string): Promise<ReactNode> {
 		const config: MagnoliaConfig = {
 			componentMappings: this.componentMappingsProvider.getComponentMappings(),
 		};
 
 		RefService.setMagnoliaContextRef(magnoliaContext);
 		global.mgnlInPageEditor = magnoliaContext.isMagnoliaEdit;
-
 		return (
 			<div>
 				{/* is moved to <head> see https://react.dev/blog/2024/12/05/react-19#support-for-stylesheets */}
 				{this.getStylesheet(magnoliaContext, content).map((stylesheet, index) => (
-					<link rel="stylesheet" key={`AbstractDynamicPage-stylesheet-${index}`} href={stylesheet} precedence="high" />
+					<link rel="stylesheet" key={`AbstractDynamicPage-stylesheet-${index}`} href={stylesheet} precedence="high" nonce={nonce} />
 				))}
-				{await this.editablePage.render({ content, config, templateAnnotations, magnoliaContext })}
+				{await this.editablePage.render({ content, config, templateAnnotations, magnoliaContext, nonce })}
 			</div>
 		);
 	}

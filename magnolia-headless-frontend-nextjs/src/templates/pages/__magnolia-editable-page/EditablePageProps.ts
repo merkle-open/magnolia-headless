@@ -9,4 +9,5 @@ export default interface EditablePageProps {
 	templateAnnotations: MgnlTemplateAnnotations;
 	config: MagnoliaConfig;
 	magnoliaContext: IMagnoliaContext;
+	nonce?: string;
 }
