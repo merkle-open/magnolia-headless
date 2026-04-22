@@ -15,7 +15,7 @@ export class UrlProvider {
 		// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
 		const headerList = await import('next/headers').then((headers) => headers.headers());
 		const { pathname } = await props.params;
-		const url = new URL(`https://${headerList.get('host')}/${pathname.join('/')}`);
+		const url = new URL(`https://${headerList.get('host')}/${(pathname || [])?.join('/')}`);
 		const queryParams = props ? await props.searchParams : null;
 		if (queryParams) {
 			url.search = this.toUrlSearchParams(queryParams).toString();
