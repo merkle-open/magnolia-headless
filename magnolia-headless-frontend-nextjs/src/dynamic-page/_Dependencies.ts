@@ -5,6 +5,7 @@ import { DynamicErrorPageGlobal } from './DynamicErrorPageGlobal.tsx';
 import { DynamicPageLayout } from './DynamicPageLayout.tsx';
 import { UrlProvider } from './PageProps.ts';
 import { ErrorPageLoader } from './AbstractDynamicErrorPage.tsx';
+import registerProvider from './provider/_Dependencies.ts';
 
 export default function register(container: DependencyContainer) {
 	container.register(DynamicErrorPage, { useClass: DynamicErrorPage });
@@ -13,4 +14,6 @@ export default function register(container: DependencyContainer) {
 	container.register(DynamicPageLayout, { useClass: DynamicPageLayout });
 	container.register(UrlProvider, { useClass: UrlProvider });
 	container.register(ErrorPageLoader, { useClass: ErrorPageLoader });
+
+	registerProvider(container);
 }
