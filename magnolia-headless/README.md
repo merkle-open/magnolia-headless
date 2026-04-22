@@ -8,7 +8,7 @@
 <dependency>
     <groupId>com.merkle.oss.magnolia</groupId>
     <artifactId>magnolia-headless</artifactId>
-    <version>0.0.8</version>
+    <version>0.0.9</version>
 </dependency>
 ```
 
