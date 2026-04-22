@@ -31,17 +31,17 @@ public class DynamicHeaderEndpoint {
 	private static final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private final SiteManager siteManager;
 	private final Gson gson;
-    private final Provider<Set<DynamicHeaderProvider>> dynamicResponseHeaderProviders;
+    private final Provider<Set<DynamicHeaderProvider>> dynamicHeaderProviders;
 
     @Inject
     public DynamicHeaderEndpoint(
 		final SiteManager siteManager,
 		final GsonBuilder gsonBuilder,
-		final Provider<Set<DynamicHeaderProvider>> dynamicResponseHeaderProviders
+		final Provider<Set<DynamicHeaderProvider>> dynamicHeaderProviders
 	) {
         this.siteManager = siteManager;
 		this.gson = gsonBuilder.create();
-        this.dynamicResponseHeaderProviders = dynamicResponseHeaderProviders;
+        this.dynamicHeaderProviders = dynamicHeaderProviders;
     }
 
 	@Path("/dynamic/header")
@@ -57,7 +57,7 @@ public class DynamicHeaderEndpoint {
 				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 
-			final Map<String, DynamicHeaderProvider.Header.Value> headers = dynamicResponseHeaderProviders.get().stream()
+			final Map<String, DynamicHeaderProvider.Header.Value> headers = dynamicHeaderProviders.get().stream()
 					.flatMap(provider -> provider.stream(request, site))
 					.collect(Collectors.toMap(
 							DynamicHeaderProvider.Header::key,
@@ -65,7 +65,7 @@ public class DynamicHeaderEndpoint {
 					));
 			return Response.ok(gson.toJson(headers)).build();
 		} catch (Exception e) {
-			LOG.error("Failed to serve dynamicResponseHeader response!", e);
+			LOG.error("Failed to serve dynamicHeader response!", e);
 			return Response.serverError().build();
 		}
     }
