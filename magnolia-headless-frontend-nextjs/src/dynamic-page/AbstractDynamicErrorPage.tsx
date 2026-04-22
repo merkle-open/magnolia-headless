@@ -9,6 +9,7 @@ import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
 import { ThemeValidator } from '../helper/ThemeValidator.ts';
 import { EditablePage } from '../templates/pages/__magnolia-editable-page/EditablePage.tsx';
+import { injectable } from 'tsyringe';
 
 export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 	private readonly frontendApisProvider: FrontendApiEndpointsProvider;
@@ -45,5 +46,21 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 		queryParams.append('errorType', errorType);
 		const errorPageUrl = this.frontendApisProvider.errorPage(language) + '?' + queryParams.toString();
 		return fetch(errorPageUrl).then((response) => this.restClient.getJson(errorPageUrl, response));
+	}
+}
+
+@injectable()
+export class ErrorPageLoader {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	public render(errorType: ErrorType): ReactNode {
+		return <div>Loading...</div>;
+	}
+
+	public renderGlobal(errorType: ErrorType): ReactNode {
+		return (
+			<html>
+				<body>{this.render(errorType)}</body>
+			</html>
+		);
 	}
 }

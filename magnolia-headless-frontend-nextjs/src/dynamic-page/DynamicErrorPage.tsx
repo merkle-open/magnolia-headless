@@ -6,7 +6,7 @@ import { inject, injectable } from 'tsyringe';
 import { RestClient } from '../helper/RestClient.ts';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
 import { type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
-import { AbstractDynamicErrorPage } from './AbstractDynamicErrorPage.tsx';
+import { AbstractDynamicErrorPage, ErrorPageLoader } from './AbstractDynamicErrorPage.tsx';
 
 import { type StylesheetProviderI, STYLESHEET_PROVIDER_TOKEN } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
@@ -26,6 +26,7 @@ export class DynamicErrorPage extends AbstractDynamicErrorPage {
 		@inject(RestClient) restClient: RestClient,
 		@inject(StaticErrorPage) staticErrorPage: StaticErrorPage,
 		@inject(MagnoliaContextProvider) magnoliaContextProvider: MagnoliaContextProvider,
+		@inject(ErrorPageLoader) private readonly errorPageLoader: ErrorPageLoader,
 	) {
 		super(componentMappingsProvider, configProvider, StylesheetProviderI, themeValidator, editablePage, restClient, staticErrorPage, magnoliaContextProvider);
 	}
@@ -42,7 +43,7 @@ export class DynamicErrorPage extends AbstractDynamicErrorPage {
 		}, []);
 
 		if (!errorPage) {
-			return <div>Loading...</div>;
+			return this.errorPageLoader.render(errorType);
 		}
 		return errorPage;
 	}

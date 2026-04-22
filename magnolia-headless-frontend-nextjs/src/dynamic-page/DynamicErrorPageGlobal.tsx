@@ -4,7 +4,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { ErrorType } from '../helper/MagnoliaPageRestClient.ts';
 import { inject, injectable } from 'tsyringe';
 import { DynamicPageLayout } from './DynamicPageLayout.tsx';
-import { AbstractDynamicErrorPage } from './AbstractDynamicErrorPage.tsx';
+import { AbstractDynamicErrorPage, ErrorPageLoader } from './AbstractDynamicErrorPage.tsx';
 import { type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 import { RestClient } from '../helper/RestClient.ts';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
@@ -28,6 +28,7 @@ export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
 		@inject(StaticErrorPage) staticErrorPage: StaticErrorPage,
 		@inject(MagnoliaContextProvider) magnoliaContextProvider: MagnoliaContextProvider,
 		@inject(DynamicPageLayout) private readonly dynamicPageLayout: DynamicPageLayout,
+		@inject(ErrorPageLoader) private readonly errorPageLoader: ErrorPageLoader,
 	) {
 		super(componentMappingsProvider, configProvider, StylesheetProviderI, themeValidator, editablePage, restClient, staticErrorPage, magnoliaContextProvider);
 	}
@@ -43,20 +44,9 @@ export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
 		}, []);
 
 		if (!errorPage) {
-			return this.renderLoader(errorType);
+			return this.errorPageLoader.renderGlobal(errorType);
 		}
 		return errorPage;
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	protected renderLoader(errorType: ErrorType): ReactNode {
-		return (
-			<html>
-				<body>
-					<div>Loading...</div>
-				</body>
-			</html>
-		);
 	}
 
 	private async renderGlobalDynamicError(language: string, errorType: ErrorType): Promise<ReactNode> {
