@@ -147,9 +147,14 @@ public class TemplateAnnotationEndpoint {
     }
 
     private Optional<Map.Entry<String, String>> getTemplateAnnotationEntries(final PowerNode templateNode) {
-        return getTemplateDefinition(templateNode).map(definition ->
-                Map.entry(templateNode.getPath(), renderAnnotations(templateNode, definition))
-        );
+        try {
+            return getTemplateDefinition(templateNode).map(definition ->
+                    Map.entry(templateNode.getPath(), renderAnnotations(templateNode, definition))
+            );
+        } catch (Exception e) {
+            LOG.error("Failed to getTemplateAnnotationEntries for "+templateNode.getPath()+", skipping", e);
+            return Optional.empty();
+        }
     }
 
     private Stream<PowerNode> streamTemplateNodes(final PowerNode node) {
