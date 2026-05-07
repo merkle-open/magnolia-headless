@@ -25,7 +25,8 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
 	}
 
 	render() {
-		if (this.state.error) {
+		if (this.state.error && this.state.error.message !== 'NEXT_REDIRECT') {
+			// see REDIRECT_ERROR_CODE in nextJs redirect-error (not exposed)
 			return <ErrorElement editMode={this.props.isEditMode} throwNotEditMode={this.props.throwNotEditMode} path={this.props.path} msg={this.state.error.message} />;
 		}
 		return <Suspense fallback={null}>{this.props.children}</Suspense>;
