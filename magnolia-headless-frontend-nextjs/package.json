@@ -1,6 +1,6 @@
 {
 	"name": "@merkle-open/magnolia-headless-frontend-nextjs",
-	"version": "0.0.10-SNAPSHOT",
+	"version": "0.0.10",
 	"description": "Magnolia headless frontend nextJs",
 	"license": "MIT",
 	"author": "Merkle Inc.",
@@ -11,7 +11,12 @@
 	"engines": {
 		"node": ">=24"
 	},
-	"files": ["README.md", "index.ts", "src", "src/**/_README.md"],
+	"files": [
+		"README.md",
+		"index.ts",
+		"src",
+		"src/**/_README.md"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/merkle-open/magnolia-headless.git"
