@@ -52,6 +52,7 @@ public class VanityEndpoint {
 		@QueryParam(value = "domain") final String domain
 	) {
 		try {
+			LOG.debug("requesting template annotations - language:{}, path:{}, domain:{}", language, path, domain);
 			@Nullable
 			final Site site = siteManager.getAssignedSite(domain, "");
 			if (site == null) {

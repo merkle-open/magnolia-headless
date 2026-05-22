@@ -63,6 +63,7 @@ public class RobotsTxtEndpoint {
 			@QueryParam(value = "sitemapUrlTemplate") @Parameter(name = "sitemapUrlTemplate", description = "url template with language placeholder", example = "/api/{language}/seo/sitemap.xml") final String sitemapUrlTemplate
 	) {
 		try {
+			LOG.debug("requesting robots - domain:{}, sitemapUrlTemplate:{}", domain, sitemapUrlTemplate);
 			@Nullable final Site site = siteManager.getAssignedSite(domain, "");
 			if (site == null) {
 				return Response.status(Response.Status.BAD_REQUEST).build();

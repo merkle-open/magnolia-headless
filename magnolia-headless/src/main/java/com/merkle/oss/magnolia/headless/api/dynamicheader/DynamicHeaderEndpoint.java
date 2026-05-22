@@ -52,6 +52,7 @@ public class DynamicHeaderEndpoint {
 			@QueryParam(value = "domain") final String domain
 	) {
 		try {
+			LOG.debug("requesting dynamic header - domain:{}", domain);
 			@Nullable final Site site = siteManager.getAssignedSite(domain, "");
 			if (site == null) {
 				return Response.status(Response.Status.BAD_REQUEST).build();

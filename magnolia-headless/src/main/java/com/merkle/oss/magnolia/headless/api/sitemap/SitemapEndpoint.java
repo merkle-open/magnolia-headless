@@ -70,6 +70,7 @@ public class SitemapEndpoint {
             @QueryParam(value = "domain") final String domain
     ){
         try {
+            LOG.debug("requesting sitemap - language:{}, type:{}, domain:{}", language, type, domain);
             final Locale locale = Locale.forLanguageTag(language);
             @Nullable final Site site = siteManager.getAssignedSite(domain, "");
             if (site == null) {

@@ -117,6 +117,7 @@ public class TemplateAnnotationEndpoint {
             @QueryParam(value = "domain") final String domain
     ) {
         try {
+            LOG.debug("requesting template annotations - path:{}, workspace:{}, domain:{}", path, workspace, domain);
             @Nullable
             final Site site = siteManager.getAssignedSite(domain, "");
             if (site == null) {

@@ -82,6 +82,7 @@ public class PageEndpoint {
             @Nullable @QueryParam(value = "variants") final String variants
     ) {
         try {
+            LOG.debug("requesting page - language:{}, path:{}, workspace:{}, domain:{}, versionName:{}, selectedComponentVariants:{}, variants:{}", language, path, workspace, domain, versionName, selectedComponentVariants, variants);
             @Nullable
             final Site site = siteManager.getAssignedSite(domain, "");
             if (site == null) {
