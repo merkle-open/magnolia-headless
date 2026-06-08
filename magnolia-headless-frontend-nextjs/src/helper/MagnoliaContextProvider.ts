@@ -21,15 +21,16 @@ export class MagnoliaContextProvider {
 	}
 
 	public getMagnoliaContext(url: URL): ExtendedMagnoliaContext {
-		const currentLanguage = this.getLanguage(url.pathname);
+		const pathname = decodeURIComponent(url.pathname);
+		const currentLanguage = this.getLanguage(pathname);
 		if (this.multiTree) {
 			return {
-				...EditorContextService.getMagnoliaContext(`${url.pathname}${url.search}`, `/` + currentLanguage, [currentLanguage]),
+				...EditorContextService.getMagnoliaContext(`${pathname}${url.search}`, `/` + currentLanguage, [currentLanguage]),
 				domain: url.hostname,
 				url: url.toString(),
 			};
 		}
-		const path = this.getPath(url.pathname);
+		const path = this.getPath(pathname);
 		return {
 			...EditorContextService.getMagnoliaContext(`${path}${url.search}`, `/` + currentLanguage, [currentLanguage]),
 			nodePath: path, //magnolia is always returning multi tree path (with language)
