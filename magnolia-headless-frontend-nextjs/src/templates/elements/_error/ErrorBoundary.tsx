@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, Suspense } from 'react';
+import React, { ReactNode } from 'react';
 import ErrorElement from './ErrorElement.tsx';
 
 interface ErrorState {
@@ -29,6 +29,6 @@ export default class ErrorBoundary extends React.Component<ErrorProps, ErrorStat
 			// see REDIRECT_ERROR_CODE in nextJs redirect-error (not exposed)
 			return <ErrorElement editMode={this.props.isEditMode} throwNotEditMode={this.props.throwNotEditMode} path={this.props.path} msg={this.state.error.message} />;
 		}
-		return <Suspense fallback={null}>{this.props.children}</Suspense>;
+		return this.props.children;
 	}
 }
