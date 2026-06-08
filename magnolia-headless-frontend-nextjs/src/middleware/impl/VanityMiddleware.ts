@@ -82,28 +82,19 @@ export class VanityMiddleware extends AbstractMiddleware {
 				 * - https://github.com/vercel/next.js/discussions/49546
 				 * - https://github.com/vercel/next.js/pull/78566
 				 */
-				return Promise.resolve({
-					...NextResponse.rewrite(destination, {
-						...init,
-						status: 303,
-					}),
-					break: true,
+				return NextResponse.rewrite(destination, {
+					...init,
+					status: 303,
 				});
 			case RedirectType.TEMPORARY:
-				return Promise.resolve({
-					...NextResponse.redirect(destination, {
-						...init,
-						status: 307,
-					}),
-					break: true,
+				return NextResponse.redirect(destination, {
+					...init,
+					status: 307,
 				});
 			case RedirectType.PERMANENT:
-				return Promise.resolve({
-					...NextResponse.redirect(destination, {
-						...init,
-						status: 308,
-					}),
-					break: true,
+				return NextResponse.redirect(destination, {
+					...init,
+					status: 308,
 				});
 			default:
 				return undefined;
