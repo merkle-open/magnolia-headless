@@ -38,7 +38,7 @@ export class DynamicErrorPage extends AbstractDynamicErrorPage {
 		useEffect(() => {
 			const currentUrl = new URL(window.location.href);
 			super
-				.renderDynamic(currentUrl, errorType, nonce)
+				.renderDynamicErrorPage(currentUrl, errorType, nonce)
 				.catch(() => super.renderStatic(this.getLanguage(currentUrl), errorType))
 				.then((content) => setErrorPage(content));
 		}, []);

@@ -1,5 +1,6 @@
 export * from './DynamicErrorPageGlobal.tsx';
 export * from './DynamicErrorPage.tsx';
+export * from './DynamicErrorPageServer.tsx';
 export { ErrorPageLoader } from './AbstractDynamicErrorPage.tsx';
 export * from './DynamicPage.tsx';
 export * from './DynamicPageLayout.tsx';

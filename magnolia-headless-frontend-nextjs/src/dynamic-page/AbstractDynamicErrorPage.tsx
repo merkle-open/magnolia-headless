@@ -10,6 +10,7 @@ import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProv
 import { ThemeValidator } from '../helper/ThemeValidator.ts';
 import { EditablePage } from '../templates/pages/__magnolia-editable-page/EditablePage.tsx';
 import { injectable } from 'tsyringe';
+import PageProps from '../templates/pages/BaseProps.ts';
 
 export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 	private readonly frontendApisProvider: FrontendApiEndpointsProvider;
@@ -28,9 +29,14 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 		this.frontendApisProvider = configProvider.get().frontendApisProvider;
 	}
 
-	protected async renderDynamic(currentUrl: URL, errorType: ErrorType, nonce?: string): Promise<ReactNode> {
+	protected async renderDynamicErrorPage(currentUrl: URL, errorType: ErrorType, nonce?: string): Promise<ReactNode> {
 		const magnoliaContext = this.magnoliaContextProvider.getMagnoliaContext(currentUrl);
 		const content = await this.fetchErrorPageContent(magnoliaContext.currentLanguage, errorType);
+		return this.renderErrorPageContent(currentUrl, content, nonce);
+	}
+
+	protected async renderErrorPageContent(currentUrl: URL, content: PageProps, nonce?: string): Promise<ReactNode> {
+		const magnoliaContext = this.magnoliaContextProvider.getMagnoliaContext(currentUrl);
 		if (content) {
 			return super.renderBase(magnoliaContext, content, {}, nonce);
 		}

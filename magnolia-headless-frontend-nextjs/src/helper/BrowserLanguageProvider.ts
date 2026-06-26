@@ -1,13 +1,15 @@
-// @ts-expect-error: Next.js missing exports prevents ESM resolution with 'nodenext'.
-import { NextRequest } from 'next/server.d.ts';
 import { injectable, inject } from 'tsyringe';
 import { Logger } from './Logger.ts';
+
+interface BrowserLanguageRequest {
+	headers: Headers;
+}
 
 @injectable()
 export class BrowserLanguageProvider {
 	constructor(@inject(Logger) private readonly logger: Logger) {}
 
-	public getBrowserLanguage(req: NextRequest): string {
+	public getBrowserLanguage(req: BrowserLanguageRequest): string {
 		try {
 			if (req.headers.has('accept-language')) {
 				return this.parseAcceptLanguageHeader(req.headers.get('accept-language'));

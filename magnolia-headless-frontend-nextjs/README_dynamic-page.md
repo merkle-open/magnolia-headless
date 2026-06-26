@@ -49,15 +49,14 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 `/app/dynamic/[..pathname]/not-found.tsx`
 
 ```typescript
-'use client';
-
 import { container } from '../../Dependencies';  //must be first import!!
 import { ErrorType } from '@merkle-open/magnolia-headless-frontend-nextjs';
-import { DynamicErrorPage } from '@merkle-open/magnolia-headless-frontend-nextjs';
+import { DynamicErrorPageServer } from '@merkle-open/magnolia-headless-frontend-nextjs';
+import { ReactNode } from 'react';
 
-const dynamicErrorPage = container.resolve<DynamicErrorPage>(DynamicErrorPage);
+const dynamicErrorPage = container.resolve<DynamicErrorPageServer>(DynamicErrorPageServer);
 
-export default function NotFound() {
+export default async function NotFound(): Promise<ReactNode> {
     return dynamicErrorPage.render(ErrorType.PAGE_NOT_FOUND);
 }
 ```

@@ -54,7 +54,7 @@ export class DynamicErrorPageGlobal extends AbstractDynamicErrorPage {
 		try {
 			const currentUrl = new URL(window.location.href);
 			currentUrl.pathname = language;
-			return super.renderDynamic(currentUrl, errorType, nonce).then((errorPage) => this.dynamicPageLayout.render(language, errorPage));
+			return super.renderDynamicErrorPage(currentUrl, errorType, nonce).then((errorPage) => this.dynamicPageLayout.render(language, errorPage));
 		} catch (e) {
 			return Promise.reject(e);
 		}
