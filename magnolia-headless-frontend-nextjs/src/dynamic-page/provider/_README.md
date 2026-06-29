@@ -2,7 +2,7 @@
 
 The provider composer executes all providers based on their getOrder() value. It is used in the dynamicPageLayout.
 
-<b>Providers are not applied for global error and global not found pages (due to NextJs only allowing client components)!!<b>
+<b>Providers are not applied for global error page (due to NextJs only allowing client component)!!<b>
 
 ## Provided providers
 

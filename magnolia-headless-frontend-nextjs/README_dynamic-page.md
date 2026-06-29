@@ -82,21 +82,43 @@ export default function Error() {
 
 ## Global error handling
 
+`/app/global-dynamic-error-client-wrapper.tsx`
+
+```typescript
+'use client';
+
+import { container } from './Dependencies.ts'; //must be first import!!
+import { DynamicErrorPageGlobal, ErrorType } from '@merkle-open/magnolia-headless-frontend-nextjs';
+
+const dynamicErrorPage = container.resolve<DynamicErrorPageGlobal>(DynamicErrorPageGlobal);
+
+export interface Props {
+	type: ErrorType;
+}
+export default function GlobalDynamicError({ type }: Props) {
+	return dynamicErrorPage.render(type);
+}
+```
+
 ### Global error 404
 
 `/app/global-not-found.tsx`
 
 ```typescript
-'use client';
-
 import { container } from './Dependencies'; //must be first import!!
+
+import { ComposedContextProvider } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { ErrorType } from '@merkle-open/magnolia-headless-frontend-nextjs';
-import { DynamicErrorPageGlobal } from '@merkle-open/magnolia-headless-frontend-nextjs';
+import './css/main.css';
+import GlobalDynamicError from './global-dynamic-error-client-wrapper.tsx';
+import { ReactNode } from 'react';
 
-const dynamicErrorPage = container.resolve<DynamicErrorPageGlobal>(DynamicErrorPageGlobal);
+const composedProvider = container.resolve<ComposedContextProvider>(ComposedContextProvider);
 
-export default function GlobalNotFound() {
-    return dynamicErrorPage.render(ErrorType.PAGE_NOT_FOUND);
+export default async function GlobalNotFound(): Promise<ReactNode> {
+    return composedProvider.render({
+        childrenProvider: () => Promise.resolve(<GlobalDynamicError type={ErrorType.PAGE_NOT_FOUND} />),
+    });
 }
 ```
 
@@ -105,15 +127,14 @@ export default function GlobalNotFound() {
 `/app/global-error.tsx`
 
 ```typescript
-'use client';
+'use client'; //must be client component due to nextJs constraint
 
-import { container } from './Dependencies'; //must be first import!!
+import 'reflect-metadata';
 import { ErrorType } from '@merkle-open/magnolia-headless-frontend-nextjs';
-import { DynamicErrorPageGlobal } from '@merkle-open/magnolia-headless-frontend-nextjs';
-
-const dynamicErrorPage = container.resolve<DynamicErrorPageGlobal>(DynamicErrorPageGlobal);
+import './css/main.css';
+import GlobalDynamicError from './global-dynamic-error-client-wrapper.tsx';
 
 export default function GlobalError() {
-    return dynamicErrorPage.render(ErrorType.INTERNAL_SERVER_ERROR);
+    return <GlobalDynamicError type={ErrorType.INTERNAL_SERVER_ERROR} />;
 }
 ```
