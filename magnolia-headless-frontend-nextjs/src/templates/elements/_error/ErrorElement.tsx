@@ -5,7 +5,7 @@ import { constants, EditableComment, RefService } from '@magnolia/react-editor';
 export default function ErrorElement({ msg, path, editMode, throwNotEditMode }: ErrorElementProps): ReactNode {
 	if (!editMode) {
 		if (throwNotEditMode) {
-			throw new Error(msg);
+			throw new Error(path + ' - ' + msg);
 		}
 		return;
 	}
