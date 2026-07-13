@@ -41,14 +41,14 @@
 
 	<properties>
 		<!--	mvn versions:display-property-updates	-->
-		<magnolia.version>6.4.6</magnolia.version>
+		<magnolia.version>6.4.7</magnolia.version>
 		<magnolia-personalization.version>4.0.1</magnolia-personalization.version>
 
-		<merkle.oss.powernode.version>2.3.3</merkle.oss.powernode.version>
+		<merkle.oss.powernode.version>2.3.4</merkle.oss.powernode.version>
 
 		<jjwt.version>0.13.0</jjwt.version>
 		<!--Test dependency versions-->
-		<junit.version>6.1.0</junit.version>
+		<junit.version>6.1.2</junit.version>
 		<mockito.version>5.23.0</mockito.version>
 
 		<!-- Maven Plugins -->
