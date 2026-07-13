@@ -15,11 +15,13 @@ public class SitemapXmlFormatter {
 	public String format(final Set<SitemapProvider.Url> sitemapUrls) throws JsonProcessingException {
 		return new XmlMapper()
 				.setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
-				.writeValueAsString(new UrlSet(sitemapUrls));
+				.writeValueAsString(new UrlSet("http://www.sitemaps.org/schemas/sitemap/0.9", sitemapUrls));
 	}
 
-	@JacksonXmlRootElement(localName = "urlset", namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")
+	@JacksonXmlRootElement(localName = "urlset")
 	private record UrlSet(
+			@JacksonXmlProperty(isAttribute=true, localName = "xmlns")
+			String xmlns,
 			@JacksonXmlElementWrapper(useWrapping = false)
 			@JacksonXmlProperty(localName = "url")
 			Collection<? extends SitemapProvider.Url> urls
