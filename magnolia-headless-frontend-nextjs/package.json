@@ -1,6 +1,6 @@
 {
 	"name": "@merkle-open/magnolia-headless-frontend-nextjs",
-	"version": "0.0.13",
+	"version": "0.0.14-SNAPSHOT",
 	"description": "Magnolia headless frontend nextJs",
 	"license": "MIT",
 	"author": "Merkle Inc.",
