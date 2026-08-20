@@ -5,6 +5,7 @@ import { AbstractMiddleware, MiddlewareNextResponse, MiddlewareResult } from '..
 import { BrowserLanguageProvider } from '../../helper/BrowserLanguageProvider.ts';
 import { inject, injectable } from 'tsyringe';
 import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../../config/ConfigProvider.ts';
+import { MagnoliaContextProvider } from '../../helper/MagnoliaContextProvider.ts';
 
 export enum RedirectType {
 	TEMPORARY = 'redirect',
@@ -27,6 +28,7 @@ export class VanityMiddleware extends AbstractMiddleware {
 		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
 		@inject(RestClient) private restClient: RestClient,
 		@inject(BrowserLanguageProvider) private browserLanguageProvider: BrowserLanguageProvider,
+		@inject(MagnoliaContextProvider) private magnoliaContextProvider: MagnoliaContextProvider,
 	) {
 		super();
 		this.apisProvider = configProvider.get().magnoliaApisProvider;
@@ -43,9 +45,8 @@ export class VanityMiddleware extends AbstractMiddleware {
 		if (super.isPagePathRequest(req)) {
 			const url = new URL('https://' + req.headers.get('host'));
 			const domain: string = url.hostname; //strip port
-			const path = req.nextUrl.pathname;
-			const language: string = this.browserLanguageProvider.getBrowserLanguage(req);
-			const vanity = await this.getVanity(domain, path, language);
+			const languageAndPath = this.getLanguageAndPath(req, url);
+			const vanity = await this.getVanity(domain, languageAndPath.path, languageAndPath.language);
 			const response = vanity ? this.getResponse(req, vanity) : undefined;
 			if (response) {
 				return Promise.resolve({
@@ -55,6 +56,22 @@ export class VanityMiddleware extends AbstractMiddleware {
 			}
 		}
 		return Promise.resolve({ response: res });
+	}
+
+	private getLanguageAndPath(req: NextRequest, url: URL) {
+		const path = req.nextUrl.pathname;
+		try {
+			const context = this.magnoliaContextProvider.getMagnoliaContext(new URL(path, url));
+			return {
+				language: context.currentLanguage,
+				path: context.nodePath,
+			};
+		} catch {
+			return {
+				language: this.browserLanguageProvider.getBrowserLanguage(req),
+				path: path,
+			};
+		}
 	}
 
 	private async getVanity(domain: string, path: string, language: string): Promise<Vanity> {
