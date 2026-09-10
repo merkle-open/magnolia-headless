@@ -93,13 +93,16 @@ class ComposedMiddleware {
 
 	private async triggerMiddlewareSafe(middleware: Middleware, request: NextRequest, response: MiddlewareNextResponse, event: NextFetchEvent): Promise<MiddlewareResult> {
 		try {
-			return middleware.apply(request, response, event);
+			return middleware.apply(request, response, event).catch((e) => this.handleError(middleware, response, e));
 		} catch (e) {
-			this.logger.error(`failed to execute middleware ${middleware.getName()} with order:${middleware.getOrder()}, skipping... error: ${e}`);
-			return Promise.resolve({
-				response: response,
-				break: false,
-			});
+			return this.handleError(middleware, response, e);
 		}
+	}
+	private async handleError(middleware: Middleware, response: MiddlewareNextResponse, e: Error): Promise<MiddlewareResult> {
+		this.logger.error(`failed to execute middleware ${middleware.getName()} with order:${middleware.getOrder()}, skipping... error: ${e}`);
+		return Promise.resolve({
+			response: response,
+			break: false,
+		});
 	}
 }
