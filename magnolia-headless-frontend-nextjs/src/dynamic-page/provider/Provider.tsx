@@ -47,10 +47,13 @@ export class ComposedContextProvider {
 
 	private async renderProviderSafe(provider: ContextProvider, props: Props): Promise<ReactNode> {
 		try {
-			return provider.render(props);
+			return provider.render(props).catch((e) => this.handleError(provider, props, e));
 		} catch (e) {
-			this.logger.error(`failed to render provider ${provider.getName()} with order:${provider.getOrder()}, skipping... error: ${e}`);
-			return Promise.resolve(props.childrenProvider());
+			return this.handleError(provider, props, e);
 		}
+	}
+	private async handleError(provider: ContextProvider, props: Props, e: Error): Promise<ReactNode> {
+		this.logger.error(`failed to render provider ${provider.getName()} with order:${provider.getOrder()}, skipping... error: ${e}`);
+		return Promise.resolve(props.childrenProvider());
 	}
 }
