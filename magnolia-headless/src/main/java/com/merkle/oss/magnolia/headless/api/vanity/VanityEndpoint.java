@@ -6,6 +6,7 @@ import info.magnolia.module.site.SiteManager;
 import java.lang.invoke.MethodHandles;
 import java.util.Locale;
 
+import org.apache.commons.lang3.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,10 +56,10 @@ public class VanityEndpoint {
 			LOG.debug("requesting template annotations - language:{}, path:{}, domain:{}", language, path, domain);
 			@Nullable
 			final Site site = siteManager.getAssignedSite(domain, "");
-			if (site == null) {
+			final Locale locale = Locale.forLanguageTag(language);
+			if (site == null || LocaleUtils.isLanguageUndetermined(locale)) {
 				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
-			final Locale locale = Locale.forLanguageTag(language);
 			return vanityProvider
 				.getVanity(locale, site, path)
 				.map(vanity ->

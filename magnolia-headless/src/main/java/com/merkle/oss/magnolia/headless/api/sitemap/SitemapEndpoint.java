@@ -13,6 +13,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.text.StringSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,9 +72,9 @@ public class SitemapEndpoint {
     ){
         try {
             LOG.debug("requesting sitemap - language:{}, type:{}, domain:{}", language, type, domain);
-            final Locale locale = Locale.forLanguageTag(language);
             @Nullable final Site site = siteManager.getAssignedSite(domain, "");
-            if (site == null) {
+            final Locale locale = Locale.forLanguageTag(language);
+            if (site == null || LocaleUtils.isLanguageUndetermined(locale)) {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
             final Set<SitemapProvider.Url> sitemapUrls = typeSitemapProviderMapping.get().get(type).stream(request, locale, site).collect(Collectors.toSet());

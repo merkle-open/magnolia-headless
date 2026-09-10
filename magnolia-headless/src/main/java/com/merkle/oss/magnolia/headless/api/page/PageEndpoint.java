@@ -12,6 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,10 +86,10 @@ public class PageEndpoint {
             LOG.debug("requesting page - language:{}, path:{}, workspace:{}, domain:{}, versionName:{}, selectedComponentVariants:{}, variants:{}", language, path, workspace, domain, versionName, selectedComponentVariants, variants);
             @Nullable
             final Site site = siteManager.getAssignedSite(domain, "");
-            if (site == null) {
+            final Locale locale = Locale.forLanguageTag(language);
+            if (site == null || LocaleUtils.isLanguageUndetermined(locale)) {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
-            final Locale locale = Locale.forLanguageTag(language);
             return getPageResponse(locale, site, path, workspace, versionName, request);
         } catch (Exception e) {
             LOG.error("Failed to serve page response!", e);
@@ -107,10 +108,10 @@ public class PageEndpoint {
         try {
             @Nullable
             final Site site = siteManager.getAssignedSite(domain, "");
-            if (site == null) {
+            final Locale locale = Locale.forLanguageTag(language);
+            if (site == null || LocaleUtils.isLanguageUndetermined(locale)) {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
-            final Locale locale = Locale.forLanguageTag(language);
             return getErrorPageResponse(locale, site, errorCode);
         } catch (Exception e) {
             LOG.error("Failed to serve error page response!", e);
