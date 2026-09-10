@@ -44,7 +44,7 @@
 		<magnolia.version>6.4.9</magnolia.version>
 		<magnolia-personalization.version>4.0.2</magnolia-personalization.version>
 
-		<merkle.oss.powernode.version>2.3.4</merkle.oss.powernode.version>
+		<merkle.oss.powernode.version>2.3.6</merkle.oss.powernode.version>
 
 		<jjwt.version>0.13.0</jjwt.version>
 		<!--Test dependency versions-->
@@ -52,12 +52,12 @@
 		<mockito.version>5.23.0</mockito.version>
 
 		<!-- Maven Plugins -->
-		<mvn.compiler.plugin.version>3.15.0</mvn.compiler.plugin.version>
+		<mvn.compiler.plugin.version>3.16.0</mvn.compiler.plugin.version>
 		<mvn.source.plugin.version>3.4.0</mvn.source.plugin.version>
 		<mvn.javadoc.version>3.12.0</mvn.javadoc.version>
 		<mvn.gpg.plugin.version>3.2.5</mvn.gpg.plugin.version>
 		<mvn.sonatype.publishing.plugin.version>0.5.0</mvn.sonatype.publishing.plugin.version>
-		<mvn.surefire.plugin.version>3.5.6</mvn.surefire.plugin.version>
+		<mvn.surefire.plugin.version>3.6.0</mvn.surefire.plugin.version>
 
 		<javaVersion>17</javaVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
