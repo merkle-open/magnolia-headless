@@ -62,16 +62,17 @@ export class VanityMiddleware extends AbstractMiddleware {
 		const path = req.nextUrl.pathname;
 		try {
 			const context = this.magnoliaContextProvider.getMagnoliaContext(new URL(path, url));
-			return {
-				language: context.currentLanguage,
-				path: context.nodePath,
-			};
-		} catch {
-			return {
-				language: this.browserLanguageProvider.getBrowserLanguage(req),
-				path: path,
-			};
-		}
+			if (context.currentLanguage && context.nodePath) {
+				return {
+					language: context.currentLanguage,
+					path: context.nodePath,
+				};
+			}
+		} catch {}
+		return {
+			language: this.browserLanguageProvider.getBrowserLanguage(req),
+			path: path,
+		};
 	}
 
 	private async getVanity(domain: string, path: string, language: string): Promise<Vanity> {
