@@ -41,8 +41,8 @@
 
 	<properties>
 		<!--	mvn versions:display-property-updates	-->
-		<magnolia.version>6.4.9</magnolia.version>
-		<magnolia-personalization.version>4.0.2</magnolia-personalization.version>
+		<magnolia.version>6.4.10</magnolia.version>
+		<magnolia-personalization.version>4.0.3</magnolia-personalization.version>
 
 		<merkle.oss.powernode.version>2.3.6</merkle.oss.powernode.version>
 
