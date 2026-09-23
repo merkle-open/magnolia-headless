@@ -5,6 +5,7 @@ import info.magnolia.config.registry.DefinitionProvider;
 import info.magnolia.jcr.inheritance.InheritanceContentDecorator;
 import info.magnolia.jcr.util.NodeTypes;
 import info.magnolia.jcr.util.NodeUtil;
+import info.magnolia.jcr.wrapper.MgnlPropertySettingNodeWrapper;
 import info.magnolia.objectfactory.Components;
 import info.magnolia.rendering.engine.AppendableOnlyOutputProvider;
 import info.magnolia.rendering.engine.RenderException;
@@ -140,6 +141,7 @@ public class PageModelProvider {
         }
         return node
                 .toSystemSession()
+                .map(systemSessionNode -> powerNodeService.convertToPowerNode(NodeUtil.deepUnwrap(systemSessionNode, MgnlPropertySettingNodeWrapper.class)))
                 .map(systemSessionNode -> systemSessionNode.getOrAddChild(name, NodeTypes.Area.NAME))
                 .map(n -> {
                     triggerAutoGeneration(n, areaDefinition);
