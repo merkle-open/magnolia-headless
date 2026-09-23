@@ -1,6 +1,6 @@
 import { DependencyContainer } from 'tsyringe';
 import { MetadataProvider } from './MetadataProvider.ts';
-import { RestClient } from './RestClient.ts';
+import { ResponseHelper, RestClient } from './RestClient.ts';
 import { Logger } from './Logger.ts';
 import { BrowserLanguageProvider } from './BrowserLanguageProvider.ts';
 import { MagnoliaContextProvider } from './MagnoliaContextProvider.ts';
@@ -13,6 +13,7 @@ export default function register(container: DependencyContainer) {
 	container.register(BrowserLanguageProvider, { useClass: BrowserLanguageProvider });
 	container.register(MagnoliaContextProvider, { useClass: MagnoliaContextProvider });
 	container.register(MagnoliaPageRestClient, { useClass: MagnoliaPageRestClient });
+	container.register(ResponseHelper, { useClass: ResponseHelper });
 	container.register(RestClient, { useClass: RestClient });
 	container.register(ThemeValidator, { useClass: ThemeValidator });
 }

@@ -3,22 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { Credentials, type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 
 @injectable()
-export class RestClient {
-	private readonly magnoliaCredentials: Credentials;
-
-	constructor(@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) readonly configProvider: HeadlessConfigProviderI) {
-		this.magnoliaCredentials = configProvider.get().magnoliaCredentials;
-	}
-
-	public async fetchMagnoliaBasicAuth(url: string, additionalHeaders?: any): Promise<Response> {
-		const headers = new Headers();
-		headers.set('Authorization', createBasicAuthHeader(this.magnoliaCredentials.username, this.magnoliaCredentials.password));
-		for (const header in additionalHeaders) {
-			headers.set(header, additionalHeaders[header]);
-		}
-		return await fetch(url, { headers: headers });
-	}
-
+export class ResponseHelper {
 	public async getJson(url: string, response: Response): Promise<any> {
 		if (response.status === 200 && response.headers.get('content-type').startsWith('application/json')) {
 			return response.json();
@@ -43,5 +28,24 @@ export class RestClient {
 		return new Error(
 			`Failed to fetch ${type} - request: ${url} response statusCode: ${response.status} contentType: ${response.headers.get('content-type')} body: ${await response.text()}`,
 		);
+	}
+}
+
+@injectable()
+export class RestClient extends ResponseHelper {
+	private readonly magnoliaCredentials: Credentials;
+
+	constructor(@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) readonly configProvider: HeadlessConfigProviderI) {
+		super();
+		this.magnoliaCredentials = configProvider.get().magnoliaCredentials;
+	}
+
+	public async fetchMagnoliaBasicAuth(url: string, additionalHeaders?: any): Promise<Response> {
+		const headers = new Headers();
+		headers.set('Authorization', createBasicAuthHeader(this.magnoliaCredentials.username, this.magnoliaCredentials.password));
+		for (const header in additionalHeaders) {
+			headers.set(header, additionalHeaders[header]);
+		}
+		return await fetch(url, { headers: headers });
 	}
 }
