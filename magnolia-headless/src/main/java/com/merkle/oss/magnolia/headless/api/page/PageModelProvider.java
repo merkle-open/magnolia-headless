@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.machinezoo.noexception.Exceptions;
+import com.merkle.oss.magnolia.headless.model.ErrorModelDataProvider;
 import com.merkle.oss.magnolia.powernode.PowerNode;
 import com.merkle.oss.magnolia.powernode.PowerNodeService;
 import com.merkle.oss.magnolia.powernode.predicate.magnolia.IsComponent;
@@ -53,6 +54,7 @@ public class PageModelProvider {
     private final RenderingEngine renderingEngine;
     private final PowerNodeService powerNodeService;
     private final TemplateDefinitionRegistry templateDefinitionRegistry;
+    private final ErrorModelDataProvider errorModelDataProvider;
     private final Gson gson;
 
     @Inject
@@ -60,11 +62,13 @@ public class PageModelProvider {
             final GsonBuilder gsonBuilder,
             final RenderingEngine renderingEngine,
             final PowerNodeService powerNodeService,
-            final TemplateDefinitionRegistry templateDefinitionRegistry
+            final TemplateDefinitionRegistry templateDefinitionRegistry,
+            final ErrorModelDataProvider errorModelDataProvider
     ) {
         this.renderingEngine = renderingEngine;
         this.powerNodeService = powerNodeService;
         this.templateDefinitionRegistry = templateDefinitionRegistry;
+        this.errorModelDataProvider = errorModelDataProvider;
         gson = gsonBuilder.create();
     }
 
@@ -93,12 +97,11 @@ public class PageModelProvider {
 
                     final List<PowerNode> components = area.streamChildren(new IsComponent<>()).toList();
                     for (final PowerNode component : components) {
-                        @Nullable
-                        final TemplateDefinition componentTemplateDefinition = getTemplateDefinition(component).orElse(null);
-                        if (componentTemplateDefinition != null) {
+                        try {
+                            final TemplateDefinition componentTemplateDefinition = getTemplateDefinition(component);
                             areaModel.put(component.getName(), get(component, componentTemplateDefinition));
-                        } else {
-                            areaModel.put(component.getName(), Collections.emptyMap());
+                        } catch (Exception e) {
+                            areaModel.put(component.getName(), errorModelDataProvider.get(e.getMessage(), component, e));
                         }
                     }
                     areaModel.put(CHILD_PROPERTY, components.stream().map(PowerNode::getName).collect(Collectors.toList()));
@@ -111,12 +114,13 @@ public class PageModelProvider {
         }
     }
 
-    private Optional<TemplateDefinition> getTemplateDefinition(final PowerNode component) {
+    private TemplateDefinition getTemplateDefinition(final PowerNode component) {
         try {
-            return component.getTemplate().map(templateDefinitionRegistry::getProvider).map(DefinitionProvider::get);
+            return templateDefinitionRegistry.getProvider(component.getTemplate().orElseThrow(() ->
+                    new NullPointerException("template not present!")
+            )).get();
         } catch (final Exception e) {
-            LOG.error("Failed to get template definition for component " + component.getPath(), e);
-            return Optional.empty();
+            throw new RuntimeException("Failed to get template definition for component " + component.getPath() + " with templateId: '" + component.getTemplate().orElse(null) + "'", e);
         }
     }
 

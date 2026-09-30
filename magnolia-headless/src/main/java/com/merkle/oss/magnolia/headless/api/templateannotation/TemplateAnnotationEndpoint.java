@@ -22,7 +22,6 @@ import info.magnolia.templating.elements.AbstractContentTemplatingElement;
 import info.magnolia.templating.elements.AreaElement;
 import info.magnolia.templating.elements.ComponentElement;
 import info.magnolia.templating.elements.PageElement;
-import info.magnolia.templating.elements.TemplatingElement;
 import info.magnolia.templating.module.TemplatingModule;
 
 import java.io.OutputStream;
@@ -150,10 +149,17 @@ public class TemplateAnnotationEndpoint {
     private Optional<Map.Entry<String, String>> getTemplateAnnotationEntries(final PowerNode templateNode) {
         try {
             return getTemplateDefinition(templateNode).map(definition ->
-                    Map.entry(templateNode.getPath(), renderAnnotations(templateNode, definition))
+                    Map.entry(templateNode.getPath(), renderAnnotations(templateNode, definition, createTemplatingElement(templateNode, contextProvider.get())))
             );
-        } catch (Exception e) {
-            LOG.error("Failed to getTemplateAnnotationEntries for "+templateNode.getPath()+", skipping", e);
+        } catch (Exception ignored) {
+            try {
+                if (new IsComponent<>().test(templateNode)) {
+                    final ErrorComponentElement errorComponent = createErrorComponentElement(contextProvider.get());
+                    return Optional.of(Map.entry(templateNode.getPath(), renderAnnotations(templateNode, errorComponent.getTemplateDefinition(), errorComponent)));
+                }
+            } catch (Exception e){
+                LOG.error("Failed to getTemplateAnnotationEntries for "+templateNode.getPath()+", skipping", e);
+            }
             return Optional.empty();
         }
     }
@@ -204,7 +210,7 @@ public class TemplateAnnotationEndpoint {
                 });
     }
 
-    private String renderAnnotations(final PowerNode node, final TemplateDefinition definition) {
+    private String renderAnnotations(final PowerNode node, final TemplateDefinition definition, final AbstractContentTemplatingElement contentElement) {
         contextProvider.get().getAggregationState().setPreviewMode(false);
         final StringBuilder outputBuilder = new StringBuilder();
         try {
@@ -218,7 +224,10 @@ public class TemplateAnnotationEndpoint {
                     return null;
                 }
             });
-            final TemplatingElement contentElement = createTemplatingElement(node);
+            contentElement.setContent(node);
+            contentElement.setWorkspace(node.getSession().getWorkspace().getName());
+            contentElement.setNodeIdentifier(node.getIdentifier());
+            contentElement.setPath(node.getPath());
             contentElement.begin(outputBuilder);
             return unwrapComment(outputBuilder.toString());
         } catch (Exception e) {
@@ -242,15 +251,9 @@ public class TemplateAnnotationEndpoint {
                 .map(DefinitionProvider::get);
     }
 
-    private TemplatingElement createTemplatingElement(final PowerNode node) {
-        final AbstractContentTemplatingElement contentElement = createTemplatingElement(node, contextProvider.get());
-        contentElement.setContent(node);
-        contentElement.setWorkspace(node.getSession().getWorkspace().getName());
-        contentElement.setNodeIdentifier(node.getIdentifier());
-        contentElement.setPath(node.getPath());
-        return contentElement;
+    private ErrorComponentElement createErrorComponentElement(final WebContext webContext) {
+        return new ErrorComponentElement(serverConfiguration, renderingEngine.getRenderingContext(), webContext, templatingModuleProvider);
     }
-
     private AbstractContentTemplatingElement createTemplatingElement(final PowerNode node, final WebContext webContext) {
         switch (node.getPrimaryNodeType().getName()) {
         case NodeTypes.Page.NAME:
