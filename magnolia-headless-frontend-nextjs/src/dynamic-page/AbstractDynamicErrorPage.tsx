@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { ErrorType } from '../helper/MagnoliaPageRestClient.ts';
 import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.tsx';
 import { AbstractDynamicPage } from './AbstractDynamicPage.tsx';
-import { RestClient } from '../helper/RestClient.ts';
+import { ResponseHelper } from '../helper/RestClient.ts';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
 import type { FrontendApiEndpointsProvider, HeadlessConfigProviderI } from '../config/ConfigProvider.ts';
 import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
@@ -20,7 +20,7 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 		StylesheetProviderI: StylesheetProviderI,
 		themeValidator: ThemeValidator,
 		editablePage: EditablePage,
-		private readonly restClient: RestClient,
+		private readonly restHelper: ResponseHelper,
 		private readonly staticErrorPage: StaticErrorPage,
 		protected readonly magnoliaContextProvider: MagnoliaContextProvider,
 	) {
@@ -45,7 +45,7 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 		const queryParams = new URLSearchParams();
 		queryParams.append('errorType', errorType);
 		const errorPageUrl = this.frontendApisProvider.errorPage(language) + '?' + queryParams.toString();
-		return fetch(errorPageUrl).then((response) => this.restClient.getJson(errorPageUrl, response));
+		return fetch(errorPageUrl).then((response) => this.restHelper.getJson(errorPageUrl, response));
 	}
 }
 

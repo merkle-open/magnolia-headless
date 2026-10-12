@@ -3,7 +3,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { ErrorType } from '../helper/MagnoliaPageRestClient.ts';
 import { inject, injectable } from 'tsyringe';
-import { RestClient } from '../helper/RestClient.ts';
+import { ResponseHelper } from '../helper/RestClient.ts';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
 import { type HeadlessConfigProviderI, HEADLESS_CONFIG_PROVIDER_TOKEN } from '../config/ConfigProvider.ts';
 import { AbstractDynamicErrorPage, ErrorPageLoader } from './AbstractDynamicErrorPage.tsx';
@@ -24,12 +24,12 @@ export class DynamicErrorPage extends AbstractDynamicErrorPage {
 		@inject(STYLESHEET_PROVIDER_TOKEN) StylesheetProviderI: StylesheetProviderI,
 		@inject(ThemeValidator) themeValidator: ThemeValidator,
 		@inject(EditablePage) editablePage: EditablePage,
-		@inject(RestClient) restClient: RestClient,
+		@inject(ResponseHelper) restHelper: ResponseHelper,
 		@inject(StaticErrorPage) staticErrorPage: StaticErrorPage,
 		@inject(MagnoliaContextProvider) magnoliaContextProvider: MagnoliaContextProvider,
 		@inject(ErrorPageLoader) private readonly errorPageLoader: ErrorPageLoader,
 	) {
-		super(componentMappingsProvider, configProvider, StylesheetProviderI, themeValidator, editablePage, restClient, staticErrorPage, magnoliaContextProvider);
+		super(componentMappingsProvider, configProvider, StylesheetProviderI, themeValidator, editablePage, restHelper, staticErrorPage, magnoliaContextProvider);
 	}
 
 	public render(errorType: ErrorType): ReactNode {
