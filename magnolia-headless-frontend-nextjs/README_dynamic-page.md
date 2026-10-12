@@ -8,7 +8,7 @@
 import { container } from '../../Dependencies';
 import { DynamicPageLayout, Props } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
-const dynamicPageLayout = container.resolve<DynamicPageLayout>(DynamicPageLayout);
+const dynamicPageLayout = container().resolve<DynamicPageLayout>(DynamicPageLayout);
 
 export default async function DefaultLocaleLayout(props: Props) {
     return dynamicPageLayout.renderUrl(props);
@@ -20,7 +20,7 @@ export default async function DefaultLocaleLayout(props: Props) {
 `/app/dynamic/[..pathname]/page.tsx`
 
 ```typescript
-import { container } from '../../Dependencies'; //must be first import!!
+import { container } from '../../Dependencies_server'; //must be first import!!
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 import { DynamicPage as DynamicPageUrl } from '@merkle-open/magnolia-headless-frontend-nextjs';
@@ -29,7 +29,7 @@ import { PageProps } from '@merkle-open/magnolia-headless-frontend-nextjs';
 //prevent pre-rendering https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
 export const dynamic = 'force-dynamic';
 
-const dynamicPage = container.resolve<DynamicPageUrl>(DynamicPageUrl);
+const dynamicPage = container().resolve<DynamicPageUrl>(DynamicPageUrl);
 
 export default async function DynamicPage(props: PageProps): Promise<ReactNode> {
     return dynamicPage.render(props);
@@ -51,11 +51,11 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 ```typescript
 'use client';
 
-import { container } from '../../Dependencies';  //must be first import!!
+import { container } from '../../Dependencies_client';  //must be first import!!
 import { ErrorType } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { DynamicErrorPage } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
-const dynamicErrorPage = container.resolve<DynamicErrorPage>(DynamicErrorPage);
+const dynamicErrorPage = container().resolve<DynamicErrorPage>(DynamicErrorPage);
 
 export default function NotFound() {
     return dynamicErrorPage.render(ErrorType.PAGE_NOT_FOUND);
@@ -69,11 +69,11 @@ export default function NotFound() {
 ```typescript
 'use client';
 
-import { container } from '../../Dependencies'; //must be first import!!
+import { container } from '../../Dependencies_client'; //must be first import!!
 import { ErrorType } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { DynamicErrorPage } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
-const dynamicErrorPage = container.resolve<DynamicErrorPage>(DynamicErrorPage);
+const dynamicErrorPage = container().resolve<DynamicErrorPage>(DynamicErrorPage);
 
 export default function Error() {
     return dynamicErrorPage.render(ErrorType.INTERNAL_SERVER_ERROR);
@@ -87,10 +87,10 @@ export default function Error() {
 ```typescript
 'use client';
 
-import { container } from './Dependencies.ts'; //must be first import!!
+import { container } from './Dependencies_client.ts'; //must be first import!!
 import { DynamicErrorPageGlobal, ErrorType } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
-const dynamicErrorPage = container.resolve<DynamicErrorPageGlobal>(DynamicErrorPageGlobal);
+const dynamicErrorPage = container().resolve<DynamicErrorPageGlobal>(DynamicErrorPageGlobal);
 
 export interface Props {
 	type: ErrorType;
@@ -105,7 +105,7 @@ export default function GlobalDynamicError({ type }: Props) {
 `/app/global-not-found.tsx`
 
 ```typescript
-import { container } from './Dependencies'; //must be first import!!
+import { container } from './Dependencies_client'; //must be first import!!
 
 import { ComposedContextProvider } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { ErrorType } from '@merkle-open/magnolia-headless-frontend-nextjs';
@@ -113,7 +113,7 @@ import './css/main.css';
 import GlobalDynamicError from './global-dynamic-error-client-wrapper.tsx';
 import { ReactNode } from 'react';
 
-const composedProvider = container.resolve<ComposedContextProvider>(ComposedContextProvider);
+const composedProvider = container().resolve<ComposedContextProvider>(ComposedContextProvider);
 
 export default async function GlobalNotFound(): Promise<ReactNode> {
     return composedProvider.render({

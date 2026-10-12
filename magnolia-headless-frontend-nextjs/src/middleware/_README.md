@@ -7,7 +7,7 @@ The middleware composer executes all middlewares based on their getOrder() value
 `/proxy.ts` [see nextJs docu](https://nextjs.org/docs/app/getting-started/proxy)
 
 ```typescript
-import { container } from './app/Dependencies';
+import { container } from './app/Dependencies_server';
 import { NextProxy, NextRequest } from 'next/server';
 import { NextMiddlewareResult } from 'next/dist/server/web/types';
 import type { NextFetchEvent } from 'next/dist/server/web/spec-extension/fetch-event';

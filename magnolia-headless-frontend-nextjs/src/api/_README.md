@@ -8,7 +8,7 @@ Consumes content provided by the [Magnolia Robots Endpoint](../../../magnolia-he
 
 ```typescript
 import { NextRequest } from 'next/server';
-import { container } from '../../Dependencies.ts';
+import { container } from '../../Dependencies_server.ts';
 import { RobotsTxtApi } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { TOKEN_PREFIX } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
@@ -27,7 +27,7 @@ Consumes content provided by the [Magnolia Sitemap Endpoint](../../../magnolia-h
 
 ```typescript
 import { NextRequest } from 'next/server';
-import { container } from '../../../../Dependencies.ts';
+import { container } from '../../../../Dependencies_server.ts';
 import { SitemapApi } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { TOKEN_PREFIX } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
@@ -56,7 +56,7 @@ Frontend API path must be provided in the [HeadlessConfigProviderI](../config/_R
 
 ```typescript
 import { NextRequest } from 'next/server';
-import { container } from '../../../Dependencies.ts';
+import { container } from '../../../Dependencies_server.ts';
 import { ErrorPageApi } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { TOKEN_PREFIX } from '@merkle-open/magnolia-headless-frontend-nextjs';
 

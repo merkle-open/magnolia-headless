@@ -4,4 +4,5 @@ export * from './config/_Index.ts';
 export * from './helper/_Index.ts';
 export * from './middleware/_Index.ts';
 export * from './templates/_Index.ts';
-export * from './Dependencies.ts';
+export * from './Dependencies_server.ts';
+export * from './Dependencies_client.ts';

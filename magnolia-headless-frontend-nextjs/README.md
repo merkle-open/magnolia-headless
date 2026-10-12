@@ -37,19 +37,37 @@
     }
     ```
 - Setup [dynamic page](./README_dynamic-page.md)
-- Setup Dependencies (`./Dependencies.ts`)
+- Setup Dependencies
+    - Server (`./Dependencies_server.ts`)
+        ```typescript
+        import 'reflect-metadata';
+        import { container as RootContainer } from 'tsyringe';
+        import { registerServer as registerOss, Logger } from '@merkle-open/magnolia-headless-frontend-nextjs';
+        import registerConfigs from './config/_Dependencies_shared.ts';
 
-    ```typescript
-    import 'reflect-metadata';
-    import { container } from 'tsyringe';
-    import { register as registerOss } from '@merkle-open/magnolia-headless-frontend-nextjs';
-    import registerConfigs from './config/_Dependencies.ts';
+        export function container() {
+            if (!rootContainer.isRegistered(Logger)) {
+                registerConfigs(rootContainer);
+                registerOss(rootContainer);
+            }
+            return rootContainer;
+        }
+        ```
+    - Client (`./Dependencies_client.ts`)
+        ```typescript
+        import 'reflect-metadata';
+        import { container as rootContainer } from 'tsyringe';
+        import { registerClient as registerOss, Logger } from '@merkle-open/magnolia-headless-frontend-nextjs';
+        import registerConfigs from './config/_Dependencies_shared.ts';
 
-    registerConfigs(container);
-    registerOss(container);
-
-    export { container };
-    ```
+        export function container() {
+            if (!rootContainer.isRegistered(Logger)) {
+                registerConfigs(container);
+                registerOss(container);
+            }
+            return rootContainer;
+        }
+        ```
 
 - Setup next.config.ts (`./next.config.ts`)
 
