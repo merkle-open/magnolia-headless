@@ -21,7 +21,7 @@ jobs:
           distribution: temurin
           java-version: 17
       - name: Maven verify
-        run: mvn -s ci/mvnsettings.xml verify --batch-mode
+        run: ./mvnw -s ci/mvnsettings.xml verify --batch-mode
         env:
           MAGNOLIA_REPO_USER: ${{ secrets.MGNL_NEXUS_USER }}
           MAGNOLIA_REPO_PASSWORD: ${{ secrets.MGNL_NEXUS_PASS }}
@@ -84,7 +84,7 @@ jobs:
           java-version: 17
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
       - name: Release Maven package
-        run: mvn -s ci/mvnsettings.xml deploy -Pdeploy
+        run: ./mvnw -s ci/mvnsettings.xml deploy -Pdeploy
         env:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USER }}
           MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}

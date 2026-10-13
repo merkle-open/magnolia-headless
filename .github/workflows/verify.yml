@@ -17,7 +17,7 @@ jobs:
           distribution: temurin
           java-version: 17
       - name: Maven verify
-        run: mvn -s ci/mvnsettings.xml verify --batch-mode
+        run: ./mvnw -s ci/mvnsettings.xml verify --batch-mode
         env:
           MAGNOLIA_REPO_USER: ${{ secrets.MGNL_NEXUS_USER }}
           MAGNOLIA_REPO_PASSWORD: ${{ secrets.MGNL_NEXUS_PASS }}
