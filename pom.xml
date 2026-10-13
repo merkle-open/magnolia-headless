@@ -44,12 +44,12 @@
 		<magnolia.version>6.4.10</magnolia.version>
 		<magnolia-personalization.version>4.0.3</magnolia-personalization.version>
 
-		<merkle.oss.powernode.version>2.3.6</merkle.oss.powernode.version>
+		<merkle.oss.powernode.version>2.3.7</merkle.oss.powernode.version>
 
 		<jjwt.version>0.13.0</jjwt.version>
 		<!--Test dependency versions-->
 		<junit.version>6.1.3</junit.version>
-		<mockito.version>5.23.0</mockito.version>
+		<mockito.version>5.24.0</mockito.version>
 
 		<!-- Maven Plugins -->
 		<mvn.compiler.plugin.version>3.16.0</mvn.compiler.plugin.version>
