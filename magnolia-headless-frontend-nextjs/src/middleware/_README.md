@@ -13,7 +13,7 @@ import { NextMiddlewareResult } from 'next/dist/server/web/types';
 import type { NextFetchEvent } from 'next/dist/server/web/spec-extension/fetch-event';
 import { MiddlewareComposer } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
-const middleware: NextProxy = container.resolve<MiddlewareComposer>(MiddlewareComposer).composeMiddleware();
+const middleware: NextProxy = container().resolve<MiddlewareComposer>(MiddlewareComposer).composeMiddleware();
 
 export async function proxy(request: NextRequest, event: NextFetchEvent): Promise<NextMiddlewareResult> {
     return middleware(request, event);

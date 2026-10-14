@@ -45,12 +45,13 @@
         import { registerServer as registerOss, Logger } from '@merkle-open/magnolia-headless-frontend-nextjs';
         import registerConfigs from './config/_Dependencies_shared.ts';
 
+        const _container = rootContainer.createChildContainer();
         export function container() {
-            if (!rootContainer.isRegistered(Logger)) {
-                registerConfigs(rootContainer);
-                registerOss(rootContainer);
+            if (!_container.isRegistered(Logger)) {
+                registerConfigs(_container);
+                registerOss(_container);
             }
-            return rootContainer;
+            return _container;
         }
         ```
     - Client (`./Dependencies_client.ts`)
@@ -60,12 +61,13 @@
         import { registerClient as registerOss, Logger } from '@merkle-open/magnolia-headless-frontend-nextjs';
         import registerConfigs from './config/_Dependencies_shared.ts';
 
+        const _container = rootContainer.createChildContainer();
         export function container() {
-            if (!rootContainer.isRegistered(Logger)) {
-                registerConfigs(container);
-                registerOss(container);
+            if (!_container.isRegistered(Logger)) {
+                registerConfigs(_container);
+                registerOss(_container);
             }
-            return rootContainer;
+            return _container;
         }
         ```
 

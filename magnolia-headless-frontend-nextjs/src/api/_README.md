@@ -12,7 +12,7 @@ import { container } from '../../Dependencies_server.ts';
 import { RobotsTxtApi } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { TOKEN_PREFIX } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
-const robotsApi = container.resolve<RobotsTxtApi>(TOKEN_PREFIX + 'RobotsTxtApi');
+const robotsApi = container().resolve<RobotsTxtApi>(TOKEN_PREFIX + 'RobotsTxtApi');
 
 export async function GET(req: NextRequest): Promise<Response> {
     return robotsApi.get(req, '/{language}/sitemap/{type}.xml');
@@ -31,7 +31,7 @@ import { container } from '../../../../Dependencies_server.ts';
 import { SitemapApi } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { TOKEN_PREFIX } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
-const sitemapApi = container.resolve<SitemapApi>(TOKEN_PREFIX + 'SitemapApi');
+const sitemapApi = container().resolve<SitemapApi>(TOKEN_PREFIX + 'SitemapApi');
 
 export async function GET(req: NextRequest): Promise<Response> {
     const language: string = getLanguage(req.url);
@@ -60,7 +60,7 @@ import { container } from '../../../Dependencies_server.ts';
 import { ErrorPageApi } from '@merkle-open/magnolia-headless-frontend-nextjs';
 import { TOKEN_PREFIX } from '@merkle-open/magnolia-headless-frontend-nextjs';
 
-const errorPageApi = container.resolve<ErrorPageApi>(TOKEN_PREFIX + 'ErrorPageApi');
+const errorPageApi = container().resolve<ErrorPageApi>(TOKEN_PREFIX + 'ErrorPageApi');
 
 export async function GET(req: NextRequest): Promise<Response> {
     const language: string = getLanguage(req.url);
