@@ -4,6 +4,7 @@ import path from 'path';
 interface Template {
 	templateId: string;
 	file: string;
+	client: boolean;
 }
 
 function getAllTemplateJsonFiles(dirPath: string, arrayOfFiles: string[] = []): string[] {
@@ -19,13 +20,15 @@ function getAllTemplateJsonFiles(dirPath: string, arrayOfFiles: string[] = []): 
 	});
 }
 
-function getMapping(magnoliaTemplatesRootDirs: string[], outputDir: string): Map<string, string> {
+function getMapping(magnoliaTemplatesRootDirs: string[], outputDir: string, client: boolean): Map<string, string> {
 	const files: string[] = magnoliaTemplatesRootDirs.flatMap((magnoliaTemplatesRootDir) => getAllTemplateJsonFiles(magnoliaTemplatesRootDir, []));
 	const mapping = new Map();
 
 	for (const file of files) {
 		const template: Template = JSON.parse(fs.readFileSync(file, 'utf8'));
-		mapping.set(template.templateId, path.relative(outputDir, file).replace('template.json', template.file).replace(/\\/g, '/'));
+		if (template.client == client || !client) {
+			mapping.set(template.templateId, path.relative(outputDir, file).replace('template.json', template.file).replace(/\\/g, '/'));
+		}
 	}
 	return mapping;
 }
@@ -48,7 +51,8 @@ function writeConfig(mapping: Map<string, string>, file: string): void {
 try {
 	const outputDir = process.argv[2];
 	const magnoliaTemplatesRootDirs = process.argv.slice(2);
-	writeConfig(getMapping(magnoliaTemplatesRootDirs, outputDir), path.join(outputDir, 'magnolia.config.ts'));
+	writeConfig(getMapping(magnoliaTemplatesRootDirs, outputDir, false), path.join(outputDir, 'magnolia.config.ts'));
+	writeConfig(getMapping(magnoliaTemplatesRootDirs, outputDir, true), path.join(outputDir, 'magnolia.config.client.ts'));
 } catch (error) {
 	console.error(error);
 	process.exit(1);

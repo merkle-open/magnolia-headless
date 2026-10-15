@@ -16,11 +16,12 @@ Each magnolia page/area/component has to define a template.json:
 ```json
 {
   "templateId": "<MAGNOLIA_TEMPLATE_ID>",
-  "file": "<REACT_COMPONENT>.tsx"
+  "file": "<REACT_COMPONENT>.tsx",
+  "client": false
 }
 ```
 
-generate `magnolia.config.ts` during build and use delegate to it in the ComponentMappingsProviderI
+generate `magnolia.config.ts` (client=false|true) and `magnolia.config.client.ts` (client=true) during build and delegate to it in the corresponding ComponentMappingsProviderI
 
 ```json
 {
@@ -48,8 +49,9 @@ The lib provides the following templates. You can map them differently in your C
 
 ```json
 {
-	"templateId": "some-project-name:components/SampleComponent",
-	"file": "SampleComponentProps.tsx"
+    "templateId": "some-project-name:components/SampleComponent",
+    "file": "SampleComponentProps.tsx",
+    "client": false
 }
 ```
 

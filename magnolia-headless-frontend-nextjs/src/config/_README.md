@@ -56,6 +56,8 @@ export class SampleLogger implements LoggerI {
 
 ### [ComponentMappingsProviderI](./ComponentMappingsProvider.ts)
 
+<b>It is recommended to create and bind 2 different ComponentMappingsProvider for client and server to avoid exposure of code that is only needed on server side</b><br>
+
 `/app/config/SampleComponentMappingsProvider.ts`
 
 ```typescript
