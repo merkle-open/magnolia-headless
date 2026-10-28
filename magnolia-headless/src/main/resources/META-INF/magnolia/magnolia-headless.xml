@@ -13,6 +13,10 @@
             <class>com.merkle.oss.magnolia.headless.configuration.HeadlessGuiceComponentConfigurer</class>
         </configurer>
         <component>
+            <type>com.merkle.oss.magnolia.headless.api.PathValidator</type>
+            <implementation>com.merkle.oss.magnolia.headless.api.PathValidator$DefaultPathValidator</implementation>
+        </component>
+        <component>
             <type>com.merkle.oss.magnolia.headless.renderer.JsonRenderer</type>
             <implementation>com.merkle.oss.magnolia.headless.renderer.JsonRenderer</implementation>
         </component>
