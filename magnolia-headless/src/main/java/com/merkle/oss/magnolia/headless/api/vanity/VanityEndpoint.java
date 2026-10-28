@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.merkle.oss.magnolia.headless.api.PathValidator;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -31,17 +32,20 @@ public class VanityEndpoint {
 	private final SiteManager siteManager;
 	private final Gson gson;
 	private final VanityProvider vanityProvider;
+    private final PathValidator pathValidator;
 
-	@Inject
+    @Inject
 	public VanityEndpoint(
 		final SiteManager siteManager,
 		final GsonBuilder gsonBuilder,
-		final VanityProvider vanityProvider
+		final VanityProvider vanityProvider,
+		final PathValidator pathValidator
 	) {
 		this.siteManager = siteManager;
 		this.gson = gsonBuilder.create();
 		this.vanityProvider = vanityProvider;
-	}
+        this.pathValidator = pathValidator;
+    }
 
 	@ApiResponses(value = {@ApiResponse(responseCode = "200", description = "pages")})
 	@Path("{language}/vanity")
@@ -57,7 +61,7 @@ public class VanityEndpoint {
 			@Nullable
 			final Site site = siteManager.getAssignedSite(domain, "");
 			final Locale locale = Locale.forLanguageTag(language);
-			if (site == null || LocaleUtils.isLanguageUndetermined(locale)) {
+			if (site == null || !pathValidator.isValid(path) || LocaleUtils.isLanguageUndetermined(locale)) {
 				return Response.status(Response.Status.BAD_REQUEST).build();
 			}
 			return vanityProvider

@@ -41,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.machinezoo.noexception.Exceptions;
+import com.merkle.oss.magnolia.headless.api.PathValidator;
 import com.merkle.oss.magnolia.powernode.PowerNode;
 import com.merkle.oss.magnolia.powernode.PowerNodeService;
 import com.merkle.oss.magnolia.powernode.predicate.magnolia.IsArea;
@@ -71,6 +72,7 @@ public class TemplateAnnotationEndpoint {
     private final Provider<TemplatingModule> templatingModuleProvider;
     private final ServerConfiguration serverConfiguration;
     private final RenderableVariationResolver variationResolver;
+    private final PathValidator pathValidator;
     private final Provider<WebContext> contextProvider;
     private final PathLockManager lockManager;
     private final AreaNodeGenerator areaNodeGenerator;
@@ -90,7 +92,8 @@ public class TemplateAnnotationEndpoint {
             final PathLockManager lockManager,
             final AreaNodeGenerator areaNodeGenerator,
             final VariantManager variantManager,
-            final GsonBuilder gsonBuilder
+            final GsonBuilder gsonBuilder,
+            final PathValidator pathValidator
     ) {
         this.siteManager = siteManager;
         this.powerNodeService = powerNodeService;
@@ -100,6 +103,7 @@ public class TemplateAnnotationEndpoint {
         this.templatingModuleProvider = templatingModuleProvider;
         this.serverConfiguration = serverConfiguration;
         this.variationResolver = variationResolver;
+        this.pathValidator = pathValidator;
         this.contextProvider = MgnlContext::getWebContext;
         this.lockManager = lockManager;
         this.areaNodeGenerator = areaNodeGenerator;
@@ -119,7 +123,7 @@ public class TemplateAnnotationEndpoint {
             LOG.debug("requesting template annotations - path:{}, workspace:{}, domain:{}", path, workspace, domain);
             @Nullable
             final Site site = siteManager.getAssignedSite(domain, "");
-            if (site == null) {
+            if (site == null || !pathValidator.isValid(path)) {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
             final PowerNode node = powerNodeService.getByPath(workspace, path).orElse(null);

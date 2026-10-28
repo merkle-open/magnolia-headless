@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.merkle.oss.magnolia.headless.api.PathValidator;
 import com.merkle.oss.magnolia.headless.api.page.mapper.PagePathMapper;
 import com.merkle.oss.magnolia.headless.api.page.mapper.PagePathMapperResolver;
 import com.merkle.oss.magnolia.headless.model.RedirectModelDataProvider;
@@ -47,6 +48,7 @@ public class PageEndpoint {
     private final PageNodeResolver pageNodeResolver;
     private final PagePathMapperResolver pagePathMapperResolver;
     private final PageModelProvider pageModelProvider;
+    private final PathValidator pathValidator;
 
     @Inject
     public PageEndpoint(
@@ -57,7 +59,8 @@ public class PageEndpoint {
             final GsonBuilder gsonBuilder,
             final PageNodeResolver pageNodeResolver,
             final PagePathMapperResolver pagePathMapperResolver,
-            final PageModelProvider pageModelProvider
+            final PageModelProvider pageModelProvider,
+            final PathValidator pathValidator
     ) {
         this.siteManager = siteManager;
         this.templateDefinitionRegistry = templateDefinitionRegistry;
@@ -67,6 +70,7 @@ public class PageEndpoint {
 		this.pageNodeResolver = pageNodeResolver;
         this.pagePathMapperResolver = pagePathMapperResolver;
         this.pageModelProvider = pageModelProvider;
+        this.pathValidator = pathValidator;
     }
 
     @Path("/{language}/page")
@@ -87,7 +91,7 @@ public class PageEndpoint {
             @Nullable
             final Site site = siteManager.getAssignedSite(domain, "");
             final Locale locale = Locale.forLanguageTag(language);
-            if (site == null || LocaleUtils.isLanguageUndetermined(locale)) {
+            if (site == null || !pathValidator.isValid(path) || LocaleUtils.isLanguageUndetermined(locale)) {
                 return Response.status(Response.Status.BAD_REQUEST).build();
             }
             return getPageResponse(locale, site, path, workspace, versionName, request);
