@@ -30,6 +30,7 @@ class DefaultPathValidatorTest {
 
     @ParameterizedTest
     @CsvSource(value = {
+            "'':true",
             "/some:true",
             "/some/path:true",
             "/some/path:true",

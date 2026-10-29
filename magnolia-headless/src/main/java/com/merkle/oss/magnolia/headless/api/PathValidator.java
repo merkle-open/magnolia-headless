@@ -2,6 +2,9 @@ package com.merkle.oss.magnolia.headless.api;
 
 import info.magnolia.jcr.util.NodeNameHelper;
 
+
+import org.apache.commons.lang3.StringUtils;
+
 import jakarta.inject.Inject;
 
 /**
@@ -19,7 +22,7 @@ public interface PathValidator {
 
         @Override
         public boolean isValid(final String path) {
-            return !path.contains("..") && nodeNameHelper.isValidName(path.replace("/", ""));
+            return StringUtils.isEmpty(path) || (!path.contains("..") && nodeNameHelper.isValidName(path.replace("/", "")));
         }
     }
 }
