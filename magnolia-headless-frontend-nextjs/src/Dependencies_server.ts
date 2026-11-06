@@ -4,8 +4,10 @@ import registerDynamicPages from './dynamic-page/_Dependencies_server.ts';
 import registerHelpers from './helper/_Dependencies_server.ts';
 import registerMiddlewares from './middleware/_Dependencies_server.ts';
 import registerTemplates from './templates/_Dependencies_server.ts';
+import { CONTAINER_PROVIDER_TOKEN } from './Constants.ts';
 
 export function registerServer(container: DependencyContainer) {
+	container.register(CONTAINER_PROVIDER_TOKEN, { useValue: container });
 	registerApis(container);
 	registerDynamicPages(container);
 	registerHelpers(container);

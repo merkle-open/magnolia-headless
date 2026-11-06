@@ -3,30 +3,47 @@ import React, { ReactElement, ReactNode } from 'react';
 import EditableAreaProps from './EditableAreaProps.ts';
 import { ContentRendererService, IMagnoliaContext, MgnlContent } from '@magnolia/frontend-helpers-base';
 import { EditableComponent } from '../../components/__magnolia-editable-component/EditableComponent.tsx';
+import { injectable, inject, DependencyContainer } from 'tsyringe';
 
+export interface EditableAreaPassedAttributes extends Record<string, unknown> {
+	container: DependencyContainer;
+}
+
+@injectable()
 export class EditableAreaClass {
-	constructor(private readonly editableComponent: EditableComponent) {}
+	constructor(@inject(EditableComponent) private readonly editableComponent: EditableComponent) {}
 
 	public render(props: EditableAreaProps): ReactNode {
-		const { content, additionalContent, additionalComponentContent } = props;
+		const { content, additionalContent, additionalComponentContent, container, passedAttributes } = props;
 		const mergedContent = this.merge(content, additionalContent);
 		const mergedComponentContents: MgnlContent[] = content?.['@nodes']?.map((nodeName: string): MgnlContent => this.merge(content[nodeName], additionalComponentContent)) || [];
-		const children: ReactElement[] = mergedComponentContents?.map((content: MgnlContent, index: number): ReactElement => this.renderComponent(content, index) as ReactElement);
+		const children: ReactElement[] = mergedComponentContents?.map(
+			(content: MgnlContent, index: number): ReactElement => this.renderComponent(content, index, container, passedAttributes) as ReactElement,
+		);
 
 		return (
 			this.shouldRender(children.length > 0, props.renderEmpty) && (
-				<MagnoliaEditableArea {...props} content={mergedContent}>
+				<MagnoliaEditableArea {...props} content={mergedContent} passedAttributes={this.getPassedAttributes(container, props)}>
 					{children}
 				</MagnoliaEditableArea>
 			)
 		);
 	}
 
-	protected renderComponent(content: any, index: number): ReactNode {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	protected getPassedAttributes(container: DependencyContainer, props: EditableAreaProps): EditableAreaPassedAttributes {
+		return {
+			container: container, // must match templates/pages/BaseProps.ts
+		};
+	}
+
+	protected renderComponent(content: any, index: number, container: DependencyContainer, passedAttributes?: Record<string, unknown>): ReactNode {
 		return this.editableComponent.render({
 			key: ContentRendererService.buildKey(content),
 			content,
 			index,
+			container,
+			passedAttributes,
 		});
 	}
 
@@ -50,5 +67,5 @@ export class EditableAreaClass {
 }
 
 export function EditableArea(props: EditableAreaProps): ReactNode {
-	return new EditableAreaClass(new EditableComponent()).render(props);
+	return props.container.resolve<EditableAreaClass>(EditableAreaClass).render(props);
 }

@@ -1,4 +1,5 @@
 import { MgnlContent } from '@magnolia/frontend-helpers-base';
+import { DependencyContainer } from 'tsyringe';
 
 export interface HrefLangLink {
 	language: string;
@@ -31,4 +32,5 @@ export interface MetaProps {
 export default interface Props extends MgnlContent {
 	meta: MetaProps;
 	theme?: string;
+	container: DependencyContainer;
 }

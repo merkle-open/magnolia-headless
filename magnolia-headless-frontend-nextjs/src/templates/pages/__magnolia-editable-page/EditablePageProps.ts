@@ -10,4 +10,5 @@ export default interface EditablePageProps {
 	config: MagnoliaConfig;
 	magnoliaContext: IMagnoliaContext;
 	nonce?: string;
+	passedAttributes?: Record<string, unknown>;
 }
