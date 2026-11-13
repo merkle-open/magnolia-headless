@@ -1,4 +1,3 @@
-import { ReactComponentLike, ReactNodeLike } from 'prop-types';
 import AreaProps from '../BaseProps.ts';
 
 export default interface EditableAreaProps {
@@ -6,8 +5,8 @@ export default interface EditableAreaProps {
 	parentTemplateId?: string;
 	className?: any;
 	elementType?: any;
-	customView?: ReactComponentLike;
-	children?: ReactNodeLike;
+	customView?: React.ElementType;
+	children?: React.ReactElement | React.ReactElement[] | null;
 	additionalContent?: any;
 	additionalComponentContent?: any;
 	renderEmpty?: boolean;
