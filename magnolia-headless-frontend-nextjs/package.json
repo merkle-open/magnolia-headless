@@ -40,21 +40,20 @@
 		"tsyringe": "^4.10"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.39.5",
-		"@types/node": "^26.6.5",
+		"@eslint-react/eslint-plugin": "^5.30.2",
+		"@types/node": "^26.6.6",
 		"@types/react": "19.3.0",
-		"@typescript-eslint/eslint-plugin": "^8.71.2",
-		"@typescript-eslint/parser": "^8.71.2",
-		"eslint": "9.39.5",
+		"@typescript-eslint/eslint-plugin": "^8.72.2",
+		"@typescript-eslint/parser": "^8.72.2",
+		"eslint": "^10.14.0",
 		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-prettier": "^5.5.6",
-		"eslint-plugin-react": "^7.37.5",
+		"eslint-plugin-prettier": "^5.5.7",
 		"husky": "^9.1.7",
 		"jiti": "^2.7.0",
 		"lint-staged": "^17.6.0",
-		"prettier": "^3.9.10",
+		"prettier": "^3.10.1",
 		"tsx": "^4.23.15",
-		"typescript-eslint": "^8.71.2"
+		"typescript-eslint": "^8.72.2"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx,md,mdx,html,css}": "npm run format"
