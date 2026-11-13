@@ -16,6 +16,7 @@ import { CombinedComponentMappingsProvider } from '../templates/ComponentMapping
 import { ThemeValidator } from '../helper/ThemeValidator.ts';
 import { EditablePage } from '../templates/pages/__magnolia-editable-page/EditablePage.tsx';
 import { ContentSecurityPolicyNonceProvider } from '../middleware/impl/ContentSecurityPolicyNonceMiddleware.ts';
+import { HEADLESS_CONFIG_PROVIDER_TOKEN, type HeadlessConfigProviderI } from '../config/ConfigProvider.ts';
 
 @injectable()
 export class DynamicPage extends AbstractDynamicPage {
@@ -24,13 +25,14 @@ export class DynamicPage extends AbstractDynamicPage {
 		@inject(STYLESHEET_PROVIDER_TOKEN) stylesheetProviderI: StylesheetProviderI,
 		@inject(ThemeValidator) themeValidator: ThemeValidator,
 		@inject(EditablePage) editablePage: EditablePage,
+		@inject(HEADLESS_CONFIG_PROVIDER_TOKEN) configProvider: HeadlessConfigProviderI,
 		@inject(ContentSecurityPolicyNonceProvider) private readonly cspNonceProvider: ContentSecurityPolicyNonceProvider,
 		@inject(MagnoliaContextProvider) private readonly magnoliaContextProvider: MagnoliaContextProvider,
 		@inject(MagnoliaPageRestClient) private readonly magnoliaPageRestClient: MagnoliaPageRestClient,
 		@inject(MetadataProvider) private readonly metadataProvider: MetadataProvider,
 		@inject(UrlProvider) private readonly urlProvider: UrlProvider,
 	) {
-		super(componentMappingsProvider, stylesheetProviderI, themeValidator, editablePage);
+		super(componentMappingsProvider, stylesheetProviderI, themeValidator, editablePage, configProvider);
 	}
 
 	public async render(pageProps: PageProps): Promise<ReactNode> {

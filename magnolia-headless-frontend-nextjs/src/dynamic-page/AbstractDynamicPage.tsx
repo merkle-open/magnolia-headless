@@ -7,18 +7,25 @@ import { EditablePage } from '../templates/pages/__magnolia-editable-page/Editab
 import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
 import { ThemeValidator } from '../helper/ThemeValidator.ts';
+import { type HeadlessConfigProviderI, MagnoliaApiEndpointsProvider } from '../config/ConfigProvider.ts';
 
 export abstract class AbstractDynamicPage {
+	private readonly apisProvider: MagnoliaApiEndpointsProvider;
+
 	protected constructor(
 		private readonly componentMappingsProvider: ComponentMappingsProviderI,
 		private readonly StylesheetProviderI: StylesheetProviderI,
 		private readonly themeValidator: ThemeValidator,
 		private readonly editablePage: EditablePage,
-	) {}
+		configProvider: HeadlessConfigProviderI,
+	) {
+		this.apisProvider = configProvider.get().magnoliaApisProvider;
+	}
 
 	protected async renderBase(magnoliaContext: ExtendedMagnoliaContext, content: PageProps, templateAnnotations: MgnlTemplateAnnotations, nonce?: string): Promise<ReactNode> {
 		const config: MagnoliaConfig = {
 			componentMappings: this.componentMappingsProvider.getComponentMappings(),
+			trustedOrigins: magnoliaContext.isMagnoliaEdit ? [new URL(this.apisProvider.annotationTemplates()).origin] : [], // only required in author mode
 		};
 
 		RefService.setMagnoliaContextRef(magnoliaContext);

@@ -30,7 +30,7 @@
 		"prepare": "cd .. && husky magnolia-headless-frontend-nextjs/.husky"
 	},
 	"dependencies": {
-		"@magnolia/react-editor": "2.1.1"
+		"@magnolia/react-editor": "3.0.0"
 	},
 	"peerDependencies": {
 		"next": "^16.4",

@@ -4,7 +4,7 @@ import { StaticErrorPage } from '../templates/pages/_error-static/ErrorStatic.ts
 import { AbstractDynamicPage } from './AbstractDynamicPage.tsx';
 import { ResponseHelper } from '../helper/RestClient.ts';
 import { MagnoliaContextProvider } from '../helper/MagnoliaContextProvider.ts';
-import type { FrontendApiEndpointsProvider, HeadlessConfigProviderI } from '../config/ConfigProvider.ts';
+import { FrontendApiEndpointsProvider, HeadlessConfigProviderI } from '../config/ConfigProvider.ts';
 import { type StylesheetProviderI } from '../config/StylesheetProvider.ts';
 import { type ComponentMappingsProviderI } from '../config/ComponentMappingsProvider.ts';
 import { ThemeValidator } from '../helper/ThemeValidator.ts';
@@ -24,7 +24,7 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 		private readonly staticErrorPage: StaticErrorPage,
 		protected readonly magnoliaContextProvider: MagnoliaContextProvider,
 	) {
-		super(componentMappingsProvider, StylesheetProviderI, themeValidator, editablePage);
+		super(componentMappingsProvider, StylesheetProviderI, themeValidator, editablePage, configProvider);
 		this.frontendApisProvider = configProvider.get().frontendApisProvider;
 	}
 
