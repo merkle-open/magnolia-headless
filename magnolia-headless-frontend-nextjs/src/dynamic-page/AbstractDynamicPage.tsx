@@ -25,7 +25,7 @@ export abstract class AbstractDynamicPage {
 	protected async renderBase(magnoliaContext: ExtendedMagnoliaContext, content: PageProps, templateAnnotations: MgnlTemplateAnnotations, nonce?: string): Promise<ReactNode> {
 		const config: MagnoliaConfig = {
 			componentMappings: this.componentMappingsProvider.getComponentMappings(),
-			trustedOrigins: magnoliaContext.isMagnoliaEdit ? [new URL(this.apisProvider.annotationTemplates()).origin] : [], // only required in author mode
+			trustedOrigins: magnoliaContext.isMagnolia ? [new URL(this.apisProvider.annotationTemplates()).origin] : [], // only required in author mode
 		};
 
 		RefService.setMagnoliaContextRef(magnoliaContext);
