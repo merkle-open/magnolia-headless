@@ -1,7 +1,7 @@
 package com.merkle.oss.magnolia.headless.api.page;
 
+import info.magnolia.cms.beans.config.ServerConfiguration;
 import info.magnolia.cms.core.version.VersionedNode;
-import info.magnolia.config.registry.DefinitionProvider;
 import info.magnolia.jcr.inheritance.InheritanceContentDecorator;
 import info.magnolia.jcr.util.NodeTypes;
 import info.magnolia.jcr.util.NodeUtil;
@@ -50,12 +50,14 @@ public class PageModelProvider {
     private static final String CHILD_PROPERTY = META_PROPERTY_PREFIX + "nodes";
     private static final String UUID_PROPERTY = META_PROPERTY_PREFIX + "id";
     private static final String NODE_TYPE_PROPERTY = META_PROPERTY_PREFIX + "nodeType";
+    private static final String BASE_URL_PROPERTY = META_PROPERTY_PREFIX + "baseUrl";
 
     private final RenderingEngine renderingEngine;
     private final PowerNodeService powerNodeService;
     private final TemplateDefinitionRegistry templateDefinitionRegistry;
     private final ErrorModelDataProvider errorModelDataProvider;
     private final Gson gson;
+    private final ServerConfiguration serverConfiguration;
 
     @Inject
     public PageModelProvider(
@@ -63,13 +65,15 @@ public class PageModelProvider {
             final RenderingEngine renderingEngine,
             final PowerNodeService powerNodeService,
             final TemplateDefinitionRegistry templateDefinitionRegistry,
-            final ErrorModelDataProvider errorModelDataProvider
+            final ErrorModelDataProvider errorModelDataProvider,
+            final ServerConfiguration serverConfiguration
     ) {
         this.renderingEngine = renderingEngine;
         this.powerNodeService = powerNodeService;
         this.templateDefinitionRegistry = templateDefinitionRegistry;
         this.errorModelDataProvider = errorModelDataProvider;
-        gson = gsonBuilder.create();
+        this.serverConfiguration = serverConfiguration;
+        this.gson = gsonBuilder.create();
     }
 
     public Map<String, Object> get(final PowerNode node, final TemplateDefinition templateDefinition) {
@@ -80,6 +84,7 @@ public class PageModelProvider {
             outputModel.put(UUID_PROPERTY, node.getIdentifier());
             outputModel.put(NODE_TYPE_PROPERTY, node.getPrimaryNodeType().getName());
             outputModel.put(CHILD_PROPERTY, templateDefinition.getAreas().keySet());
+            outputModel.put(BASE_URL_PROPERTY, serverConfiguration.getDefaultBaseUrl());
             outputModel.putAll(render(node, templateDefinition));
             if (!outputModel.containsKey(NodeTypes.Renderable.TEMPLATE)) {
                 node.getTemplate().ifPresent(template ->

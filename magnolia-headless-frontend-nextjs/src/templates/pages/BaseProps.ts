@@ -29,6 +29,7 @@ export interface MetaProps {
 }
 
 export default interface Props extends MgnlContent {
+	'@baseUrl': string;
 	meta: MetaProps;
 	theme?: string;
 }

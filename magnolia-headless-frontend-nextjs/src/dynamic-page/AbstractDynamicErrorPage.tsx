@@ -24,7 +24,7 @@ export abstract class AbstractDynamicErrorPage extends AbstractDynamicPage {
 		private readonly staticErrorPage: StaticErrorPage,
 		protected readonly magnoliaContextProvider: MagnoliaContextProvider,
 	) {
-		super(componentMappingsProvider, StylesheetProviderI, themeValidator, editablePage, configProvider);
+		super(componentMappingsProvider, StylesheetProviderI, themeValidator, editablePage);
 		this.frontendApisProvider = configProvider.get().frontendApisProvider;
 	}
 
